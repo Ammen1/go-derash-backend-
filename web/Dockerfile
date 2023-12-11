@@ -11,7 +11,7 @@ COPY entrypoint.sh /app/entrypoint.sh
 # /opt: reserved for the installation of add-on application software packages.
 # We'll use this to create & store our virtual environment
 RUN mkdir -p /opt
-RUN python3 -m env /opt/env
+RUN python -m venv /opt/env
 ENV PATH="/env/bin:$PATH"
 
 

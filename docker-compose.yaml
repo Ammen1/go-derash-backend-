@@ -14,8 +14,8 @@ services:
     ports:
       - "8001:8020"
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
-    volumes:
-      - staticfiles:/app/staticfiles/
+    # volumes:
+    #   - staticfiles:/app/staticfiles/
   postgres_db:
     image: postgres
     restart: always
@@ -40,7 +40,7 @@ services:
     entrypoint: redis-server --appendonly yes --port 6388
 
 volumes:
-  staticfiles:
-      external: true
+  # staticfiles:
+  #     external: true
   postgres_data:
   redis_data:

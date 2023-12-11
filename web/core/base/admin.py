@@ -23,30 +23,21 @@ from .models import (
     Complaint,
     RouteManagement,
 )
-
-
-@admin.register(NewUser)
-class NewUserAdmin(admin.ModelAdmin):
-    list_display = ('phone', 'start_date', 'is_staff', 'is_active')
-    search_fields = ('phone', 'start_date')
-    # Add more configuration as needed
-
-
-@admin.register(UserProfile)
-class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'location', 'first_name', 'last_name')
-    search_fields = ('user__phone', 'location', 'first_name', 'last_name')
-
-
-@admin.register(Booking)
-class BookingAdmin(admin.ModelAdmin):
-    list_display = ('user', 'service_type', 'status', 'timestamp')
-    search_fields = ('user__phone', 'service_type__location', 'status')
-    # Add more configuration as needed
-
-
-@admin.register(RouteManagement)
-class RouteManagementAdmin(admin.ModelAdmin):
-    list_display = ('start_location', 'end_location',
-                    'distance', 'estimated_time')
-    search_fields = ('start_location', 'end_location')
+admin.site.register(NewUser)
+admin.site.register(UserProfile)
+admin.site.register(Service)
+admin.site.register(ServiceType)
+admin.site.register(BookingService)
+admin.site.register(EngineOil)
+admin.site.register(Tyre)
+admin.site.register(GasLineDetails)
+admin.site.register(Subscription)
+admin.site.register(AutoCostCalculator)
+admin.site.register(Payment)
+admin.site.register(ReferralCoupon)
+admin.site.register(DriverProfile)
+admin.site.register(OrderAlert)
+admin.site.register(EmergencyButtonAlert)
+admin.site.register(AdminUser)
+admin.site.register(Complaint)
+admin.site.register(RouteManagement)

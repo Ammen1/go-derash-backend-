@@ -33,47 +33,114 @@ from rest_framework import serializers
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
-        fields = ["name", "slug", "is_active"]
+        fields = ["name",]
         read_only = True
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class BookingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Product
-        fields = ["name", "slug", "description",
-                  "category", "product_type", "price", "weight"]
-        read_only = True
-        editable = False
+        model = Booking
+        fields = ["user", "service_type", "status"]
+        read_only = False
+        editable = True
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class VehicleInformationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ProductType
-        fields = ["name", ""]
-        read_only = True
-        editable = False
+        model = VehicleInformation
+        fields = ["booking", "vehicle_type", "vehicle_model",
+                  "license_plate", "driver_license"]
+        read_only = False
+        editable = True
 
 
-class ProductMediaSerializer(serializers.ModelSerializer):
-    img_url = serializers.SerializerMethodField()
-
+class ServiceTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Media
-        fields = ["img_url", "alt_text"]
-        read_only = True
-        editable = False
+        model = ServiceType
+        fields = ["location", "car_type", "arrival_date",
+                  "arrival_time", "description", "price", "services"]
 
-    def get_img_url(self, obj):
-        return obj.img_url.url
+
+class BookingServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookingService
+        fields = ["booking", "service"]
+
+
+class EngineOilSerializer(serializers.ModelSerializer):
+    class Meta:
+        models = EngineOil
+        fields = ["service_type", "trye_size", "trye_type"]
+
+
+class CarWashSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarWash
+        field = ["service_type", "wash_type", "exterior", "interior", "water"]
+
+
+class GasLineDetails(serializers.ModelSerializer):
+    class Meta:
+        model = GasLineDetails
+        field = ["service", "fuel_capacity", "current_fuel_level"]
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        field = ["user", "start_date", "end_date", "active"]
+
+
+class AutoCostCalculatorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        field = ["booking", "distace_travelled",
+                 "service_type_used", "total_cost"]
+
+
+class DriverProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DriverProfile
+        field = ["driver", "address", "phone_number", "license_number"]
+
+
+class OrderAlertSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderAlert
+        field = ["driver", "booking", "timestamp", "status"]
+
+
+class EmergencyButtonAlertSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmergencyButtonAlert
+        field = ["driver", "timestamp", "location"]
+
+
+class ComplaintSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Complaint
+        field = ["user", "message", "timestamp", "status"]
+
+
+class RouteManagementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RouteManagement
+        field = ["start_location", "end_location",
+                 "distance", "estimated_time"]
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
 
-    email = serializers.EmailField(required=True)
-    username = serializers.CharField(required=True)
+    phone = serializers.CharField(required=True)
     password = serializers.CharField(min_length=8, write_only=True)
 
     class Meta:
         model = settings.AUTH_USER_MODEL
-        fields = ('email', 'user_name', 'first_name')
+        fields = ('phone', "start_date", "is_staff", "is_active")
         extra_kwargs = {'password': {'write_only': True}}
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        field = ["user", "location", "first_name", "last_name", "image"]

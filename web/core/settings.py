@@ -105,7 +105,7 @@ DB_IS_AVAIL = all([
     DB_PORT
 ])
 DB_IGNORE_SSL = os.environ.get("DB_IGNORE_SSL") == "true"
-print(DB_IS_AVAIL)
+# print(DB_IS_AVAIL)
 
 if DB_IS_AVAIL:
     DATABASES = {
@@ -119,7 +119,7 @@ if DB_IS_AVAIL:
         }
     }
 
-    print(DATABASES)
+    # print(DATABASES)
     if not DB_IGNORE_SSL:
         DATABASES["default"]["OPTIONS"] = {
             "sslmode": "disable"

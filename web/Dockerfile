@@ -1,4 +1,4 @@
-FROM python:3.11.7-slim
+FROM python:3.9-slim
 
 # Copy your local files to your Docker container
 COPY . /app

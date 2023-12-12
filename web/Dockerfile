@@ -23,4 +23,5 @@ RUN /opt/env/bin/pip install --upgrade pip && \
 
 
 # Entrypoint script will be discussed later.
-CMD [ "/app/entrypoint.sh" ]
+CMD [ "/app/entrypoint.sh"]
+

@@ -54,7 +54,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "phone"
 
     def __str__(self):
-        return self.full_name
+        return self.phone
 
 
 class UserProfile(models.Model):
@@ -62,7 +62,7 @@ class UserProfile(models.Model):
     location = models.CharField(max_length=255)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    image = models.FileField(upload_to=media, default=amen.png)
+    # image = models.FileField(upload_to=media, default=amen.png)
 
 
 class Service(models.Model):

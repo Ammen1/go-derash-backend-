@@ -3,7 +3,7 @@ from django.conf import settings
 from attr import attributes
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from models import (
+from core.base.models import (
     NewUser,
     UserProfile,
     Booking,
@@ -33,8 +33,7 @@ from rest_framework import serializers
 class ServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
-        fields = ["name",]
-        read_only = True
+        fields = ["name"]
 
 
 class BookingSerializer(serializers.ModelSerializer):
@@ -143,4 +142,4 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        field = ["user", "location", "first_name", "last_name", "image"]
+        field = ["user", "location", "first_name", "last_name"]

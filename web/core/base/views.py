@@ -37,3 +37,28 @@ class EditService(generics.UpdateAPIView):
 class DeleteService(generics.RetrieveDestroyAPIView):
     serializer_class = ServiceSerializer
     queryset = Service.objects.all()
+
+
+class CreateVehicleInformation(generics.CreateAPIView):
+    serializer_class = VehicleInformationSerializer
+    queryset = VehicleInformation.objects.all()
+
+
+class ListVehicleInformation(generics.ListAPIView):
+    serializer_class = VehicleInformationSerializer
+    queryset = VehicleInformation.objects.all()
+
+
+class detailVehicleInformation(generics.RetrieveAPIView):
+    serializer_class = VehicleInformationSerializer
+    queryset = VehicleInformation.objects.all()
+
+
+class EditVehicleInformation(generics.UpdateAPIView):
+    serializer_class = VehicleInformationSerializer
+    queryset = VehicleInformation.objects.all()
+
+
+class DeleteVehucleInformation(generics.DestroyAPIView):
+    serializer_class = VehicleInformationSerializer
+    queryset = VehicleInformation.objects.all()

@@ -18,6 +18,13 @@ urlpatterns = [
          name='listvehicleinformation'),
     path('admin/deletevehicleinformation/<int:id>/',
          DeleteVehucleInformation, name='deletevehicleinformation'),
+    path('admin/createservicetype',
+         CreateServiceType.as_view(), name='createservicetype'),
+    path('admin/listservicetype', ListServiceType.as_view(), name='listservicetype'),
+    path('admin/detilservicetype/<int:id>/',
+         DetailServiceType.as_view(), name='detailseervide'),
+    path('admin/deleteservicety<int:id>/',
+         DeteleServiceType.as_view(), name='deleteservicety'),
 
 
     # Users urls

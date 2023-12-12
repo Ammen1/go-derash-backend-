@@ -49,7 +49,7 @@ class ListVehicleInformation(generics.ListAPIView):
     queryset = VehicleInformation.objects.all()
 
 
-class detailVehicleInformation(generics.RetrieveAPIView):
+class DetailVehicleInformation(generics.RetrieveAPIView):
     serializer_class = VehicleInformationSerializer
     queryset = VehicleInformation.objects.all()
 
@@ -62,3 +62,28 @@ class EditVehicleInformation(generics.UpdateAPIView):
 class DeleteVehucleInformation(generics.DestroyAPIView):
     serializer_class = VehicleInformationSerializer
     queryset = VehicleInformation.objects.all()
+
+
+class CreateServiceType(generics.CreateAPIView):
+    serializer_class = ServiceTypeSerializer
+    queryset = Service.objects.all()
+
+
+class ListServiceType(generics.ListAPIView):
+    serializer_class = ServiceTypeSerializer
+    queryset = ServiceType.objects.all()
+
+
+class EditServiceType(generics.UpdateAPIView):
+    serializer_class = ServiceTypeSerializer
+    queryset = ServiceType.objects.all()
+
+
+class DeleteServiceType(generics.DestroyAPIView):
+    serializer_class = ServiceTypeSerializer
+    queryset = ServiceType.objects.all()
+
+
+class DetailServiceType(generics.RetrieveAPIView):
+    serializer_class = ServiceTypeSerializer
+    queryset = ServiceType.objects.all()

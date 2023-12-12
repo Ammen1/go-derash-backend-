@@ -47,7 +47,7 @@ class BookingSerializer(serializers.ModelSerializer):
 class VehicleInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = VehicleInformation
-        fields = ["booking", "vehicle_type", "vehicle_model",
+        fields = ["vehicle_type", "vehicle_model",
                   "license_plate", "driver_license"]
         read_only = False
         editable = True

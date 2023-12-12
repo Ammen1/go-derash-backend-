@@ -112,3 +112,28 @@ class DeleteEgineOil(generics.DestroyAPIView):
 class EditEngioneOil(generics.UpdateAPIView):
     serializer_class = EngineOilSerializer
     queryset = EngineOil.objects.all()
+
+
+class CreateBooking(generics.CreateAPIView):
+    serializer_class = BookingSerializer
+    queryset = Booking.objects.all()
+
+
+class ListBooking(generics.ListAPIView):
+    serializer_class = BookingSerializer
+    queryset = Booking.objects.all()
+
+
+class DetailBooking(generics.RetrieveAPIView):
+    serializer_class = BookingSerializer
+    queryset = Booking.objects.all()
+
+
+class EditBooking(generics.UpdateAPIView):
+    serializer_class = BookingSerializer
+    queryset = Booking.objects.all()
+
+
+class DeleteBooking(generics.DestroyAPIView):
+    serializer_class = BookingSerializer
+    queryset = Booking.objects.all()

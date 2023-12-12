@@ -78,7 +78,7 @@ class Booking(models.Model):
 
 
 class VehicleInformation(models.Model):
-    booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
+    # booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
     vehicle_type = models.CharField(max_length=100)
     vehicle_model = models.CharField(max_length=100)
     license_plate = models.CharField(max_length=100)

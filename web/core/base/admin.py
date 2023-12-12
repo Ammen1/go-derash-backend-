@@ -22,7 +22,9 @@ from .models import (
     AdminUser,
     Complaint,
     RouteManagement,
+
 )
+admin.site.register(Booking)
 admin.site.register(NewUser)
 admin.site.register(UserProfile)
 admin.site.register(Service)
@@ -41,3 +43,4 @@ admin.site.register(EmergencyButtonAlert)
 admin.site.register(AdminUser)
 admin.site.register(Complaint)
 admin.site.register(RouteManagement)
+admin.site.register(VehicleInformation)

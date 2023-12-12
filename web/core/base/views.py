@@ -87,3 +87,28 @@ class DeleteServiceType(generics.DestroyAPIView):
 class DetailServiceType(generics.RetrieveAPIView):
     serializer_class = ServiceTypeSerializer
     queryset = ServiceType.objects.all()
+
+
+class CreateEngineOil(generics.CreateAPIView):
+    serializer_class = EngineOilSerializer
+    queryset = EngineOil.objects.all()
+
+
+class ListEngineOil(generics.ListAPIView):
+    serializer_class = EngineOilSerializer
+    queryset = EngineOil.objects.all()
+
+
+class DetailEngineOil(generics.RetrieveAPIView):
+    serializer_class = EngineOilSerializer
+    queryset = EngineOil.objects.all()
+
+
+class DeleteEgineOil(generics.DestroyAPIView):
+    serializer_class = EngineOilSerializer
+    queryset = EngineOil.objects.all()
+
+
+class EditEngioneOil(generics.UpdateAPIView):
+    serializer_class = EngineOilSerializer
+    queryset = EngineOil.objects.all()

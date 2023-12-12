@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/detilservicetype/<int:id>/',
          DetailServiceType.as_view(), name='detailseervide'),
     path('admin/deleteservicety<int:id>/',
-         DeteleServiceType.as_view(), name='deleteservicety'),
+         DeleteServiceType.as_view(), name='deleteservicety'),
 
 
     # Users urls
@@ -32,6 +32,7 @@ urlpatterns = [
          CreateVehicleInformation.as_view(), name='createvehicleInformation'),
     path('user/editvehicleinformation/<int:int>/',
          EditVehicleInformation.as_view(), name='editvehicleinformation'),
+    path('')
 
 
 ]

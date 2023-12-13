@@ -133,45 +133,6 @@ class Subscription(models.Model):
     active = models.BooleanField(default=True)
 
 
-class AutoCostCalculator(models.Model):
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
-    distance_travelled = models.DecimalField(max_digits=8, decimal_places=2)
-    service_used = models.ForeignKey(Service, on_delete=models.CASCADE)
-    service_type_used = models.ForeignKey(
-        ServiceType, on_delete=models.CASCADE)
-    total_cost = models.DecimalField(max_digits=10, decimal_places=2)
-
-
-class Payment(models.Model):
-    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_status = models.CharField(max_length=255)
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-
-class ReferralCoupon(models.Model):
-    user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
-    coupon_code = models.CharField(max_length=20)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
-    expiry_date = models.DateField()
-
-
-class PushNotification(models.Model):
-    user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
-    message = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-    is_read = models.BooleanField(default=False)
-
-# Driver App Models
-
-
-class DriverProfile(models.Model):
-    driver = models.OneToOneField(NewUser, on_delete=models.CASCADE)
-    address = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=20)
-    license_number = models.CharField(max_length=20)
-
-
 class OrderAlert(models.Model):
     driver = models.ForeignKey(NewUser, on_delete=models.CASCADE)
     booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
@@ -184,9 +145,8 @@ class EmergencyButtonAlert(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     location = models.CharField(max_length=255)
 
+
 # Web Admin Models
-
-
 class AdminUser(models.Model):
     username = models.CharField(max_length=255)
     email = models.EmailField()

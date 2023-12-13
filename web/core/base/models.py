@@ -207,3 +207,13 @@ class RouteManagement(models.Model):
     end_location = models.CharField(max_length=100)
     distance = models.DecimalField(max_digits=8, decimal_places=2)
     estimated_time = models.TimeField()
+
+
+class CarWashList(generics.ListCreateAPIView):
+    queryset = CarWash.objects.all()
+    serializer_class = CarWashSerializer
+
+
+class CarWashDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = CarWash.objects.all()
+    serializer_class = CarWashSerializer

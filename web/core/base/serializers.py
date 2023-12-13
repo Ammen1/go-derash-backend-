@@ -143,3 +143,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         field = ["user", "location", "first_name", "last_name"]
+
+
+class TyreSerializer(serializers.ModelSerializer):
+    class Meta:
+        models = Tyre
+        field = ["service_type", "tyre_size", "tyre_type"]

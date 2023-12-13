@@ -1,16 +1,15 @@
 from django.shortcuts import get_object_or_404
-from core.base.models import *
-from .serializers import *
-from rest_framework import viewsets, filters, generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 
+from core.base.models import *
+from .serializers import *
 
+
+# Service Views
 class CreateService(APIView):
-    # parser_classes = [MultiPartParser, FormParser]
-
     def post(self, request, format=None):
         serializer = ServiceSerializer(data=request.data)
         if serializer.is_valid():
@@ -24,7 +23,7 @@ class ServiceList(generics.ListAPIView):
     queryset = Service.objects.all()
 
 
-class ServiceDaitle(generics.RetrieveAPIView):
+class ServiceDetail(generics.RetrieveAPIView):
     serializer_class = ServiceSerializer
     queryset = Service.objects.all()
 
@@ -39,6 +38,7 @@ class DeleteService(generics.RetrieveDestroyAPIView):
     queryset = Service.objects.all()
 
 
+# Vehicle Information Views
 class CreateVehicleInformation(generics.CreateAPIView):
     serializer_class = VehicleInformationSerializer
     queryset = VehicleInformation.objects.all()
@@ -59,14 +59,15 @@ class EditVehicleInformation(generics.UpdateAPIView):
     queryset = VehicleInformation.objects.all()
 
 
-class DeleteVehucleInformation(generics.DestroyAPIView):
+class DeleteVehicleInformation(generics.DestroyAPIView):
     serializer_class = VehicleInformationSerializer
     queryset = VehicleInformation.objects.all()
 
 
+# Service Type Views
 class CreateServiceType(generics.CreateAPIView):
     serializer_class = ServiceTypeSerializer
-    queryset = Service.objects.all()
+    queryset = ServiceType.objects.all()
 
 
 class ListServiceType(generics.ListAPIView):
@@ -89,6 +90,7 @@ class DetailServiceType(generics.RetrieveAPIView):
     queryset = ServiceType.objects.all()
 
 
+# Engine Oil Views
 class CreateEngineOil(generics.CreateAPIView):
     serializer_class = EngineOilSerializer
     queryset = EngineOil.objects.all()
@@ -114,6 +116,7 @@ class EditEngioneOil(generics.UpdateAPIView):
     queryset = EngineOil.objects.all()
 
 
+# Booking Views
 class CreateBooking(generics.CreateAPIView):
     serializer_class = BookingSerializer
     queryset = Booking.objects.all()
@@ -137,3 +140,40 @@ class EditBooking(generics.UpdateAPIView):
 class DeleteBooking(generics.DestroyAPIView):
     serializer_class = BookingSerializer
     queryset = Booking.objects.all()
+
+
+# Booking Service Views
+class ListCreateBookingService(generics.ListCreateAPIView):
+    serializer_class = BookingServiceSerializer
+    queryset = BookingService.objects.all()
+
+
+class EditDeleteBookingService(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BookingServiceSerializer
+    queryset = BookingService.objects.all()
+
+
+# Tyre Views
+class CreateTyre(generics.CreateAPIView):
+    serializer_class = TyreSerializer
+    queryset = Tyre.objects.all()
+
+
+class ListTyre(generics.ListAPIView):
+    serializer_class = TyreSerializer
+    queryset = Tyre.objects.all()
+
+
+class DetailTyre(generics.RetrieveAPIView):
+    serializer_class = TyreSerializer
+    queryset = Tyre.objects.all()
+
+
+class DeleteTyre(generics.DestroyAPIView):
+    serializer_class = TyreSerializer
+    queryset = Tyre.objects.all()
+
+
+class EditTyre(generics.UpdateAPIView):
+    serializer_class = TyreSerializer
+    queryset = Tyre.objects.all()

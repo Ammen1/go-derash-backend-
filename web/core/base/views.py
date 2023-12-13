@@ -180,34 +180,49 @@ class EditTyre(generics.UpdateAPIView):
 
 
 # Views for CarWash
-class CarWashList(generics.ListCreateAPIView):
+class CreateCarWash(generics.CreateAPIView):
     serializer_class = CarWashSerializer
     queryset = CarWash.objects.all()
 
 
-class CarWashDetail(generics.RetrieveUpdateDestroyAPIView):
+class ListCarWash(generics.ListAPIView):
+    serializer_class = CarWashSerializer
+    queryset = CarWash.objects.all()
+
+
+class DeleteCarWash(generics.DestroyAPIView):
+    serializer_class = CarWashSerializer
+    queryset = CarWash.objects.all()
+
+
+class DetailCarWash(generics.RetrieveAPIView):
+    serializer_class = CarWashSerializer
+    queryset = CarWash.objects.all()
+
+
+class EditCarWash(generics.UpdateAPIView):
     serializer_class = CarWashSerializer
     queryset = CarWash.objects.all()
 
 
 # Views for Fuel
 class CreateGasLineDetails(generics.CreateAPIView):
-    serializer_class = GasLineDetailsSerialzer
+    serializer_class = GasLineDetailsSerializer
     queryset = GasLineDetails.objects.all()
 
 
 class ListGasLineDetails(generics.ListAPIView):
-    serializer_class = GasLineDetailsSerialzer
+    serializer_class = GasLineDetailsSerializer
     queryset = GasLineDetails.objects.all()
 
 
 class EditGasLineDetails(generics.UpdateAPIView):
-    serializer_class = GasLineDetailsSerialzer
+    serializer_class = GasLineDetailsSerializer
     queryset = GasLineDetails.objects.all()
 
 
 class deleteGasLineDetails(generics.UpdateAPIView):
-    serializer_class = GasLineDetailsSerialzer
+    serializer_class = GasLineDetailsSerializer
     queryset = GasLineDetails.objects.all()
 
 
@@ -215,9 +230,8 @@ class GasLineDetails(generics.RetrieveAPIView):
     serializer_class = GasLineDetailsSerializer
     queryset = GasLineDetails.objects.all()
 
+
 # Views for Subscriptions
-
-
 class CreateSubscription(generics.CreateAPIView):
     serializer_class = SubscriptionSerializer
     queryset = Subscription.objects.all()

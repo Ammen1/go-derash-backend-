@@ -75,57 +75,57 @@ class EngineOilSerializer(serializers.ModelSerializer):
 class CarWashSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarWash
-        field = ["service_type", "wash_type", "exterior", "interior", "water"]
+        fields = ["service_type", "wash_type", "exterior", "interior", "water"]
 
 
-class GasLineDetails(serializers.ModelSerializer):
+class GasLineDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = GasLineDetails
-        field = ["service", "fuel_capacity", "current_fuel_level"]
+        fields = ["service", "fuel_capacity", "current_fuel_level"]
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
-        field = ["user", "start_date", "end_date", "active"]
+        fields = ["user", "start_date", "end_date", "active"]
 
 
 class AutoCostCalculatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
-        field = ["booking", "distace_travelled",
-                 "service_type_used", "total_cost"]
+        fields = ["booking", "distace_travelled",
+                  "service_type_used", "total_cost"]
 
 
 class DriverProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = DriverProfile
-        field = ["driver", "address", "phone_number", "license_number"]
+        fields = ["driver", "address", "phone_number", "license_number"]
 
 
 class OrderAlertSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderAlert
-        field = ["driver", "booking", "timestamp", "status"]
+        fields = ["driver", "booking", "timestamp", "status"]
 
 
 class EmergencyButtonAlertSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmergencyButtonAlert
-        field = ["driver", "timestamp", "location"]
+        fields = ["driver", "timestamp", "location"]
 
 
 class ComplaintSerializer(serializers.ModelSerializer):
     class Meta:
         model = Complaint
-        field = ["user", "message", "timestamp", "status"]
+        fields = ["user", "message", "timestamp", "status"]
 
 
 class RouteManagementSerializer(serializers.ModelSerializer):
     class Meta:
         model = RouteManagement
-        field = ["start_location", "end_location",
-                 "distance", "estimated_time"]
+        fields = ["start_location", "end_location",
+                  "distance", "estimated_time"]
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):

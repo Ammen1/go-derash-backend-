@@ -39,16 +39,46 @@ urlpatterns = [
     path('admin/tyre/delete/<int:pk>/', DeleteTyre.as_view(), name='delete_tyre'),
     path('admin/tyre/edit/<int:pk>/', EditTyre.as_view(), name='edit_tyre'),
 
+    # CarWah URLS
+    path('admin/listcarwash/', ListCarWash.as_view(), name='listcarwash'),
+
+    # Subscriptions URLS
+    path('admin/listsubscriptions/',
+         ListSubscriptions.as_view(), name='listsubscriptions'),
+    path('admin/deletesubscription/<int:pk>/',
+         DeleteSubscription.as_view(), name='deletesubscription'),
+
+
+
     # User URLs
     path('user/createvehicleinformation/',
          CreateVehicleInformation.as_view(), name='createvehicleInformation'),
     path('user/editvehicleinformation/<int:pk>/',
          EditVehicleInformation.as_view(), name='editvehicleinformation'),
     path('user/createengineoil/', CreateEngineOil.as_view(), name='createengineoil'),
+
     path('user/createbooking/', CreateBooking.as_view(), name='createbooking'),
     path('user/editbooking/<int:pk>/', EditBooking.as_view(), name='editbooking'),
     path('user/deletebooking/<int:pk>/',
          EditBooking.as_view(), name='deletebooking'),
     path('user/detailbooking/<int:pk>/',
          EditBooking.as_view(), name='detailbooking'),
+
+    # urls for carwash
+    path('user/createcarwash/',
+         CreateCarWash.as_view(), name='createcarwash'),
+    path('user/detailcarwash/<int:pk>/',
+         DetailCarWash.as_view(), name='detailcarwash'),
+    path('user/detelecarwash/<int:pk>/',
+         DeleteCarWash.as_view(), name='detelecarwash'),
+    path('user/editcarwash/<int:pk>/', EditCarWash.as_view(), name='editcarwash'),
+
+    # urls for Subscriptions
+    path('user/createsubscriptions/',
+         CreateSubscription.as_view(), name='createsubscriptions'),
+    path('user/detelesubscription/<int:pk>/',
+         DeleteSubscription.as_view(), name='deletesubscription'),
+    path('user/detailsubscription/<int:pk>/',
+         DetailSubscription.as_view(), name='detailsubscription')
+
 ]

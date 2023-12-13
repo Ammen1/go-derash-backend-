@@ -149,3 +149,9 @@ class TyreSerializer(serializers.ModelSerializer):
     class Meta:
         models = Tyre
         field = ["service_type", "tyre_size", "tyre_type"]
+
+
+class GasLineDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        models = GasLineDetails
+        fields = ["service", "fuel_capacity", "current_fuel_level"]

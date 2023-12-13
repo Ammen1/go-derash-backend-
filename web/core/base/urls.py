@@ -10,7 +10,7 @@ urlpatterns = [
     path('admin/createservices/', CreateService.as_view(), name='createservice'),
     path('admin/listservices/', ServiceList.as_view(), name='listservice'),
     path('admin/detailservice/<int:pk>/',
-         ServiceDaitle.as_view(), name='detailservice'),
+         ServiceDetail.as_view(), name='detailservice'),
     path('admin/editservices/<int:pk>/',
          EditService.as_view(), name='editservices'),
     path('admin/deleteservice/<int:pk>/',
@@ -20,7 +20,7 @@ urlpatterns = [
     path('admin/listvehicleinformation/',
          ListVehicleInformation.as_view(), name='listvehicleinformation'),
     path('admin/deletevehicleinformation/<int:pk>/',
-         DeleteVehucleInformation.as_view(), name='deletevehicleinformation'),
+         DeleteVehicleInformation.as_view(), name='deletevehicleinformation'),
 
     # Service Type URLs
     path('admin/createservicetype/',

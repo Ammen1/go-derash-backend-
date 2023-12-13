@@ -209,11 +209,4 @@ class RouteManagement(models.Model):
     estimated_time = models.TimeField()
 
 
-class CarWashList(generics.ListCreateAPIView):
-    queryset = CarWash.objects.all()
-    serializer_class = CarWashSerializer
 
-
-class CarWashDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = CarWash.objects.all()
-    serializer_class = CarWashSerializer

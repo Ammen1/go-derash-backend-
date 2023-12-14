@@ -9,9 +9,9 @@ from .serializers import *
 
 
 # Service Views
-class CreateService(APIView):
+class CreateCategory(APIView):
     def post(self, request, format=None):
-        serializer = ServiceSerializer(data=request.data)
+        serializer = CategorySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -19,23 +19,23 @@ class CreateService(APIView):
 
 
 class ServiceList(generics.ListAPIView):
-    serializer_class = ServiceSerializer
-    queryset = Service.objects.all()
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
 
 
 class ServiceDetail(generics.RetrieveAPIView):
-    serializer_class = ServiceSerializer
-    queryset = Service.objects.all()
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
 
 
 class EditService(generics.UpdateAPIView):
-    serializer_class = ServiceSerializer
-    queryset = Service.objects.all()
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
 
 
 class DeleteService(generics.RetrieveDestroyAPIView):
-    serializer_class = ServiceSerializer
-    queryset = Service.objects.all()
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
 
 
 # Vehicle Information Views
@@ -116,41 +116,41 @@ class EditEngioneOil(generics.UpdateAPIView):
     queryset = EngineOil.objects.all()
 
 
-# Booking Views
-class CreateBooking(generics.CreateAPIView):
-    serializer_class = BookingSerializer
-    queryset = Booking.objects.all()
+# # Booking Views
+# class CreateBooking(generics.CreateAPIView):
+#     serializer_class = BookingSerializer
+#     queryset = Booking.objects.all()
 
 
-class ListBooking(generics.ListAPIView):
-    serializer_class = BookingSerializer
-    queryset = Booking.objects.all()
+# class ListBooking(generics.ListAPIView):
+#     serializer_class = BookingSerializer
+#     queryset = Booking.objects.all()
 
 
-class DetailBooking(generics.RetrieveAPIView):
-    serializer_class = BookingSerializer
-    queryset = Booking.objects.all()
+# class DetailBooking(generics.RetrieveAPIView):
+#     serializer_class = BookingSerializer
+#     queryset = Booking.objects.all()
 
 
-class EditBooking(generics.UpdateAPIView):
-    serializer_class = BookingSerializer
-    queryset = Booking.objects.all()
+# class EditBooking(generics.UpdateAPIView):
+#     serializer_class = BookingSerializer
+#     queryset = Booking.objects.all()
 
 
-class DeleteBooking(generics.DestroyAPIView):
-    serializer_class = BookingSerializer
-    queryset = Booking.objects.all()
+# class DeleteBooking(generics.DestroyAPIView):
+#     serializer_class = BookingSerializer
+#     queryset = Booking.objects.all()
 
 
 # Booking Service Views
-class ListCreateBookingService(generics.ListCreateAPIView):
-    serializer_class = BookingServiceSerializer
-    queryset = BookingService.objects.all()
+# class ListCreateBookingService(generics.ListCreateAPIView):
+#     serializer_class = BookingServiceSerializer
+#     queryset = BookingService.objects.all()
 
 
-class EditDeleteBookingService(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = BookingServiceSerializer
-    queryset = BookingService.objects.all()
+# class EditDeleteBookingService(generics.RetrieveUpdateDestroyAPIView):
+#     serializer_class = BookingServiceSerializer
+#     queryset = BookingService.objects.all()
 
 
 # Tyre Views

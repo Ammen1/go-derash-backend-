@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'corsheaders',
-    'core.users',
+    'core.account',
     'core.base',
     'rest_framework',
     'rest_framework_simplejwt',
@@ -130,7 +130,7 @@ if DB_IS_AVAIL:
             "sslmode": "disable"
         }
 
-AUTH_USER_MODEL = "base.NewUser"
+AUTH_USER_MODEL = "account.NewUser"
 
 
 # Password validation

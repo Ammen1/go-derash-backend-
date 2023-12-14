@@ -7,7 +7,7 @@ app_name = 'base'  # Replace 'your_app' with your actual app name
 
 urlpatterns = [
     # Admin URLs
-    path('admin/createservices/', CreateService.as_view(), name='createservice'),
+    path('admin/createservices/', CreateCategory.as_view(), name='createservice'),
     path('admin/listservices/', ServiceList.as_view(), name='listservice'),
     path('admin/detailservice/<int:pk>/',
          ServiceDetail.as_view(), name='detailservice'),
@@ -57,12 +57,12 @@ urlpatterns = [
          EditVehicleInformation.as_view(), name='editvehicleinformation'),
     path('user/createengineoil/', CreateEngineOil.as_view(), name='createengineoil'),
 
-    path('user/createbooking/', CreateBooking.as_view(), name='createbooking'),
-    path('user/editbooking/<int:pk>/', EditBooking.as_view(), name='editbooking'),
-    path('user/deletebooking/<int:pk>/',
-         EditBooking.as_view(), name='deletebooking'),
-    path('user/detailbooking/<int:pk>/',
-         EditBooking.as_view(), name='detailbooking'),
+    #     path('user/createbooking/', CreateBooking.as_view(), name='createbooking'),
+    #     path('user/editbooking/<int:pk>/', EditBooking.as_view(), name='editbooking'),
+    #     path('user/deletebooking/<int:pk>/',
+    #          EditBooking.as_view(), name='deletebooking'),
+    #     path('user/detailbooking/<int:pk>/',
+    #          EditBooking.as_view(), name='detailbooking'),
 
     # urls for carwash
     path('user/createcarwash/',

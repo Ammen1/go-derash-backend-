@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django.conf import settings
 from django.db import models
-from ecommerce.apps.catalogue.models import Product
+from core.base.models import ServiceType
 
 
 class Order(models.Model):
@@ -16,12 +16,14 @@ class Order(models.Model):
     billing_status = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=255, choices=[(
+        'pending', 'Pending'), ('confirmed', 'Confirmed'), ('completed', 'Completed')])
 
     class Meta:
         ordering = ("-created",)
 
     def __str__(self):
-        return str(self.created)
+        return str(self.status)
 
 
 class OrderItem(models.Model):
@@ -34,3 +36,9 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class OrderAlert(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=255)

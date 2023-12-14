@@ -62,7 +62,7 @@ class UserProfile(models.Model):
     location = models.CharField(max_length=255)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    # image = models.FileField(upload_to=media, default=amen.png)
+    image = models.ImageField()
 
 
 class DriverProfile(models.Model):
@@ -84,11 +84,3 @@ class PushNotification(models.Model):
     message = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
-
-
-# Driver App Models
-class DriverProfile(models.Model):
-    driver = models.OneToOneField(NewUser, on_delete=models.CASCADE)
-    address = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=20)
-    license_number = models.CharField(max_length=20)

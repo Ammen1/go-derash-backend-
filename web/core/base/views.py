@@ -3,7 +3,7 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
-
+from core.basket.services import *
 from core.base.models import *
 from .serializers import *
 
@@ -36,6 +36,21 @@ class EditCategory(generics.UpdateAPIView):
 class DeleteCategory(generics.RetrieveDestroyAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+
+
+# Brand Views
+class CreateBrand(APIView):
+    def post(self, request, format=None):
+        serializer = BrandSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ListBrand(generics.ListAPIView):
+    serializer_class = BrandSerializer
+    queryset = Brand.objects.all()
 
 
 # Vehicle Information Views
@@ -86,8 +101,6 @@ class ServiceDetail(generics.RetrieveAPIView):
 
 
 # Engine Oil Views
-
-
 class CreateEngineOil(generics.CreateAPIView):
     serializer_class = EngineOilSerializer
     queryset = EngineOil.objects.all()

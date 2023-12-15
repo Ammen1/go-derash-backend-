@@ -21,6 +21,8 @@ ALLOWED_HOSTS = ["*"]
 if ENV_ALLOWED_HOST:
     ALLOWED_HOSTS = [ENV_ALLOWED_HOST]
 
+# Service session ID
+# SERVICES_SESSION_ID = "service"
 
 # Application definition
 
@@ -34,6 +36,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'core.account',
     'core.base',
+    'core.basket',
+    'core.orders',
+    'core.checkout',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',

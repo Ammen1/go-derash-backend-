@@ -15,6 +15,8 @@ urlpatterns = [
          EditCategory.as_view(), name='editcategory'),
     path('admin/deletecategory/<int:pk>/',
          DeleteCategory.as_view(), name='deletecategory'),
+    path('admin/createbrand/', CreateBrand.as_view(), name='createbrand'),
+    path('admin/listbrand/', ListBrand.as_view(), name='listbrand'),
 
     # Vehicle Information URLs
     path('admin/listvehicleinformation/',

@@ -58,19 +58,28 @@ class VehicleInformationSerializer(serializers.ModelSerializer):
 class EngineOilSerializer(serializers.ModelSerializer):
     class Meta:
         models = EngineOil
-        fields = ["service_type", "trye_size", "trye_type"]
+        fields = ["service_type", "trye_size",
+                  "trye_type", "regular_price", "qty"]
 
 
 class CarWashSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarWash
-        fields = ["service_type", "wash_type", "exterior", "interior", "water"]
+        fields = ["service_type", "wash_type", "exterior",
+                  "interior", "water", "regular_price", "qty"]
 
 
 class GasLineDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = GasLineDetails
-        fields = ["service", "fuel_capacity", "current_fuel_level"]
+        fields = ["service", "fuel_capacity",
+                  "current_fuel_level", "regular_price", "qty"]
+
+
+class TyreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tyre  # Specify the model associated with this serializer
+        fields = '__all__'
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):

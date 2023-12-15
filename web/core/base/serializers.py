@@ -2,26 +2,16 @@ from rest_framework import serializers
 from django.conf import settings
 from attr import attributes
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q
 from core.base.models import (
-    # NewUser,
-    # # UserProfile,
-    # Booking,
+    Brand,
     VehicleInformation,
     Category,
     ServiceType,
-    # BookingService,
     EngineOil,
     Tyre,
     CarWash,
     GasLineDetails,
     Subscription,
-    # AutoCostCalculator,
-    # Payment,
-    # ReferralCoupon,
-    # PushNotification,
-    # DriverProfile,
-    # OrderAlert,
     EmergencyButtonAlert,
     AdminUser,
     Complaint,
@@ -36,12 +26,24 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['name']
 
 
-# class BookingSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Booking
-#         fields = ["user", "service_type", "status"]
-#         read_only = False
-#         editable = True
+class ServiceTypeSerializer(serializers.ModelSerializer):
+    total_cost = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ServiceType
+        fields = '__all__'
+
+    def get_total_cost(self, obj):
+        service_instance = obj.create_service_instance()
+        return service_instance.calculate_total_cost()
+
+
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ["name"]
+        read_only = False
+        editable = True
 
 
 class VehicleInformationSerializer(serializers.ModelSerializer):
@@ -51,19 +53,6 @@ class VehicleInformationSerializer(serializers.ModelSerializer):
                   "license_plate", "driver_license"]
         read_only = False
         editable = True
-
-
-class ServiceTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ServiceType
-        fields = ["location", "car_type", "arrival_date",
-                  "arrival_time", "description", "price", "services"]
-
-
-# class BookingServiceSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = BookingService
-#         fields = ["booking", "service"]
 
 
 class EngineOilSerializer(serializers.ModelSerializer):
@@ -90,25 +79,6 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         fields = ["user", "start_date", "end_date", "active"]
 
 
-# class AutoCostCalculatorSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Subscription
-#         fields = ["booking", "distace_travelled",
-#                   "service_type_used", "total_cost"]
-
-
-# class DriverProfileSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = DriverProfile
-#         fields = ["driver", "address", "phone_number", "license_number"]
-
-
-# class OrderAlertSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = OrderAlert
-#         fields = ["driver", "booking", "timestamp", "status"]
-
-
 class EmergencyButtonAlertSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmergencyButtonAlert
@@ -126,23 +96,6 @@ class RouteManagementSerializer(serializers.ModelSerializer):
         model = RouteManagement
         fields = ["start_location", "end_location",
                   "distance", "estimated_time"]
-
-
-class UserRegisterSerializer(serializers.ModelSerializer):
-
-    phone = serializers.CharField(required=True)
-    password = serializers.CharField(min_length=8, write_only=True)
-
-    class Meta:
-        model = settings.AUTH_USER_MODEL
-        fields = ('phone', "start_date", "is_staff", "is_active")
-        extra_kwargs = {'password': {'write_only': True}}
-
-
-# class UserProfileSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = UserProfile
-        field = ["user", "location", "first_name", "last_name"]
 
 
 class TyreSerializer(serializers.ModelSerializer):

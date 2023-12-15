@@ -3,18 +3,18 @@
 from django.urls import path, include
 from .views import *
 
-app_name = 'base'  # Replace 'your_app' with your actual app name
+app_name = 'base'
 
 urlpatterns = [
     # Admin URLs
-    path('admin/createservices/', CreateCategory.as_view(), name='createservice'),
-    path('admin/listservices/', ServiceList.as_view(), name='listservice'),
-    path('admin/detailservice/<int:pk>/',
-         ServiceDetail.as_view(), name='detailservice'),
-    path('admin/editservices/<int:pk>/',
-         EditService.as_view(), name='editservices'),
-    path('admin/deleteservice/<int:pk>/',
-         DeleteService.as_view(), name='deleteservice'),
+    path('admin/createcategory/', CreateCategory.as_view(), name='createcategory'),
+    path('admin/listcategory/', CategoryList.as_view(), name='listcategory'),
+    path('admin/detailcategory/<int:pk>/',
+         CategoryDetail.as_view(), name='detailcategory'),
+    path('admin/editcategory/<int:pk>/',
+         EditCategory.as_view(), name='editcategory'),
+    path('admin/deletecategory/<int:pk>/',
+         DeleteCategory.as_view(), name='deletecategory'),
 
     # Vehicle Information URLs
     path('admin/listvehicleinformation/',
@@ -24,13 +24,13 @@ urlpatterns = [
 
     # Service Type URLs
     path('admin/createservicetype/',
-         CreateServiceType.as_view(), name='createservicetype'),
+         ServiceTypeAPIView.as_view(), name='createservicetype'),
     path('admin/listservicetype/',
-         ListServiceType.as_view(), name='listservicetype'),
+         ServiceTypeAPIView.as_view(), name='listservicetype'),
     path('admin/detilservicetype/<int:pk>/',
-         DetailServiceType.as_view(), name='detailseervide'),
+         ServiceDetail.as_view(), name='detailseervide'),
     path('admin/deleteservicetype/<int:pk>/',
-         DeleteServiceType.as_view(), name='deleteservicetype'),
+         ServiceDetele.as_view(), name='deleteservicetype'),
 
     # Tyre URLs
     path('admin/tyre/create/', CreateTyre.as_view(), name='create_tyre'),
@@ -56,13 +56,6 @@ urlpatterns = [
     path('user/editvehicleinformation/<int:pk>/',
          EditVehicleInformation.as_view(), name='editvehicleinformation'),
     path('user/createengineoil/', CreateEngineOil.as_view(), name='createengineoil'),
-
-    #     path('user/createbooking/', CreateBooking.as_view(), name='createbooking'),
-    #     path('user/editbooking/<int:pk>/', EditBooking.as_view(), name='editbooking'),
-    #     path('user/deletebooking/<int:pk>/',
-    #          EditBooking.as_view(), name='deletebooking'),
-    #     path('user/detailbooking/<int:pk>/',
-    #          EditBooking.as_view(), name='detailbooking'),
 
     # urls for carwash
     path('user/createcarwash/',

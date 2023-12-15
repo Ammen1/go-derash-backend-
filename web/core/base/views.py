@@ -8,7 +8,7 @@ from core.base.models import *
 from .serializers import *
 
 
-# Service Views
+# Category Views
 class CreateCategory(APIView):
     def post(self, request, format=None):
         serializer = CategorySerializer(data=request.data)
@@ -18,22 +18,22 @@ class CreateCategory(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ServiceList(generics.ListAPIView):
+class CategoryList(generics.ListAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
 
-class ServiceDetail(generics.RetrieveAPIView):
+class CategoryDetail(generics.RetrieveAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
 
-class EditService(generics.UpdateAPIView):
+class EditCategory(generics.UpdateAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
 
-class DeleteService(generics.RetrieveDestroyAPIView):
+class DeleteCategory(generics.RetrieveDestroyAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
@@ -65,32 +65,29 @@ class DeleteVehicleInformation(generics.DestroyAPIView):
 
 
 # Service Type Views
-class CreateServiceType(generics.CreateAPIView):
-    serializer_class = ServiceTypeSerializer
+class ServiceTypeAPIView(generics.ListCreateAPIView):
     queryset = ServiceType.objects.all()
-
-
-class ListServiceType(generics.ListAPIView):
     serializer_class = ServiceTypeSerializer
+
+
+class ServiceDetele(generics.DestroyAPIView):
     queryset = ServiceType.objects.all()
-
-
-class EditServiceType(generics.UpdateAPIView):
     serializer_class = ServiceTypeSerializer
+
+
+class ServiceEdit(generics.UpdateAPIView):
     queryset = ServiceType.objects.all()
-
-
-class DeleteServiceType(generics.DestroyAPIView):
     serializer_class = ServiceTypeSerializer
+
+
+class ServiceDetail(generics.RetrieveAPIView):
     queryset = ServiceType.objects.all()
-
-
-class DetailServiceType(generics.RetrieveAPIView):
     serializer_class = ServiceTypeSerializer
-    queryset = ServiceType.objects.all()
 
 
 # Engine Oil Views
+
+
 class CreateEngineOil(generics.CreateAPIView):
     serializer_class = EngineOilSerializer
     queryset = EngineOil.objects.all()
@@ -114,43 +111,6 @@ class DeleteEgineOil(generics.DestroyAPIView):
 class EditEngioneOil(generics.UpdateAPIView):
     serializer_class = EngineOilSerializer
     queryset = EngineOil.objects.all()
-
-
-# # Booking Views
-# class CreateBooking(generics.CreateAPIView):
-#     serializer_class = BookingSerializer
-#     queryset = Booking.objects.all()
-
-
-# class ListBooking(generics.ListAPIView):
-#     serializer_class = BookingSerializer
-#     queryset = Booking.objects.all()
-
-
-# class DetailBooking(generics.RetrieveAPIView):
-#     serializer_class = BookingSerializer
-#     queryset = Booking.objects.all()
-
-
-# class EditBooking(generics.UpdateAPIView):
-#     serializer_class = BookingSerializer
-#     queryset = Booking.objects.all()
-
-
-# class DeleteBooking(generics.DestroyAPIView):
-#     serializer_class = BookingSerializer
-#     queryset = Booking.objects.all()
-
-
-# Booking Service Views
-# class ListCreateBookingService(generics.ListCreateAPIView):
-#     serializer_class = BookingServiceSerializer
-#     queryset = BookingService.objects.all()
-
-
-# class EditDeleteBookingService(generics.RetrieveUpdateDestroyAPIView):
-#     serializer_class = BookingServiceSerializer
-#     queryset = BookingService.objects.all()
 
 
 # Tyre Views

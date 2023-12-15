@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 from django.core.validators import MinValueValidator
 from mptt.models import MPTTModel, TreeForeignKey
+from core.basket.services import BaseService, BatteryService, EngineOilService
 
 
 class Category(MPTTModel):
@@ -51,6 +52,16 @@ class ServiceType(models.Model):
         "Discount price"), max_digits=5, decimal_places=2)
     brand = models.ForeignKey(Brand, related_name="service_types",
                               on_delete=models.SET_NULL, blank=True, null=True)
+
+    def create_service_instance(self):
+        # Use Factory Pattern to create the appropriate service instance
+        if self.select_battery_service:
+            return BatteryService(self)
+        elif self.engine_oils.exists():
+            return EngineOilService(self)
+        # Add other conditions for TyreService, CarWashService, GasLineService, etc.
+        else:
+            return BaseService(self)
 
 
 class VehicleInformation(models.Model):

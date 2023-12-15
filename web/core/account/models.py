@@ -70,17 +70,3 @@ class DriverProfile(models.Model):
     address = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=20)
     license_number = models.CharField(max_length=20)
-
-
-class ReferralCoupon(models.Model):
-    user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
-    coupon_code = models.CharField(max_length=20)
-    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
-    expiry_date = models.DateField()
-
-
-class PushNotification(models.Model):
-    user = models.ForeignKey(NewUser, on_delete=models.CASCADE)
-    message = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
-    is_read = models.BooleanField(default=False)

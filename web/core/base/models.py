@@ -59,7 +59,12 @@ class ServiceType(models.Model):
             return BatteryService(self)
         elif self.engine_oils.exists():
             return EngineOilService(self)
-        # Add other conditions for TyreService, CarWashService, GasLineService, etc.
+        elif self.TryeService.exits():
+            return TyreService(self)
+        elif self.CarWashService.exit():
+            return CarWashService(self)
+        elif self.GasLineService.exit():
+            return GasLineService(self)
         else:
             return BaseService(self)
 
@@ -101,8 +106,6 @@ class Tyre(models.Model):
 class CarWash(models.Model):
     service_type = models.ForeignKey(
         ServiceType, related_name='car_washes', on_delete=models.PROTECT)
-    brand = models.ForeignKey(
-        Brand, related_name='car_washes', on_delete=models.CASCADE)
     wash_type = models.CharField(max_length=255)
     exterior = models.BooleanField()
     interior = models.BooleanField()
@@ -112,8 +115,6 @@ class CarWash(models.Model):
 class GasLineDetails(models.Model):
     service_type = models.ForeignKey(
         ServiceType, related_name='gas_lines', on_delete=models.PROTECT)
-    brand = models.ForeignKey(
-        Brand, related_name='gas_lines', on_delete=models.CASCADE)
     fuel_capacity = models.DecimalField(max_digits=8, decimal_places=2)
     current_fuel_level = models.DecimalField(max_digits=8, decimal_places=2)
 

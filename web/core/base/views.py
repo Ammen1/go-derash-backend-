@@ -80,9 +80,12 @@ class DeleteVehicleInformation(generics.DestroyAPIView):
 
 
 # Service Type Views
-class ServiceTypeAPIView(generics.ListCreateAPIView):
-    queryset = ServiceType.objects.all()
+# class ServiceTypeAPIView(generics.ListCreateAPIView):
+#     queryset = ServiceType.objects.all()
+#     serializer_class = ServiceTypeSerializer
+class ServiceTypeAPIView(generics.CreateAPIView):
     serializer_class = ServiceTypeSerializer
+    queryset = ServiceType.objects.all()
 
 
 class ServiceDetele(generics.DestroyAPIView):

@@ -33,10 +33,6 @@ class ServiceTypeSerializer(serializers.ModelSerializer):
         model = ServiceType
         fields = '__all__'
 
-    def get_total_cost(self, obj):
-        service_instance = obj.create_service_instance()
-        return service_instance.calculate_total_cost()
-
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,6 +43,7 @@ class BrandSerializer(serializers.ModelSerializer):
 
 
 class VehicleInformationSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = VehicleInformation
         fields = ["vehicle_type", "vehicle_model",
@@ -56,30 +53,47 @@ class VehicleInformationSerializer(serializers.ModelSerializer):
 
 
 class EngineOilSerializer(serializers.ModelSerializer):
+    total_price = serializers.SerializerMethodField()
+
     class Meta:
         models = EngineOil
-        fields = ["service_type", "trye_size",
-                  "trye_type", "regular_price", "qty"]
+        fields = '__all__'
 
-
-class CarWashSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CarWash
-        fields = ["service_type", "wash_type", "exterior",
-                  "interior", "water", "regular_price", "qty"]
-
-
-class GasLineDetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = GasLineDetails
-        fields = ["service", "fuel_capacity",
-                  "current_fuel_level", "regular_price", "qty"]
+    def get_total_price(self, obj):
+        return obj.total_price()
 
 
 class TyreSerializer(serializers.ModelSerializer):
+    total_price = serializers.SerializerMethodField()
+
     class Meta:
-        model = Tyre  # Specify the model associated with this serializer
+        model = Tyre
         fields = '__all__'
+
+    def get_total_price(self, obj):
+        return obj.total_price()
+
+
+class GasLineDetailsSerializer(serializers.ModelSerializer):
+    total_price = serializers.SerializerMethodField()
+
+    class Meta:
+        model = GasLineDetails
+        fields = '__all__'
+
+    def get_total_price(self, obj):
+        return obj.total_price()
+
+
+class CarWashSerializer(serializers.ModelSerializer):
+    total_price = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CarWash
+        fields = '__all__'
+
+    def get_total_price(self, obj):
+        return obj.total_price()
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
@@ -105,15 +119,3 @@ class RouteManagementSerializer(serializers.ModelSerializer):
         model = RouteManagement
         fields = ["start_location", "end_location",
                   "distance", "estimated_time"]
-
-
-class TyreSerializer(serializers.ModelSerializer):
-    class Meta:
-        models = Tyre
-        field = ["service_type", "tyre_size", "tyre_type"]
-
-
-class GasLineDetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        models = GasLineDetails
-        fields = ["service", "fuel_capacity", "current_fuel_level"]

@@ -41,8 +41,8 @@ class TyreServiceSerializer(BaseServiceSerializer):
     total_tyre_price = serializers.SerializerMethodField()
 
     class Meta:
-        model = ServiceType
-        fields = ['total_cost', 'battery']
+        model = Tyre
+        fields = ['total_price', 'total_tyre_price']
 
     def get_total_tyre_price(self, obj):
         tyres = obj.tyres.all()

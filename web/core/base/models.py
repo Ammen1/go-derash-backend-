@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 from mptt.models import MPTTModel, TreeForeignKey
 from django.core.validators import MinValueValidator
+from core.account.models import Driver
 
 
 class Category(MPTTModel):
@@ -220,23 +221,7 @@ class Subscription(models.Model):
         return f"{self.start_date} to {self.end_date}"
 
 
-class EmergencyButtonAlert(models.Model):
-    driver = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
-    location = models.CharField(max_length=255)
-
 # Web Admin Models
-
-
-class AdminUser(models.Model):
-    username = models.CharField(max_length=255)
-    email = models.EmailField()
-    password = models.CharField(max_length=255)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-
-
 class Complaint(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
@@ -246,7 +231,20 @@ class Complaint(models.Model):
 
 
 class RouteManagement(models.Model):
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     start_location = models.CharField(max_length=100)
     end_location = models.CharField(max_length=100)
     distance = models.DecimalField(max_digits=8, decimal_places=2)
     estimated_time = models.TimeField()
+
+
+class Analysis(models.Model):
+    date = models.DateField()
+    total_revenue = models.DecimalField(max_digits=10, decimal_places=2)
+    total_fuel_consumption = models.DecimalField(
+        max_digits=8, decimal_places=2)
+    total_distance_covered = models.DecimalField(
+        max_digits=8, decimal_places=2)
+
+    def __str__(self):
+        return f"Analysis for {self.date}"

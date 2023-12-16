@@ -28,7 +28,7 @@ urlpatterns = [
     path('admin/createservicetype/',
          ServiceTypeAPIView.as_view(), name='createservicetype'),
     path('admin/listservicetype/',
-         ServiceTypeAPIView.as_view(), name='listservicetype'),
+         ServiceList.as_view(), name='listservicetype'),
     path('admin/detilservicetype/<int:pk>/',
          ServiceDetail.as_view(), name='detailseervide'),
     path('admin/deleteservicetype/<int:pk>/',

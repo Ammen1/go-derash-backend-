@@ -1,20 +1,15 @@
 from django.db import models
 from django.utils import timezone
-from django.conf import settings
-from django.utils.translation import gettext_lazy as _
-from django.db import models
-
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    PermissionsMixin,
-    BaseUserManager,
-)
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
 
 class CustomAccountManager(BaseUserManager):
     def create_superuser(
-        self, phone, password, **other_fields
+        self, phone, password, email=None, **other_fields
     ):
+        if not (phone or email):
+            raise ValueError(
+                "Either the Phone or Email field must be set for the superuser.")
 
         other_fields.setdefault("is_staff", True)
         other_fields.setdefault("is_superuser", True)
@@ -26,25 +21,16 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError(
                 "Superuser must be assigned to is_superuser=True.")
 
-        return self.create_user(
-            phone, password, **other_fields
-        )
-
-    def create_user(self, phone, password, **other_fields):
-        if not phone:
-            raise ValueError(_("You must provide an phone number"))
-
-        user = self.model(
-            phone=phone,
-            **other_fields
-        )
+        # Create a NewUser instance (superuser)
+        user = self.model(phone=phone, email=email, **other_fields)
         user.set_password(password)
         user.save()
         return user
 
 
 class NewUser(AbstractBaseUser, PermissionsMixin):
-    phone = models.CharField(max_length=15, blank=False, unique=True)
+    phone = models.CharField(max_length=15, unique=True)
+    email = models.EmailField(null=True, blank=True)
     start_date = models.DateTimeField(default=timezone.now)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -52,21 +38,22 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomAccountManager()
 
     USERNAME_FIELD = "phone"
+    EMAIL_FIELD = "email"
 
     def __str__(self):
         return self.phone
 
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(NewUser, on_delete=models.CASCADE)
-    location = models.CharField(max_length=255)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    image = models.ImageField()
-
-
-class DriverProfile(models.Model):
+class Driver(models.Model):
     driver = models.OneToOneField(NewUser, on_delete=models.CASCADE)
     address = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=20)
     license_number = models.CharField(max_length=20)
+
+
+class AdminUser(models.Model):
+    # Assume that AdminUser is not used for authentication and extends models.Model
+    username = models.CharField(max_length=255)
+    email = models.EmailField()
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)

@@ -1,3 +1,4 @@
+from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
@@ -80,10 +81,12 @@ class DeleteVehicleInformation(generics.DestroyAPIView):
 
 
 # Service Type Views
-# class ServiceTypeAPIView(generics.ListCreateAPIView):
-#     queryset = ServiceType.objects.all()
-#     serializer_class = ServiceTypeSerializer
 class ServiceTypeAPIView(generics.CreateAPIView):
+    serializer_class = ServiceTypeSerializer
+    queryset = ServiceType.objects.all()
+
+
+class ServiceList(generics.ListAPIView):
     serializer_class = ServiceTypeSerializer
     queryset = ServiceType.objects.all()
 
@@ -231,3 +234,10 @@ class DetailSubscription(generics.RetrieveAPIView):
 class DeleteSubscription(generics.DestroyAPIView):
     serializer_class = SubscriptionSerializer
     queryset = Subscription.objects.all()
+
+
+class ComplaintViewSet(viewsets.ModelViewSet):
+    queryset = Complaint.objects.all()
+    serializer_class = ComplaintSerializer
+
+# Create viewsets for other models in a similar fashion

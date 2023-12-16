@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import (
+from core.account.models import (
     NewUser,
-    UserProfile,
-    DriverProfile,
+    AdminUser,
+    Driver,
 )
-admin.site.register(DriverProfile)
+admin.site.register(Driver)
 admin.site.register(NewUser)
-admin.site.register(UserProfile)
+admin.site.register(AdminUser)

@@ -12,17 +12,17 @@ from .serializers import (
 )
 
 
-# class BaseServiceView(APIView):
-#     def get_serializer_class(self):
-#         return BaseServiceSerializer
+class BaseServiceView(APIView):
+    def get_serializer_class(self):
+        return BaseServiceSerializer
 
-#     def get_service_type(self, service_type_id):
-#         return ServiceType.objects.get(id=service_type_id)
+    def get_service_type(self, service_type_id):
+        return ServiceType.objects.get(id=service_type_id)
 
-#     def get(self, request, service_type_id):
-#         service_type = self.get_service_type(service_type_id)
-#         serializer = self.get_serializer_class()(service_type)
-#         return Response(serializer.data)
+    def get(self, request, service_type_id):
+        service_type = self.get_service_type(service_type_id)
+        serializer = self.get_serializer_class()(service_type)
+        return Response(serializer.data)
 
 
 class BaseServiceView(generics.RetrieveAPIView):

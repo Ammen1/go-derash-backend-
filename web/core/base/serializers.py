@@ -2,22 +2,9 @@ from rest_framework import serializers
 from django.conf import settings
 from attr import attributes
 from django.core.exceptions import ObjectDoesNotExist
-from core.base.models import (
-    Brand,
-    VehicleInformation,
-    Category,
-    ServiceType,
-    EngineOil,
-    Tyre,
-    CarWash,
-    GasLineDetails,
-    Subscription,
-    EmergencyButtonAlert,
-    AdminUser,
-    Complaint,
-    RouteManagement,
-)
+from core.base.models import *
 from rest_framework import serializers
+from core.account.serializers import CustomUserSerializer
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -27,7 +14,10 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ServiceTypeSerializer(serializers.ModelSerializer):
-    total_cost = serializers.SerializerMethodField()
+    def get_total_cost(self, obj):
+        # Add your logic to calculate the total cost based on the obj
+        # For example, if obj has a field named 'price' and 'quantity':
+        return obj.total_cost * obj.quantity
 
     class Meta:
         model = ServiceType
@@ -102,20 +92,15 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         fields = ["user", "start_date", "end_date", "active"]
 
 
-class EmergencyButtonAlertSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EmergencyButtonAlert
-        fields = ["driver", "timestamp", "location"]
-
-
 class ComplaintSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer()
+
     class Meta:
         model = Complaint
-        fields = ["user", "message", "timestamp", "status"]
+        fields = '__all__'
 
 
-class RouteManagementSerializer(serializers.ModelSerializer):
+class AnalysisSerializer(serializers.ModelSerializer):
     class Meta:
-        model = RouteManagement
-        fields = ["start_location", "end_location",
-                  "distance", "estimated_time"]
+        model = Analysis
+        fields = '__all__'

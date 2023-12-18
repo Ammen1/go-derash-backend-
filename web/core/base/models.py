@@ -133,7 +133,7 @@ class EngineOil(models.Model):
 
 class Tyre(models.Model):
     service_type = models.ForeignKey(
-        ServiceType, related_name='tyes', on_delete=models.PROTECT)
+        ServiceType, related_name='tryes', on_delete=models.PROTECT)
     car_type = models.ForeignKey(
         VehicleInformation, on_delete=models.CASCADE)
     tyre_size = models.CharField(max_length=100)

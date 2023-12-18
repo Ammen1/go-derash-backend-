@@ -41,11 +41,11 @@ class TyreServiceSerializer(BaseServiceSerializer):
     total_tyre_price = serializers.SerializerMethodField()
 
     class Meta:
-        model = Tyre
+        model = ServiceType
         fields = ['total_price', 'total_tyre_price']
 
     def get_total_tyre_price(self, obj):
-        tyres = obj.tyres.all()
+        tyres = obj.tryes.all()
         total_price = sum(tyre.regular_price * tyre.qty for tyre in tyres)
         return total_price
 
@@ -54,7 +54,7 @@ class CarWashServiceSerializer(BaseServiceSerializer):
     total_carwash_price = serializers.SerializerMethodField()
 
     class Meta:
-        model = CarWash
+        model = ServiceType
         fields = ['total_cost', 'total_carwash_price']
 
     def get_total_carwash_price(self, obj):

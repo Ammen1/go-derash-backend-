@@ -1,3 +1,4 @@
+from .models import CarWashOrder
 from rest_framework import serializers
 from django.conf import settings
 from attr import attributes
@@ -10,26 +11,18 @@ from core.account.serializers import CustomUserSerializer
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['name']
-
-
-class ServiceTypeSerializer(serializers.ModelSerializer):
-    def get_total_cost(self, obj):
-        # Add your logic to calculate the total cost based on the obj
-        # For example, if obj has a field named 'price' and 'quantity':
-        return obj.total_cost * obj.quantity
-
-    class Meta:
-        model = ServiceType
         fields = '__all__'
 
 
-class BrandSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Brand
-        fields = ["name"]
-        read_only = False
-        editable = True
+# class ServiceTypeSerializer(serializers.ModelSerializer):
+#     def get_total_cost(self, obj):
+#         # Add your logic to calculate the total cost based on the obj
+#         # For example, if obj has a field named 'price' and 'quantity':
+#         return obj.total_cost * obj.quantity
+
+#     class Meta:
+#         model = ServiceType
+#         fields = '__all__'
 
 
 class VehicleInformationSerializer(serializers.ModelSerializer):
@@ -75,15 +68,15 @@ class GasLineDetailsSerializer(serializers.ModelSerializer):
         return obj.total_price()
 
 
-class CarWashSerializer(serializers.ModelSerializer):
-    total_price = serializers.SerializerMethodField()
+# class CarWashSerializer(serializers.ModelSerializer):
+#     total_price = serializers.SerializerMethodField()
 
-    class Meta:
-        model = CarWash
-        fields = '__all__'
+#     class Meta:
+#         model = CarWash
+#         fields = '__all__'
 
-    def get_total_price(self, obj):
-        return obj.total_price()
+#     def get_total_price(self, obj):
+#         return obj.total_price()
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
@@ -104,3 +97,38 @@ class AnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = Analysis
         fields = '__all__'
+
+
+class BatteryOrderSerializer(serializers.ModelSerializer):
+    total_cost = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Battery
+        fields = ["car_type", "select_battery_service", "qty", "total_cost"]
+
+    def get_total_cost(self, obj):
+        # Assuming you have a 'total_price' method in your Battery model
+        total_price = obj.total_price()
+
+        # Calculate total cost based on quantity
+        total_cost = total_price * obj.qty
+
+        return total_cost
+
+
+class CarWashOrderSerializer(serializers.ModelSerializer):
+    total_cost = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CarWashOrder
+        fields = ["car_type", "name", "delivery_address", "typeofcarwash",
+                  "quantity", "arrivaltime", "category", "total_cost"]
+
+    def get_total_cost(self, obj):
+        # Assuming you have a 'total_price' method in your Battery model
+        total_price = obj.total_price()
+
+        # Calculate total cost based on quantity
+        total_cost = total_price * obj.qty
+
+        return total_cost

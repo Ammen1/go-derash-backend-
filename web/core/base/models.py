@@ -1,3 +1,5 @@
+from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.conf import settings
@@ -8,18 +10,22 @@ from django.core.validators import MinValueValidator
 from core.account.models import Driver
 
 
+from django.db import models
+from mptt.models import MPTTModel, TreeForeignKey
+from django.utils.translation import gettext_lazy as _
+
+
 class Category(MPTTModel):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
+    parent = models.ForeignKey(
+        'self', null=True, blank=True, on_delete=models.SET_NULL)
     is_active = models.BooleanField(default=False)
-    parent = TreeForeignKey(
-        'self',
-        null=True,
-        blank=True,
-        related_name='children',
-        db_index=True,
-        on_delete=models.CASCADE
-    )
+    description = models.TextField()
+    price = models.DecimalField(verbose_name=_(
+        "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    image = models.ImageField(
+        upload_to='media/', null=True, blank=True)
 
     class MPTTMeta:
         order_insertion_by = ["name"]
@@ -32,44 +38,9 @@ class Category(MPTTModel):
         return self.name
 
 
-class Brand(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
-class ServiceType(models.Model):
-    location = models.CharField(max_length=100)
-    description = models.TextField()
-    category = models.ForeignKey(
-        Category, related_name="service_types", on_delete=models.PROTECT)
-    brand = models.ForeignKey(Brand, related_name="service_types",
-                              on_delete=models.SET_NULL, blank=True, null=True)
-    total_cost = models.DecimalField(verbose_name=_(
-        "total price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
-
-    def create_service_instance(self):
-        if self.select_battery_service:
-            return BatteryService(self)
-        elif self.engine_oils.exists():
-            return EngineOilService(self)
-        elif self.tyres.exists():
-            return TyreService(self)
-        elif self.carwashes.exists():
-            return CarWashService(self)
-        elif self.gaslines.exists():
-            return GasLineService(self)
-        else:
-            return BaseService(self)
-
-    def __str__(self):
-        return self.location
-
-
 class BaseService(models.Model):
     service_type = models.ForeignKey(
-        ServiceType, on_delete=models.CASCADE, related_name='base_services'
+        Category, on_delete=models.CASCADE, related_name='base_services'
     )
 
     class Meta:
@@ -80,8 +51,6 @@ class BaseService(models.Model):
 
 
 class VehicleInformation(models.Model):
-    service_type = models.ForeignKey(
-        ServiceType, related_name='vehicles', on_delete=models.PROTECT)
     vehicle_type = models.CharField(max_length=100)
     vehicle_model = models.CharField(max_length=100)
     license_plate = models.CharField(max_length=100)
@@ -92,88 +61,82 @@ class VehicleInformation(models.Model):
 
 
 class Battery(models.Model):
-    car_type = models.ForeignKey(
-        VehicleInformation, on_delete=models.CASCADE)
-    service_type = models.ForeignKey(
-        ServiceType, related_name='batteries', on_delete=models.PROTECT)
-    brand = models.ForeignKey(
-        Brand, related_name='batteries', on_delete=models.CASCADE)
-    select_battery_service = models.CharField(max_length=100, choices=[
-        ('standard', 'Standard'), ('premium', 'Premium'), ('agm', 'AGM')])
-    regular_price = models.DecimalField(verbose_name=_(
-        "Regular price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    category = models.ForeignKey(
+        Category, related_name='batteries', on_delete=models.CASCADE, null=True)
+    car_type = models.CharField(max_length=100)
+    select_battery_service = models.CharField(max_length=100)
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    arrivaltime = models.DateTimeField(default=timezone.now)
 
     def total_price(self):
-        return self.qty * self.regular_price
+        if self.category:
+            return self.qty * self.category.price
+        else:
+            return 0
 
     def __str__(self):
         return self.select_battery_service
 
 
 class EngineOil(models.Model):
+    category = models.ForeignKey(
+        Category, related_name='oilengine', on_delete=models.CASCADE)
     car_type = models.ForeignKey(
         VehicleInformation, on_delete=models.CASCADE)
-    service_type = models.ForeignKey(
-        ServiceType, related_name='engine_oils', on_delete=models.PROTECT)
-    brand = models.ForeignKey(
-        Brand, related_name='engine_oils', on_delete=models.CASCADE)
     engine_oil_type = models.CharField(max_length=100)
     engine_size = models.CharField(max_length=100)
-    regular_price = models.DecimalField(verbose_name=_(
-        "Regular price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
 
     def total_price(self):
-        return self.qty * self.regular_price
+        return self.qty * self.category.price
 
     def __str__(self):
         return self.engine_oil_type
 
 
 class Tyre(models.Model):
-    service_type = models.ForeignKey(
-        ServiceType, related_name='tryes', on_delete=models.PROTECT)
+    category = models.ForeignKey(
+        Category, related_name='tyres', on_delete=models.CASCADE)
     car_type = models.ForeignKey(
         VehicleInformation, on_delete=models.CASCADE)
     tyre_size = models.CharField(max_length=100)
     tyre_type = models.CharField(max_length=100)
-    regular_price = models.DecimalField(verbose_name=_(
-        "Regular price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
 
     def total_price(self):
-        return self.qty * self.regular_price
+        return self.qty * self.category.price
 
     def __str__(self):
         return self.tyre_type
 
 
-class CarWash(models.Model):
-    car_type = models.ForeignKey(
-        VehicleInformation, on_delete=models.CASCADE)
-    service_type = models.ForeignKey(
-        ServiceType, related_name='carwashes', on_delete=models.PROTECT)
-    wash_type = models.CharField(max_length=255)
-    exterior = models.BooleanField()
-    interior = models.BooleanField()
-    water = models.BooleanField()
-    regular_price = models.DecimalField(verbose_name=_(
-        "Regular price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
-    qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+class CarWashOrder(models.Model):
+    category = models.ForeignKey(
+        Category, related_name='carwashorders', on_delete=models.CASCADE)
+    car_type = models.CharField(max_length=255, blank=True, null=True)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    typeofcarwash = models.CharField(
+        max_length=100,
+    )
+    quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    delivery_address = models.CharField(max_length=255, blank=True, null=True)
+    arrivaltime = models.DateTimeField(default=timezone.now)
 
     def total_price(self):
-        return self.qty * self.regular_price
+        if self.category:
+            return self.qty * self.category.price
+        else:
+            return 0
 
     def __str__(self):
-        return self.wash_type
+        return f"{self.name}'s Car Wash Order"
 
 
 class GasLineDetails(models.Model):
+    category = models.ForeignKey(
+        Category, related_name='gaslines', on_delete=models.CASCADE)
     car_type = models.ForeignKey(
         VehicleInformation, on_delete=models.CASCADE)
-    service_type = models.ForeignKey(
-        ServiceType, related_name='gaslines', on_delete=models.PROTECT)
     fuel_capacity = models.DecimalField(
         max_digits=8,
         decimal_places=2,
@@ -186,12 +149,10 @@ class GasLineDetails(models.Model):
         validators=[MinValueValidator(0)],
         help_text='Current fuel level in liters'
     )
-    regular_price = models.DecimalField(verbose_name=_(
-        "Regular price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
 
     def total_price(self):
-        return self.qty * self.regular_price
+        return self.qty * self.category.price
 
     def clean(self):
         if self.fuel_capacity < self.current_fuel_level:

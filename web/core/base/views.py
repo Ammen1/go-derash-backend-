@@ -1,3 +1,5 @@
+from django.core.management.base import CommandError
+from rest_framework.decorators import api_view
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
@@ -40,18 +42,13 @@ class DeleteCategory(generics.RetrieveDestroyAPIView):
 
 
 # Brand Views
-class CreateBrand(APIView):
-    def post(self, request, format=None):
-        serializer = BrandSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ListBrand(generics.ListAPIView):
-    serializer_class = BrandSerializer
-    queryset = Brand.objects.all()
+# class CreateBrand(APIView):
+#     def post(self, request, format=None):
+#         serializer = BrandSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Vehicle Information Views
@@ -78,32 +75,6 @@ class EditVehicleInformation(generics.UpdateAPIView):
 class DeleteVehicleInformation(generics.DestroyAPIView):
     serializer_class = VehicleInformationSerializer
     queryset = VehicleInformation.objects.all()
-
-
-# Service Type Views
-class ServiceTypeAPIView(generics.CreateAPIView):
-    serializer_class = ServiceTypeSerializer
-    queryset = ServiceType.objects.all()
-
-
-class ServiceList(generics.ListAPIView):
-    serializer_class = ServiceTypeSerializer
-    queryset = ServiceType.objects.all()
-
-
-class ServiceDetele(generics.DestroyAPIView):
-    queryset = ServiceType.objects.all()
-    serializer_class = ServiceTypeSerializer
-
-
-class ServiceEdit(generics.UpdateAPIView):
-    queryset = ServiceType.objects.all()
-    serializer_class = ServiceTypeSerializer
-
-
-class ServiceDetail(generics.RetrieveAPIView):
-    queryset = ServiceType.objects.all()
-    serializer_class = ServiceTypeSerializer
 
 
 # Engine Oil Views
@@ -160,28 +131,28 @@ class EditTyre(generics.UpdateAPIView):
 
 # Views for CarWash
 class CreateCarWash(generics.CreateAPIView):
-    serializer_class = CarWashSerializer
-    queryset = CarWash.objects.all()
+    serializer_class = CarWashOrderSerializer
+    queryset = CarWashOrder.objects.all()
 
 
 class ListCarWash(generics.ListAPIView):
-    serializer_class = CarWashSerializer
-    queryset = CarWash.objects.all()
+    serializer_class = CarWashOrderSerializer
+    queryset = CarWashOrder.objects.all()
 
 
 class DeleteCarWash(generics.DestroyAPIView):
-    serializer_class = CarWashSerializer
-    queryset = CarWash.objects.all()
+    serializer_class = CarWashOrderSerializer
+    queryset = CarWashOrder.objects.all()
 
 
 class DetailCarWash(generics.RetrieveAPIView):
-    serializer_class = CarWashSerializer
-    queryset = CarWash.objects.all()
+    serializer_class = CarWashOrderSerializer
+    queryset = CarWashOrder.objects.all()
 
 
 class EditCarWash(generics.UpdateAPIView):
-    serializer_class = CarWashSerializer
-    queryset = CarWash.objects.all()
+    serializer_class = CarWashOrderSerializer
+    queryset = CarWashOrder.objects.all()
 
 
 # Views for Fuel
@@ -240,4 +211,18 @@ class ComplaintViewSet(viewsets.ModelViewSet):
     queryset = Complaint.objects.all()
     serializer_class = ComplaintSerializer
 
-# Create viewsets for other models in a similar fashion
+
+class BatteryOrderView(generics.CreateAPIView):
+    queryset = Battery.objects.all()
+    serializer_class = BatteryOrderSerializer
+    print(Category.price)
+
+
+class CarWashOrderCreateView(generics.CreateAPIView):
+    queryset = CarWashOrder.objects.all()
+    serializer_class = CarWashOrderSerializer
+
+
+class CarWashOrderListView(generics.ListAPIView):
+    queryset = CarWashOrder.objects.all()
+    serializer_class = CarWashOrderSerializer

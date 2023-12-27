@@ -15,24 +15,12 @@ urlpatterns = [
          EditCategory.as_view(), name='editcategory'),
     path('admin/deletecategory/<int:pk>/',
          DeleteCategory.as_view(), name='deletecategory'),
-    path('admin/createbrand/', CreateBrand.as_view(), name='createbrand'),
-    path('admin/listbrand/', ListBrand.as_view(), name='listbrand'),
 
     # Vehicle Information URLs
     path('admin/listvehicleinformation/',
          ListVehicleInformation.as_view(), name='listvehicleinformation'),
     path('admin/deletevehicleinformation/<int:pk>/',
          DeleteVehicleInformation.as_view(), name='deletevehicleinformation'),
-
-    # Service Type URLs
-    path('admin/createservicetype/',
-         ServiceTypeAPIView.as_view(), name='createservicetype'),
-    path('admin/listservicetype/',
-         ServiceList.as_view(), name='listservicetype'),
-    path('admin/detilservicetype/<int:pk>/',
-         ServiceDetail.as_view(), name='detailseervide'),
-    path('admin/deleteservicetype/<int:pk>/',
-         ServiceDetele.as_view(), name='deleteservicetype'),
 
     # Tyre URLs
     path('admin/tyre/create/', CreateTyre.as_view(), name='create_tyre'),
@@ -58,6 +46,8 @@ urlpatterns = [
     path('user/editvehicleinformation/<int:pk>/',
          EditVehicleInformation.as_view(), name='editvehicleinformation'),
     path('user/createengineoil/', CreateEngineOil.as_view(), name='createengineoil'),
+    path('user/detailvehicle/<int:id>/',
+         DetailVehicleInformation.as_view(), name='detailvehicle'),
 
     # urls for carwash
     path('user/createcarwash/',
@@ -74,6 +64,11 @@ urlpatterns = [
     path('user/detelesubscription/<int:pk>/',
          DeleteSubscription.as_view(), name='deletesubscription'),
     path('user/detailsubscription/<int:pk>/',
-         DetailSubscription.as_view(), name='detailsubscription')
+         DetailSubscription.as_view(), name='detailsubscription'),
+
+    # urlls for Battery Order
+    path('user/batteryorder/', BatteryOrderView.as_view(), name='batteryorder'),
+    path('user/carwashorder/', CarWashOrderCreateView.as_view(), name='carwashorder'),
+    path('user/carwasall/', CarWashOrderListView.as_view(), name='carwashall')
 
 ]

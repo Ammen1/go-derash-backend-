@@ -2,7 +2,6 @@ from decimal import Decimal
 
 from django.conf import settings
 from django.db import models
-from core.base.models import ServiceType
 from core.checkout.models import DeliveryOptions
 
 
@@ -42,7 +41,6 @@ class Order(models.Model):
 class OrderItem(models.Model):
     order = models.ForeignKey(
         Order, related_name="items", on_delete=models.CASCADE)
-    service_type = models.ForeignKey(ServiceType, on_delete=models.PROTECT)
     qty = models.PositiveIntegerField()
 
     def save(self, *args, **kwargs):

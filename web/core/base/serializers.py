@@ -35,48 +35,128 @@ class VehicleInformationSerializer(serializers.ModelSerializer):
         editable = True
 
 
-class EngineOilSerializer(serializers.ModelSerializer):
-    total_price = serializers.SerializerMethodField()
-
-    class Meta:
-        models = EngineOil
-        fields = '__all__'
-
-    def get_total_price(self, obj):
-        return obj.total_price()
-
-
 class TyreSerializer(serializers.ModelSerializer):
-    total_price = serializers.SerializerMethodField()
+    total_cost = serializers.SerializerMethodField()
+    car_type = serializers.CharField(write_only=True)
 
     class Meta:
         model = Tyre
+        fields = ["id", "category", "car_type", "arrivaltime", "total_cost",
+                  "tyre_size", "tyre_type", "qty", "delivery_address"]
+
+    def get_total_cost(self, obj):
+        total_price = obj.total_price()
+        total_cost = total_price * obj.qty
+
+        return total_cost
+
+    def to_internal_value(self, data):
+        if 'car_type' in data and isinstance(data['car_type'], str):
+            # Assuming VehicleInformation model has a field named 'vehicle_type'
+            vehicle_info = VehicleInformation.objects.filter(
+                vehicle_type=data['car_type']).first()
+            if vehicle_info:
+                data['car_type'] = vehicle_info.pk
+
+        return super().to_internal_value(data)
+
+
+class BatteryOrderSerializer(serializers.ModelSerializer):
+    total_cost = serializers.SerializerMethodField()
+    car_type = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = Battery
         fields = '__all__'
 
-    def get_total_price(self, obj):
-        return obj.total_price()
+    def get_total_cost(self, obj):
+        total_price = obj.total_price()
+        total_cost = total_price * obj.qty
+        return total_cost
+
+    def to_internal_value(self, data):
+        # Convert 'car_type' from a string to the corresponding primary key
+        if 'car_type' in data and isinstance(data['car_type'], str):
+            vehicle_info = VehicleInformation.objects.filter(
+                vehicle_type=data['car_type']).first()
+            if vehicle_info:
+                data['car_type'] = vehicle_info.pk
+
+        return super().to_internal_value(data)
+
+
+class CarWashOrderSerializer(serializers.ModelSerializer):
+    total_cost = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CarWashOrder
+        fields = ["id", "car_type", "name", "delivery_address", "typeofcarwash",
+                  "quantity", "arrivaltime", "total_cost", "category",]
+
+    def get_total_cost(self, obj):
+        total_price = obj.total_price()
+
+        total_cost = total_price * obj.quantity
+
+        return total_cost
+
+    def to_internal_value(self, data):
+        # Convert 'car_type' from a string to the corresponding primary key
+        if 'car_type' in data and isinstance(data['car_type'], str):
+            vehicle_info = VehicleInformation.objects.filter(
+                vehicle_type=data['car_type']).first()
+            if vehicle_info:
+                data['car_type'] = vehicle_info.pk
+
+        return super().to_internal_value(data)
+
+
+class EngineOilSerializer(serializers.ModelSerializer):
+    total_cost = serializers.SerializerMethodField()
+    car_type = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = EngineOil
+        fields = '__all__'
+
+    def get_total_cost(self, obj):
+        total_price = obj.total_price()
+        total_cost = total_price * obj.qty
+
+        return total_cost
+
+    def to_internal_value(self, data):
+        if 'car_type' in data and isinstance(data['car_type'], str):
+            vehicle_info = VehicleInformation.objects.filter(
+                vehicle_type=data['car_type']).first()
+            if vehicle_info:
+                data['car_type'] = vehicle_info.pk
+
+        return super().to_internal_value(data)
 
 
 class GasLineDetailsSerializer(serializers.ModelSerializer):
-    total_price = serializers.SerializerMethodField()
+    total_cost = serializers.SerializerMethodField()
+    car_type = serializers.CharField(write_only=True)
 
     class Meta:
         model = GasLineDetails
         fields = '__all__'
 
-    def get_total_price(self, obj):
-        return obj.total_price()
+    def get_total_cost(self, obj):
+        total_price = obj.total_price()
+        total_cost = total_price * obj.qty
 
+        return total_cost
 
-# class CarWashSerializer(serializers.ModelSerializer):
-#     total_price = serializers.SerializerMethodField()
+    def to_internal_value(self, data):
+        if 'car_type' in data and isinstance(data['car_type'], str):
+            vehicle_info = VehicleInformation.objects.filter(
+                vehicle_type=data['car_type']).first()
+            if vehicle_info:
+                data['car_type'] = vehicle_info.pk
 
-#     class Meta:
-#         model = CarWash
-#         fields = '__all__'
-
-#     def get_total_price(self, obj):
-#         return obj.total_price()
+        return super().to_internal_value(data)
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
@@ -97,38 +177,3 @@ class AnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = Analysis
         fields = '__all__'
-
-
-class BatteryOrderSerializer(serializers.ModelSerializer):
-    total_cost = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Battery
-        fields = ["car_type", "select_battery_service", "qty", "total_cost"]
-
-    def get_total_cost(self, obj):
-        # Assuming you have a 'total_price' method in your Battery model
-        total_price = obj.total_price()
-
-        # Calculate total cost based on quantity
-        total_cost = total_price * obj.qty
-
-        return total_cost
-
-
-class CarWashOrderSerializer(serializers.ModelSerializer):
-    total_cost = serializers.SerializerMethodField()
-
-    class Meta:
-        model = CarWashOrder
-        fields = ["car_type", "name", "delivery_address", "typeofcarwash",
-                  "quantity", "arrivaltime", "category", "total_cost"]
-
-    def get_total_cost(self, obj):
-        # Assuming you have a 'total_price' method in your Battery model
-        total_price = obj.total_price()
-
-        # Calculate total cost based on quantity
-        total_cost = total_price * obj.qty
-
-        return total_cost

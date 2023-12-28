@@ -63,16 +63,31 @@ class VehicleInformation(models.Model):
 class Battery(models.Model):
     category = models.ForeignKey(
         Category, related_name='batteries', on_delete=models.CASCADE, null=True)
-    car_type = models.CharField(max_length=100)
+    car_type = models.ForeignKey(VehicleInformation, on_delete=models.CASCADE)
     select_battery_service = models.CharField(max_length=100)
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     arrivaltime = models.DateTimeField(default=timezone.now)
+    delivery_address = models.CharField(max_length=255)
 
     def total_price(self):
-        if self.category:
+        if self.category is not None:
             return self.qty * self.category.price
         else:
             return 0
+
+    def save(self, *args, **kwargs):
+        if isinstance(self.car_type, str):
+            vehicle_info = VehicleInformation.objects.filter(
+                vehicle_type=self.car_type).first()
+            if vehicle_info:
+                self.car_type = vehicle_info
+            else:
+                # If the vehicle information doesn't exist, you might want to handle this case accordingly.
+                # For example, you can raise an exception or set a default value.
+                # In this example, I'm setting car_type to None, but you can adjust it based on your requirements.
+                self.car_type = None
+
+        super(Battery, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.select_battery_service
@@ -86,47 +101,80 @@ class EngineOil(models.Model):
     engine_oil_type = models.CharField(max_length=100)
     engine_size = models.CharField(max_length=100)
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    delivery_address = models.CharField(max_length=255)
+    arrivaltime = models.DateTimeField(default=timezone.now)
 
     def total_price(self):
-        return self.qty * self.category.price
+        if self.category is not None:
+            return self.qty * self.category.price
+        else:
+            return 0
+
+    def save(self, *args, **kwargs):
+        if isinstance(self.car_type, str):
+            vehicle_info = VehicleInformation.objects.filter(
+                vehicle_type=self.car_type).first()
+            if vehicle_info:
+                self.car_type = vehicle_info
+        super(EngineOil, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.engine_oil_type
+        return f"{self.engine_oil_type}'s Tyre Order"
 
 
 class Tyre(models.Model):
     category = models.ForeignKey(
         Category, related_name='tyres', on_delete=models.CASCADE)
     car_type = models.ForeignKey(
-        VehicleInformation, on_delete=models.CASCADE)
+        VehicleInformation, related_name='car_type', on_delete=models.CASCADE)
     tyre_size = models.CharField(max_length=100)
     tyre_type = models.CharField(max_length=100)
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    delivery_address = models.CharField(max_length=255)
+    arrivaltime = models.DateTimeField(default=timezone.now)
 
     def total_price(self):
-        return self.qty * self.category.price
+        if self.category is not None:
+            return self.qty * self.category.price
+        else:
+            return 0
+
+    def save(self, *args, **kwargs):
+        if isinstance(self.car_type, str):
+            vehicle_info = VehicleInformation.objects.filter(
+                vehicle_type=self.car_type).first()
+            if vehicle_info:
+                self.car_type = vehicle_info
+        super(Tyre, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.tyre_type
+        return f"{self.tyre_type}'s Tyre Order"
 
 
 class CarWashOrder(models.Model):
     category = models.ForeignKey(
         Category, related_name='carwashorders', on_delete=models.CASCADE)
-    car_type = models.CharField(max_length=255, blank=True, null=True)
-    name = models.CharField(max_length=255, blank=True, null=True)
-    typeofcarwash = models.CharField(
-        max_length=100,
-    )
+    car_type = models.ForeignKey(
+        VehicleInformation, related_name='car_types', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    typeofcarwash = models.CharField(max_length=100)
     quantity = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    delivery_address = models.CharField(max_length=255, blank=True, null=True)
+    delivery_address = models.CharField(max_length=255)
     arrivaltime = models.DateTimeField(default=timezone.now)
 
     def total_price(self):
-        if self.category:
-            return self.qty * self.category.price
+        if self.category is not None:
+            return self.quantity * self.category.price
         else:
             return 0
+
+    def save(self, *args, **kwargs):
+        if isinstance(self.car_type, str):
+            vehicle_info = VehicleInformation.objects.filter(
+                vehicle_type=self.car_type).first()
+            if vehicle_info:
+                self.car_type = vehicle_info
+        super(CarWashOrder, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name}'s Car Wash Order"
@@ -150,9 +198,23 @@ class GasLineDetails(models.Model):
         help_text='Current fuel level in liters'
     )
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    delivery_address = models.CharField(max_length=255)
+    arrivaltime = models.DateTimeField(default=timezone.now)
+    fuel_type = models.CharField(max_length=200, default=True)
 
     def total_price(self):
-        return self.qty * self.category.price
+        if self.category is not None:
+            return self.qty * self.category.price
+        else:
+            return 0
+
+    def save(self, *args, **kwargs):
+        if isinstance(self.car_type, str):
+            vehicle_info = VehicleInformation.objects.filter(
+                vehicle_type=self.car_type).first()
+            if vehicle_info:
+                self.car_type = vehicle_info
+        super(GasLineDetails, self).save(*args, **kwargs)
 
     def clean(self):
         if self.fuel_capacity < self.current_fuel_level:

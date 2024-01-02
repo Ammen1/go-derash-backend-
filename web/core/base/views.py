@@ -209,6 +209,21 @@ class FuelOrderCreateView(generics.CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ListFuel(generics.ListAPIView):
+    serializer_class = GasLineDetailsSerializer
+    queryset = GasLineDetails.objects.all()
+
+
+class DetailGasline(generics.RetrieveAPIView):
+    serializer_class = GasLineDetailsSerializer
+    queryset = GasLineDetails.objects.all()
+
+
+class DeleteGasline(generics.DestroyAPIView):
+    serializer_class = GasLineDetailsSerializer
+    queryset = GasLineDetails.objects.all()
+
+
 class ListTyre(generics.ListAPIView):
     serializer_class = TyreSerializer
     queryset = Tyre.objects.all()

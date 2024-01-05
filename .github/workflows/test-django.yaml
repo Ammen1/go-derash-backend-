@@ -11,10 +11,10 @@ jobs:
       run:
         working-directory: ./web
     env:
-      DJANGO_SECRET_KEY: test-key-not-good-maybe-make-one-better
-      POSTGRES_DB: dockerdc
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_USER: myuser
+      DJANGO_SECRET_KEY: azb2h+9yo=pfd2t1+q&9g6cf$iksoq(9jy8%9w=t_q_^gjtlt7
+      POSTGRES_DB: go_derash
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: postgres
       POSTGRES_HOST: localhost
       POSTGRES_PORT: 5432
       DB_IGNORE_SSL: "true"
@@ -35,7 +35,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.9]
+        python-version: [3.11.6]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}

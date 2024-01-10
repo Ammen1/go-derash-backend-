@@ -50,7 +50,6 @@ jobs:
           sudo apt-get install -y lftp
       - name: Deploy to cPanel
         run: |
-          # Example: Use FTP to copy files
-          /usr/bin/lftp -d -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASSWORD }} -e "mirror -R . /public_html; exit" ${{ secrets.FTP_HOST }}
+          lftp -d -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASSWORD }} -e "mirror -R . /public_html; exit" ${{ secrets.FTP_HOST }}
           python manage.py migrate
           python manage.py collectstatic --noinput

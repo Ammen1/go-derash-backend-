@@ -45,9 +45,9 @@ jobs:
         uses: actions/checkout@v2.4.4
         with:
           python-version: ${{ matrix.python-version }}
-          ftp-server: ${{ sercrete.FTP_HOST }}
-          ftp-username: ${{ sercrete.FTP_USER }}
-          ftp-password: ${{ sercrete.FTP_PASSWORD }}
+          # ftp-server: ${{ sercrete.FTP_HOST }}
+          # ftp-username: ${{ sercrete.FTP_USER }}
+          # ftp-password: ${{ sercrete.FTP_PASSWORD }}
 
       - name: Install Dependencies
         run: |
@@ -59,6 +59,6 @@ jobs:
       - name: Deploy to cPanel
         run: |
           # # Example: Use FTP to copy files
-          # lftp -u $FTP_USER,$FTP_PASSWORD -e "mirror -R . /public_html; exit" $FTP_HOST
+          $FTP_USER,$FTP_PASSWORD, $FTP_HOST
           python manage.py migrate
           python manage.py collectstatic --noinput

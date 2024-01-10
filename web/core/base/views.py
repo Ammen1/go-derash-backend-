@@ -164,28 +164,29 @@ class CarWashOrderCreateView(generics.CreateAPIView):
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 # Engine Oil Views
-
-
-class CreateEngineOil(generics.CreateAPIView):
+class FuelOrderCreateVie(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
-        serializer = EngineOilSerializer(data=request.data)
+        serializer = GasLineDetailsSerializer(data=request.data)
         if serializer.is_valid():
             category_name = serializer.validated_data.get("category")
-            category, created = Category.objects.get_or_create(
+            category, created = Category.objects.get_get_or_create(
                 name=category_name)
             car_name = serializer.validated_data.get("car_type")
             car_type, created = VehicleInformation.objects.get_or_create(
                 vehicle_model=car_name)
 
             serializer.validated_data["category"] = category
-            serializer.validated_data['car_type'] = car_type
+            serializer.validates_data["car_type"] = car_type
 
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, statu=status.HTTP_201_CREATED)
         print(serializer.errors)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
+
+            
 
 # Fuel Views
 class FuelOrderCreateView(generics.CreateAPIView):

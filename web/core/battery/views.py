@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from core.battery.models import *
+from core.base.models import VehicleInformation
 from .serializers import *
 
 
@@ -17,7 +18,7 @@ class BatteryOrderView(generics.CreateAPIView):
         if serializer.is_valid():
 
             category_name = serializer.validated_data.get("category")
-            category, created = Category.objects.get_or_create(
+            category, created = BatteryCategory.objects.get_or_create(
                 name=category_name)
 
             car_name = serializer.validated_data.get("car_type")
@@ -33,3 +34,89 @@ class BatteryOrderView(generics.CreateAPIView):
         # Debugging: Print serializer.errors to inspect the validation errors
         print("Validation Errors:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ListBattery(generics.ListAPIView):
+    serializer_class = BatteryOrderSerializer
+    queryset = BatteryBrand.objects.all()
+
+
+class DetailBattery(generics.RetrieveAPIView):
+    serializer_class = BatteryBrandSerializer
+    queryset = BatteryBrand.objects.all()
+
+
+class DeleteBattery(generics.DestroyAPIView):
+    serializer_class = BatteryBrandSerializer
+    queryset = BatteryBrand.objects.all()
+
+
+class UpdateBattery(generics.UpdateAPIView):
+    serializer_class = BatteryBrandSerializer
+    queryset = BatteryBrand.objects.all()
+
+
+# BatteryBrand Views
+class CreatBrand(generics.CreateAPIView):
+    def post(self, request, *args, **kwargs):
+        serializer = BatteryBrandSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        print("Validation Errors:", serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ListBrand(generics.ListAPIView):
+    serializer_class = BatteryBrandSerializer
+    queryset = BatteryBrand.objects.all()
+
+
+class DeleteBrand(generics.DestroyAPIView):
+    serializer_class = BatteryBrandSerializer
+    queryset = BatteryBrand.objects.all()
+
+
+class UpdateBrand(generics.UpdateAPIView):
+    serializer_class = BatteryBrandSerializer
+    queryset = BatteryBrand.objects.all()
+
+
+class DetailBrand(generics.RetrieveAPIView):
+    serializer_class = BatteryBrandSerializer
+    queryset = BatteryBrand.objects.all()
+
+
+# BatteryCategory Views
+class CreatBatteryCategory(generics.CreateAPIView):
+    def post(self, request, *args, **kwargs):
+        serializer = BatteryCategorySerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        print("Validation Errors:", serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ListBatteryCategory(generics.ListAPIView):
+    serializer_class = BatteryCategorySerializer
+    queryset = BatteryCategory.objects.all()
+
+
+class DeleteBatteryCategory(generics.DestroyAPIView):
+    serializer_class = BatteryCategorySerializer
+    queryset = BatteryCategory.objects.all()
+
+
+class UpdateBatteryCategory (generics.UpdateAPIView):
+    serializer_class = BatteryCategorySerializer
+    queryset = BatteryCategory.objects.all()
+
+
+class DetailBatteryCategory(generics.RetrieveAPIView):
+    serializer_class = BatteryCategorySerializer
+    queryset = BatteryCategory.objects.all()

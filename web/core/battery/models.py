@@ -38,10 +38,23 @@ class BatteryCategory(MPTTModel):
         return self.name
 
 
+class BatteryBrand(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name_plural = -("brandies")
+
+    def __str__(self):
+        return self.name
+
+
 class Battery(models.Model):
     category = models.ForeignKey(
         BatteryCategory, related_name='batteries', on_delete=models.CASCADE, null=True)
     car_type = models.ForeignKey(VehicleInformation, on_delete=models.CASCADE)
+    batteryBrand = models.ForeignKey(
+        BatteryBrand, related_name='batterybrand', on_delete=models.CASCADE, null=False)
     select_battery_service = models.CharField(max_length=100)
     price = models.DecimalField(verbose_name=_(
         "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])

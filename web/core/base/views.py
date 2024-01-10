@@ -70,11 +70,6 @@ class DeleteVehicleInformation(generics.DestroyAPIView):
     queryset = VehicleInformation.objects.all()
 
 
-class EditEngioneOil(generics.UpdateAPIView):
-    serializer_class = EngineOilSerializer
-    queryset = EngineOil.objects.all()
-
-
 # Tyre Views
 class CreateTyre(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
@@ -153,20 +148,6 @@ class EditTyre(generics.UpdateAPIView):
     serializer_class = TyreSerializer
     queryset = Tyre.objects.all()
 
-
-class ListEngineOil(generics.ListAPIView):
-    serializer_class = EngineOilSerializer
-    queryset = EngineOil.objects.all()
-
-
-class DetailEngineOil(generics.RetrieveAPIView):
-    serializer_class = EngineOilSerializer
-    queryset = EngineOil.objects.all()
-
-
-class DeleteEgineOil(generics.DestroyAPIView):
-    serializer_class = EngineOilSerializer
-    queryset = EngineOil.objects.all()
 
 # Views for Fuel
 

@@ -12,7 +12,7 @@ from .serializers import *
 
 
 # Engine Oil Views
-class EngineOilCreateVie(generics.CreateAPIView):
+class CreateEngineOil(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = EngineOilSerializer(data=request.data)
         if serializer.is_valid():

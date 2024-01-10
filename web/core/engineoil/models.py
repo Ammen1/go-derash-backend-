@@ -7,6 +7,7 @@ from core.account.models import Driver
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from core.base.models import VehicleInformation
+from django.utils.translation import gettext_lazy as _
 
 
 class EngineOilCategory(MPTTModel):

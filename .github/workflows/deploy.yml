@@ -42,7 +42,7 @@ jobs:
         uses: actions/checkout@v2
 
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: [3.11.6]
           # ftp-server: ${{ secrets.FTP_HOST }}
           # ftp-username: ${{ secrets.FTP_USER }}
           # ftp-password: ${{ secrets.FTP_PASSWORD }}

@@ -43,9 +43,9 @@ jobs:
 
         with:
           python-version: ${{ matrix.python-version }}
-          ftp-server: ${{ sercrete.FTP_HOST }}
-          ftp-username: ${{ sercrete.FTP_USER }}
-          ftp-password: ${{ sercrete.FTP_PASSWORD }}
+          ftp-server: ${{ secrete.FTP_HOST }}
+          ftp-username: ${{ secrete.FTP_USER }}
+          ftp-password: ${{ secrete.FTP_PASSWORD }}
 
       - name: Install Dependencies
         run: |

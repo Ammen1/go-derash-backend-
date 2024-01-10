@@ -44,7 +44,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2.4.4
         with:
-          # python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version }}
           ftp-server: ${{ sercrete.FTP_HOST }}
           ftp-username: ${{ sercrete.FTP_USER }}
           ftp-password: ${{ sercrete.FTP_PASSWORD }}

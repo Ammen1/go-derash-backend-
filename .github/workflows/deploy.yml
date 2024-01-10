@@ -56,6 +56,6 @@ jobs:
       - name: Deploy to cPanel
         run: |
           # Example: Use FTP to copy files
-          lftp -u $FTP_USER,$FTP_PASSWORD -e "mirror -R -e . /public_html; exit" $FTP_HOST 
+          /usr/bin/lftp -u $FTP_USER,$FTP_PASSWORD -e "mirror -R . /public_html; exit" $FTP_HOST
           python manage.py migrate
           python manage.py collectstatic --noinput

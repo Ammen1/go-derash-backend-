@@ -22,17 +22,13 @@ class BatteryCategory(MPTTModel):
     parent = models.ForeignKey(
         'self', null=True, blank=True, on_delete=models.SET_NULL)
     is_active = models.BooleanField(default=False)
-    description = models.TextField()
-
-    image = models.ImageField(
-        upload_to='media/', null=True, blank=True)
 
     class MPTTMeta:
         order_insertion_by = ["name"]
 
     class Meta:
         ordering = ["name"]
-        verbose_name_plural = _("services")
+        verbose_name_plural = _("batterycategories")
 
     def __str__(self):
         return self.name
@@ -60,6 +56,8 @@ class Battery(models.Model):
         "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     arrivaltime = models.DateTimeField(default=timezone.now)
+    image = models.ImageField(
+        upload_to='media/', null=True, blank=True)
     delivery_address = models.CharField(max_length=255)
 
     def total_price(self):

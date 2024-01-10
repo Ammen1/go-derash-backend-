@@ -49,15 +49,6 @@ urlpatterns = [
     path('user/detailvehicle/<int:id>/',
          DetailVehicleInformation.as_view(), name='detailvehicle'),
 
-    # urls for carwash
-    #     path('user/createcarwash/',
-    #          CreateCarWash.as_view(), name='createcarwash'),
-    path('user/detailcarwash/<int:pk>/',
-         DetailCarWash.as_view(), name='detailcarwash'),
-    path('user/detelecarwash/<int:pk>/',
-         DeleteCarWash.as_view(), name='detelecarwash'),
-    path('user/editcarwash/<int:pk>/', EditCarWash.as_view(), name='editcarwash'),
-
     # urls for Subscriptions
     path('user/createsubscriptions/',
          CreateSubscription.as_view(), name='createsubscriptions'),
@@ -66,9 +57,7 @@ urlpatterns = [
     path('user/detailsubscription/<int:pk>/',
          DetailSubscription.as_view(), name='detailsubscription'),
 
-    # urlls for Battery Order
 
-    path('user/carwashorder/', CarWashOrderCreateView.as_view(), name='carwashorder'),
-    path('user/carwasall/', CarWashOrderListView.as_view(), name='carwashall')
+
 
 ]

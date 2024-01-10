@@ -4,7 +4,6 @@ from core.base.models import (
     Category,
     EngineOil,
     Tyre,
-    CarWashOrder,
     GasLineDetails,
     Subscription,
     Complaint,
@@ -23,4 +22,3 @@ admin.site.register(Subscription)
 admin.site.register(Complaint)
 admin.site.register(RouteManagement)
 admin.site.register(VehicleInformation)
-admin.site.register(CarWashOrder)

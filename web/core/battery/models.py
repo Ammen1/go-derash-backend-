@@ -43,7 +43,7 @@ class BatteryBrand(models.Model):
 
     class Meta:
         ordering = ["name"]
-        verbose_name_plural = -("brandies")
+        verbose_name_plural = _("brandes")
 
     def __str__(self):
         return self.name

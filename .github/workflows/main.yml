@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Deploy to FTP
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+        with:
+          server: www.gooderash.com
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./web
+          remote-dir: /public_html

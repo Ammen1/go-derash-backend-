@@ -41,8 +41,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2.4.4
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -56,6 +56,6 @@ jobs:
       - name: Deploy to cPanel
         run: |
           # # Example: Use FTP to copy files
-          # /usr/bin/lftp -u $FTP_USER,$FTP_PASSWORD -e "mirror -R . /public_html; exit" $FTP_HOST
+          lftp -u $FTP_USER,$FTP_PASSWORD -e "mirror -R . /public_html; exit" $FTP_HOST
           python manage.py migrate
           python manage.py collectstatic --noinput

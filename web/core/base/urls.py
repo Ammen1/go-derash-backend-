@@ -45,9 +45,7 @@ urlpatterns = [
          CreateVehicleInformation.as_view(), name='createvehicleInformation'),
     path('user/editvehicleinformation/<int:pk>/',
          EditVehicleInformation.as_view(), name='editvehicleinformation'),
-    path('user/createengineoil/', CreateEngineOil.as_view(), name='createengineoil'),
-    path('user/detailvehicle/<int:id>/',
-         DetailVehicleInformation.as_view(), name='detailvehicle'),
+
 
     # urls for Subscriptions
     path('user/createsubscriptions/',

@@ -21,6 +21,7 @@ class CarWashOrder(models.Model):
     delivery_address = models.CharField(max_length=255)
     image = models.ImageField(
         upload_to='media/', null=True, blank=True)
+    description = models.TextField()
     arrivaltime = models.DateTimeField(default=timezone.now)
 
     def total_price(self):

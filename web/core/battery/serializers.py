@@ -21,7 +21,6 @@ class BatteryBrandSerializer(serializers.ModelSerializer):
 
 class BatteryOrderSerializer(serializers.ModelSerializer):
     total_cost = serializers.SerializerMethodField()
-    batteryBrand = serializers.CharField(write_only=True)
     car_type = serializers.CharField(write_only=True)
 
     class Meta:
@@ -41,10 +40,4 @@ class BatteryOrderSerializer(serializers.ModelSerializer):
             if vehicle_info:
                 data['car_type'] = vehicle_info.pk
 
-        return super().to_internal_value(data)
-
-    def to_internal_value(self, data):
-        if 'batteryBrand' in data and isinstance(data['car_type'], str):
-            batterybrand = BatteryBrand.objects.filter(
-                name=data['name']).first()
         return super().to_internal_value(data)

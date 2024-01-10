@@ -70,27 +70,6 @@ class DeleteVehicleInformation(generics.DestroyAPIView):
     queryset = VehicleInformation.objects.all()
 
 
-# Engine Oil Views
-class CreateEngineOil(generics.CreateAPIView):
-    serializer_class = EngineOilSerializer
-    queryset = EngineOil.objects.all()
-
-
-class ListEngineOil(generics.ListAPIView):
-    serializer_class = EngineOilSerializer
-    queryset = EngineOil.objects.all()
-
-
-class DetailEngineOil(generics.RetrieveAPIView):
-    serializer_class = EngineOilSerializer
-    queryset = EngineOil.objects.all()
-
-
-class DeleteEgineOil(generics.DestroyAPIView):
-    serializer_class = EngineOilSerializer
-    queryset = EngineOil.objects.all()
-
-
 class EditEngioneOil(generics.UpdateAPIView):
     serializer_class = EngineOilSerializer
     queryset = EngineOil.objects.all()
@@ -116,27 +95,6 @@ class CreateTyre(generics.CreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# Engine Oil Views
-class FuelOrderCreateVie(generics.CreateAPIView):
-    def post(self, request, *args, **kwargs):
-        serializer = GasLineDetailsSerializer(data=request.data)
-        if serializer.is_valid():
-            category_name = serializer.validated_data.get("category")
-            category, created = Category.objects.get_get_or_create(
-                name=category_name)
-            car_name = serializer.validated_data.get("car_type")
-            car_type, created = VehicleInformation.objects.get_or_create(
-                vehicle_model=car_name)
-
-            serializer.validated_data["category"] = category
-            serializer.validates_data["car_type"] = car_type
-
-            serializer.save()
-            return Response(serializer.data, statu=status.HTTP_201_CREATED)
-        print(serializer.errors)
-        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
 
 # Fuel Views

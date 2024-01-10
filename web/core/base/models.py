@@ -60,39 +60,6 @@ class VehicleInformation(models.Model):
         return self.vehicle_type
 
 
-class Battery(models.Model):
-    category = models.ForeignKey(
-        Category, related_name='batteries', on_delete=models.CASCADE, null=True)
-    car_type = models.ForeignKey(VehicleInformation, on_delete=models.CASCADE)
-    select_battery_service = models.CharField(max_length=100)
-    qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    arrivaltime = models.DateTimeField(default=timezone.now)
-    delivery_address = models.CharField(max_length=255)
-
-    def total_price(self):
-        if self.category is not None:
-            return self.qty * self.category.price
-        else:
-            return 0
-
-    def save(self, *args, **kwargs):
-        if isinstance(self.car_type, str):
-            vehicle_info = VehicleInformation.objects.filter(
-                vehicle_type=self.car_type).first()
-            if vehicle_info:
-                self.car_type = vehicle_info
-            else:
-                # If the vehicle information doesn't exist, you might want to handle this case accordingly.
-                # For example, you can raise an exception or set a default value.
-                # In this example, I'm setting car_type to None, but you can adjust it based on your requirements.
-                self.car_type = None
-
-        super(Battery, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return self.select_battery_service
-
-
 class EngineOil(models.Model):
     category = models.ForeignKey(
         Category, related_name='oilengine', on_delete=models.CASCADE)

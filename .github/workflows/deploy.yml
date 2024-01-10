@@ -47,8 +47,8 @@ jobs:
           pip install -r requirements.txt
       - name: Deploy to cPanel
         run: |
-          FTP-HOST: ${{ secrets.FTP_HOST}}
-          FTP-USER: ${{ secrets.FTP_USER }}
-          FTP-PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          # ftp-server: ${{ secrets.FTP_HOST}}
+          # ftp-username: ${{ secrets.FTP_USER }}
+          # ftp-password: ${{ secrets.FTP_PASSWORD }}
           python manage.py migrate
           python manage.py collectstatic --noinput

@@ -10,10 +10,10 @@ from core.base.models import (
     Complaint,
     RouteManagement,
     Analysis,
-    Battery
+
 
 )
-admin.site.register(Battery)
+
 admin.site.register(Category)
 admin.site.register(Analysis),
 admin.site.register(EngineOil)

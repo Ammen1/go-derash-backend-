@@ -14,17 +14,6 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# class ServiceTypeSerializer(serializers.ModelSerializer):
-#     def get_total_cost(self, obj):
-#         # Add your logic to calculate the total cost based on the obj
-#         # For example, if obj has a field named 'price' and 'quantity':
-#         return obj.total_cost * obj.quantity
-
-#     class Meta:
-#         model = ServiceType
-#         fields = '__all__'
-
-
 class VehicleInformationSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -53,30 +42,6 @@ class TyreSerializer(serializers.ModelSerializer):
     def to_internal_value(self, data):
         if 'car_type' in data and isinstance(data['car_type'], str):
             # Assuming VehicleInformation model has a field named 'vehicle_type'
-            vehicle_info = VehicleInformation.objects.filter(
-                vehicle_type=data['car_type']).first()
-            if vehicle_info:
-                data['car_type'] = vehicle_info.pk
-
-        return super().to_internal_value(data)
-
-
-class BatteryOrderSerializer(serializers.ModelSerializer):
-    total_cost = serializers.SerializerMethodField()
-    car_type = serializers.CharField(write_only=True)
-
-    class Meta:
-        model = Battery
-        fields = '__all__'
-
-    def get_total_cost(self, obj):
-        total_price = obj.total_price()
-        total_cost = total_price * obj.qty
-        return total_cost
-
-    def to_internal_value(self, data):
-        # Convert 'car_type' from a string to the corresponding primary key
-        if 'car_type' in data and isinstance(data['car_type'], str):
             vehicle_info = VehicleInformation.objects.filter(
                 vehicle_type=data['car_type']).first()
             if vehicle_info:

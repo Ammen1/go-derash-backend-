@@ -67,7 +67,7 @@ urlpatterns = [
          DetailSubscription.as_view(), name='detailsubscription'),
 
     # urlls for Battery Order
-    path('user/batteryorder/', BatteryOrderView.as_view(), name='batteryorder'),
+
     path('user/carwashorder/', CarWashOrderCreateView.as_view(), name='carwashorder'),
     path('user/carwasall/', CarWashOrderListView.as_view(), name='carwashall')
 

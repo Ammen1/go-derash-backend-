@@ -8,8 +8,6 @@ from decimal import Decimal
 from mptt.models import MPTTModel, TreeForeignKey
 from django.core.validators import MinValueValidator
 from core.account.models import Driver
-
-
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from django.utils.translation import gettext_lazy as _

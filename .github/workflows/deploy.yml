@@ -1,5 +1,7 @@
 on: push
+
 name: 🚀 Deploy website on push
+
 jobs:
   web-deploy:
     name: 🎉 Deploy
@@ -7,9 +9,8 @@ jobs:
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v3
-
         with:
-          server: ftp.gooderash.com
-          username: ${{ secrets.ftp_username }}
-          password: ${{ secrets.ftp_password }}
-          server_dir: ./web
+          ftp-server: api.gooderash.com
+          ftp-username: ${{ secrets.ftp_username }}
+          ftp-password: ${{ secrets.ftp_password }}
+          local-dir: ./web

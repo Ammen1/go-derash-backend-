@@ -3,9 +3,15 @@ from django.conf import settings
 from attr import attributes
 from django.core.exceptions import ObjectDoesNotExist
 from core.base.models import VehicleInformation
-from core.carwash.models import CarWashOrder
+from core.carwash.models import CarWashOrder, CarWashCategory
 from rest_framework import serializers
 from core.account.serializers import CustomUserSerializer
+
+
+class CarWashCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarWashCategory
+        fieds = '__all__'
 
 
 class CarWashOrderSerializer(serializers.ModelSerializer):

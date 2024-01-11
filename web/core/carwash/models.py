@@ -10,7 +10,29 @@ from django.db import models
 from core.base.models import VehicleInformation
 
 
+class CarWashCategory(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100)
+    parent = models.ForeignKey(
+        'self', null=True, blank=True, on_delete=models.SET_NULL)
+    image = models.ImageField(
+        upload_to='media/', null=True, blank=True)
+    is_active = models.BooleanField(default=False)
+
+    class MPTTMeta:
+        order_insertion_by = ["name"]
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name_plural = _("carwashcategories")
+
+    def __str__(self):
+        return self.name
+
+
 class CarWashOrder(models.Model):
+    category = models.ForeignKey(
+        CarWashCategory, related_name="carwash", on_delete=models.CASCADE)
     car_type = models.ForeignKey(
         VehicleInformation, related_name='car_types', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)

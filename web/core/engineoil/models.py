@@ -15,6 +15,8 @@ class EngineOilCategory(MPTTModel):
     slug = models.SlugField(max_length=100)
     parent = models.ForeignKey(
         'self', null=True, blank=True, on_delete=models.SET_NULL)
+    image = models.ImageField(
+        upload_to='media/', null=True, blank=True)
     is_active = models.BooleanField(default=False)
 
     class MPTTMeta:
@@ -52,8 +54,6 @@ class EngineOil(models.Model):
     delivery_address = models.CharField(max_length=255)
     price = models.DecimalField(verbose_name=_(
         "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
-    image = models.ImageField(
-        upload_to='media/', null=True, blank=True)
     description = models.TextField()
     arrivaltime = models.DateTimeField(default=timezone.now)
 

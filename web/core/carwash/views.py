@@ -51,3 +51,30 @@ class DetailCarWash(generics.RetrieveAPIView):
 class EditCarWash(generics.UpdateAPIView):
     serializer_class = CarWashOrderSerializer
     queryset = CarWashOrder.objects.all()
+
+# Carwash Views
+
+
+class CreateCategory(generics.CreateAPIView):
+    serializer_class = CarWashCategorySerializer
+    queryset = CarWashCategory.objects.all()
+
+
+class ListCategory(generics.ListAPIView):
+    serializer_class = CarWashCategorySerializer
+    queryset = CarWashCategory.objects.all()
+
+
+class DetailCategory(generics.RetrieveAPIView):
+    serializer_class = CarWashCategorySerializer
+    queryset = CarWashCategory.objects.all()
+
+
+class DeleteCategory(generics.DestroyAPIView):
+    serializer_class = CarWashCategorySerializer
+    queryset = CarWashCategory.objects.all()
+
+
+class UpdateCategory(generics.UpdateAPIView):
+    serializer_class = CarWashCategorySerializer
+    queryset = CarWashCategory.objects.all()

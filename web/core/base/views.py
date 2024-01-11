@@ -70,48 +70,6 @@ class DeleteVehicleInformation(generics.DestroyAPIView):
     queryset = VehicleInformation.objects.all()
 
 
-# Tyre Views
-class CreateTyre(generics.CreateAPIView):
-    def post(self, request, *args, **kwargs):
-        serializer = TyreSerializer(data=request.data)
-        if serializer.is_valid():
-
-            category_name = serializer.validated_data.get("category")
-            category, created = Category.objects.get_or_create(
-                name=category_name)
-            car_name = serializer.validated_data.get("car_type")
-            car_type, created = VehicleInformation.objects.get_or_create(
-                vehicle_model=car_name)
-
-            serializer.validated_data["category"] = category
-            serializer.validated_data['car_type'] = car_type
-
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        print(serializer.errors)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ListTyre(generics.ListAPIView):
-    serializer_class = TyreSerializer
-    queryset = Tyre.objects.all()
-
-
-class DetailTyre(generics.RetrieveAPIView):
-    serializer_class = TyreSerializer
-    queryset = Tyre.objects.all()
-
-
-class DeleteTyre(generics.DestroyAPIView):
-    serializer_class = TyreSerializer
-    queryset = Tyre.objects.all()
-
-
-class EditTyre(generics.UpdateAPIView):
-    serializer_class = TyreSerializer
-    queryset = Tyre.objects.all()
-
-
 # Views for Subscriptions
 class CreateSubscription(generics.CreateAPIView):
     serializer_class = SubscriptionSerializer

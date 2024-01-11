@@ -6,7 +6,6 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
-from core.basket.services import *
 from core.carwash.models import *
 from .serializers import *
 
@@ -52,9 +51,8 @@ class EditCarWash(generics.UpdateAPIView):
     serializer_class = CarWashOrderSerializer
     queryset = CarWashOrder.objects.all()
 
+
 # Carwash Views
-
-
 class CreateCategory(generics.CreateAPIView):
     serializer_class = CarWashCategorySerializer
     queryset = CarWashCategory.objects.all()

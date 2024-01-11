@@ -15,6 +15,8 @@ class CarWashCategory(models.Model):
     slug = models.SlugField(max_length=100)
     parent = models.ForeignKey(
         'self', null=True, blank=True, on_delete=models.SET_NULL)
+    price = models.DecimalField(verbose_name=_(
+        "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     image = models.ImageField(
         upload_to='media/', null=True, blank=True)
     is_active = models.BooleanField(default=False)

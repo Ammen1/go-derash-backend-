@@ -8,9 +8,6 @@ from decimal import Decimal
 from mptt.models import MPTTModel, TreeForeignKey
 from django.core.validators import MinValueValidator
 from core.account.models import Driver
-from django.db import models
-from mptt.models import MPTTModel, TreeForeignKey
-from django.utils.translation import gettext_lazy as _
 
 
 class Category(MPTTModel):
@@ -56,35 +53,6 @@ class VehicleInformation(models.Model):
 
     def __str__(self):
         return self.vehicle_type
-
-
-class Tyre(models.Model):
-    category = models.ForeignKey(
-        Category, related_name='tyres', on_delete=models.CASCADE)
-    car_type = models.ForeignKey(
-        VehicleInformation, related_name='car_type', on_delete=models.CASCADE)
-    tyre_size = models.CharField(max_length=100)
-    tyre_type = models.CharField(max_length=100)
-    qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    delivery_address = models.CharField(max_length=255)
-    arrivaltime = models.DateTimeField(default=timezone.now)
-
-    def total_price(self):
-        if self.category is not None:
-            return self.qty * self.category.price
-        else:
-            return 0
-
-    def save(self, *args, **kwargs):
-        if isinstance(self.car_type, str):
-            vehicle_info = VehicleInformation.objects.filter(
-                vehicle_type=self.car_type).first()
-            if vehicle_info:
-                self.car_type = vehicle_info
-        super(Tyre, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return f"{self.tyre_type}'s Tyre Order"
 
 
 class Subscription(models.Model):

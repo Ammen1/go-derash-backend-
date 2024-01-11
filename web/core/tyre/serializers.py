@@ -1,30 +1,27 @@
 from rest_framework import serializers
-from django.conf import settings
-from attr import attributes
 from django.core.exceptions import ObjectDoesNotExist
-from core.base.models import VehicleInformation
-from core.engineoil.models import *
+from core.tyre.models import *
 from core.account.serializers import CustomUserSerializer
 
 
-class EngineOilCategorySerializer(serializers.ModelSerializer):
+class TyreCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = EngineOilCategory
+        model = TyreCategory
         fields = '__all__'
 
 
-class EngineOilBrandSerializer(serializers.ModelSerializer):
+class BrandSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EngineBrand
+        model = Brand
         fields = '__all__'
 
 
-class EngineOilSerializer(serializers.ModelSerializer):
+class TyreSerializer(serializers.ModelSerializer):
     total_cost = serializers.SerializerMethodField()
     car_type = serializers.CharField(write_only=True)
 
     class Meta:
-        model = EngineOil
+        model = Tyre
         fields = '__all__'
 
     def get_total_cost(self, obj):
@@ -35,6 +32,7 @@ class EngineOilSerializer(serializers.ModelSerializer):
 
     def to_internal_value(self, data):
         if 'car_type' in data and isinstance(data['car_type'], str):
+            # Assuming VehicleInformation model has a field named 'vehicle_type'
             vehicle_info = VehicleInformation.objects.filter(
                 vehicle_type=data['car_type']).first()
             if vehicle_info:

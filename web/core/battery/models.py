@@ -11,16 +11,13 @@ from core.account.models import Driver
 from core.base.models import VehicleInformation
 
 
-from django.db import models
-from mptt.models import MPTTModel, TreeForeignKey
-from django.utils.translation import gettext_lazy as _
-
-
 class BatteryCategory(MPTTModel):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
     parent = models.ForeignKey(
         'self', null=True, blank=True, on_delete=models.SET_NULL)
+    price = models.DecimalField(verbose_name=_(
+        "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     is_active = models.BooleanField(default=False)
 
     class MPTTMeta:

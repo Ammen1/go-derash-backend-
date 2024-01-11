@@ -22,12 +22,6 @@ urlpatterns = [
     path('admin/deletevehicleinformation/<int:pk>/',
          DeleteVehicleInformation.as_view(), name='deletevehicleinformation'),
 
-    # Tyre URLs
-    path('admin/tyre/create/', CreateTyre.as_view(), name='create'),
-    path('admin/tyre/list/', ListTyre.as_view(), name='list_tyre'),
-    path('admin/tyre/detail/<int:pk>/', DetailTyre.as_view(), name='detail_tyre'),
-    path('admin/tyre/delete/<int:pk>/', DeleteTyre.as_view(), name='delete_tyre'),
-    path('admin/tyre/edit/<int:pk>/', EditTyre.as_view(), name='edit_tyre'),
 
     # Subscriptions URLS
     path('admin/listsubscriptions/',

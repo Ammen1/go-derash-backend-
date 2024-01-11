@@ -16,10 +16,12 @@ class FuelCategory(MPTTModel):
     slug = models.SlugField(max_length=100)
     parent = models.ForeignKey(
         'self', null=True, blank=True, on_delete=models.SET_NULL)
-    is_active = models.BooleanField(default=False)
+    price = models.DecimalField(verbose_name=_(
+        "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     description = models.TextField()
     image = models.ImageField(
         upload_to='media/', null=True, blank=True)
+    is_active = models.BooleanField(default=False)
 
     class MPTTMeta:
         order_insertion_by = ["name"]
@@ -32,11 +34,24 @@ class FuelCategory(MPTTModel):
         return self.name
 
 
+class FuelBrand(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = _("brandes")
+
+    def __str__(self):
+        return self.name
+
+
 class GasLineDetails(models.Model):
     category = models.ForeignKey(
         FuelCategory, related_name='gaslines', on_delete=models.CASCADE)
     car_type = models.ForeignKey(
         VehicleInformation, on_delete=models.CASCADE)
+    brand = models.ForeignKey(
+        FuelBrand, related_name="brandes", on_delete=models.CASCADE)
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     delivery_address = models.CharField(max_length=255)
     arrivaltime = models.DateTimeField(default=timezone.now)
@@ -57,11 +72,6 @@ class GasLineDetails(models.Model):
             if vehicle_info:
                 self.car_type = vehicle_info
         super(GasLineDetails, self).save(*args, **kwargs)
-
-    def clean(self):
-        if self.fuel_capacity < self.current_fuel_level:
-            raise ValidationError(
-                _('Fuel capacity should be greater than or equal to current fuel level'))
 
     def __str__(self):
         return f"{self.fuel_capacity}L, {self.current_fuel_level}L"

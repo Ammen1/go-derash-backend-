@@ -23,8 +23,12 @@ class FuelOrderCreateView(generics.CreateAPIView):
             car_type, created = VehicleInformation.objects.get_or_create(
                 vehicle_model=car_name)
 
+            brand_name = serializers.validate_data.get("brand")
+            brand, created = Brand.objects.get_or_create(naem=brand_name)
+
             serializer.validated_data["category"] = category
             serializer.validated_data['car_type'] = car_type
+            sesrializer.validates_data["brand"] = brnad_name
 
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -50,3 +54,55 @@ class DeleteGasline(generics.DestroyAPIView):
 class UpdateGasline(generics.UpdateAPIView):
     serializer_class = GasLineDetailsSerializer
     queryset = GasLineDetails.objects.all()
+
+
+# views for Category
+class CreateFuelCategory(generics.CreateAPIView):
+    serializer_class = FuelCategorySerializer
+    queryset = FuelCategory.objects.all()
+
+
+class ListFuelCategory(generics.ListAPIView):
+    serializer_class = FuelCategorySerializer
+    queryset = FuelCategory.objects.all()
+
+
+class DetailFuelCategory(generics.RetrieveAPIView):
+    serializer_class = FuelCategorySerializer
+    queryset = FuelCategory.objects.all()
+
+
+class DeleteFuelCategory(generics.DestroyAPIView):
+    serializer_class = FuelCategorySerializer
+    queryset = FuelCategory.objects.all()
+
+
+class UpdateFuelCategory(generics.UpdateAPIView):
+    serializer_class = FuelCategorySerializer
+    queryset = FuelCategory.objects.all()
+
+
+# views for FuelBrand
+class CreateFuelBrand(generics.CreateAPIView):
+    serializer_class = FuelBrandSerializer
+    queryset = FuelBrand.objects.all()
+
+
+class ListFuelBrand(generics.ListAPIView):
+    serializer_class = FuelBrandSerializer
+    queryset = FuelBrand.objects.all()
+
+
+class DetailFuelBrand(generics.RetrieveAPIView):
+    serializer_class = FuelBrandSerializer
+    queryset = FuelBrand.objects.all()
+
+
+class DeleteFuelBrand(generics.DestroyAPIView):
+    serializer_class = FuelBrandSerializer
+    queryset = FuelBrand.objects.all()
+
+
+class UpdateFuelBrand(generics.UpdateAPIView):
+    serializer_class = FuelBrandSerializer
+    queryset = FuelBrand.objects.all()

@@ -24,9 +24,12 @@ class BatteryOrderView(generics.CreateAPIView):
             car_name = serializer.validated_data.get("car_type")
             car_type, created = VehicleInformation.objects.get_or_create(
                 vehicle_model=car_name)
+            brand_name = serializers.validate_data.get("brand")
+            brand, created = Brand.objects.get_or_create(naem=brand_name)
 
             serializer.validated_data["category"] = category
             serializer.validated_data['car_type'] = car_type
+            sesrializer.validates_data["brand"] = brnad_name
 
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

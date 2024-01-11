@@ -22,9 +22,12 @@ class CreateEngineOil(generics.CreateAPIView):
             car_name = serializer.validated_data.get("car_type")
             car_type, created = VehicleInformation.objects.get_or_create(
                 vehicle_model=car_name)
+            brand_name = serializers.validate_data.get("brand")
+            brand, created = Brand.objects.get_or_create(naem=brand_name)
 
             serializer.validated_data["category"] = category
             serializer.validates_data["car_type"] = car_type
+            sesrializer.validates_data["brand"] = brnad_name
 
             serializer.save()
             return Response(serializer.data, statu=status.HTTP_201_CREATED)
@@ -50,3 +53,55 @@ class DeleteEgineOil(generics.DestroyAPIView):
 class UpdateEngineOil(generics.UpdateAPIView):
     serializer_class = EngineOilSerializer
     queryset = EngineOil.objects.all()
+
+
+# For EngineOilCategory views
+class CreateEngineOilCategory(generics.CreateAPIView):
+    serializer_class = EngineOilCategorySerializer
+    queryset = EngineOilCategory.objects.all()
+
+
+class ListEngineOilCategory(generics.ListAPIView):
+    serializer_class = EngineOilCategorySerializer
+    queryset = EngineOilCategory.objects.all()
+
+
+class DetailEngineOilCategory(generics.RetrieveAPIView):
+    serializer_class = EngineOilCategorySerializer
+    queryset = EngineOilCategory.objects.all()
+
+
+class DeleteEngineOilCategory(generics.DestroyAPIView):
+    serializer_class = EngineOilCategorySerializer
+    queryset = EngineOilCategory.objects.all()
+
+
+class UpdateEngineOilCategory(generics.UpdateAPIView):
+    serializer_class = EngineOilCategorySerializer
+    queryset = EngineOilCategory.objects.all()
+
+
+# For EngineOilBrand views
+class CreateEngineOilBrand(generics.CreateAPIView):
+    serializer_class = EngineOilBrandSerializer
+    queryset = EngineBrand.objects.all()
+
+
+class ListEngineOilBrand(generics.ListAPIView):
+    serializer_class = EngineOilBrandSerializer
+    queryset = EngineBrand.objects.all()
+
+
+class DetailEngineOilBrand(generics.RetrieveAPIView):
+    serializer_class = EngineOilBrandSerializer
+    queryset = EngineBrand.objects.all()
+
+
+class DeleteEngineOilBrand(generics.DestroyAPIView):
+    serializer_class = EngineOilBrandSerializer
+    queryset = EngineBrand.objects.all()
+
+
+class UpdateEngineOilBrand(generics.UpdateAPIView):
+    serializer_class = EngineOilBrandSerializer
+    queryset = EngineBrand.objects.all()

@@ -29,9 +29,6 @@ urlpatterns = [
     path('admin/tyre/delete/<int:pk>/', DeleteTyre.as_view(), name='delete_tyre'),
     path('admin/tyre/edit/<int:pk>/', EditTyre.as_view(), name='edit_tyre'),
 
-    # CarWah URLS
-    path('user/orderfuel/', FuelOrderCreateView.as_view(), name='orderfuel'),
-
     # Subscriptions URLS
     path('admin/listsubscriptions/',
          ListSubscriptions.as_view(), name='listsubscriptions'),

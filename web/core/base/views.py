@@ -92,43 +92,6 @@ class CreateTyre(generics.CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# Fuel Views
-class FuelOrderCreateView(generics.CreateAPIView):
-    def post(self, request, *args, **kwargs):
-        serializer = GasLineDetailsSerializer(data=request.data)
-        if serializer.is_valid():
-            # Get or create a Category instance based on your logic
-            category_name = serializer.validated_data.get("category")
-            category, created = Category.objects.get_or_create(
-                name=category_name)
-            car_name = serializer.validated_data.get("car_type")
-            car_type, created = VehicleInformation.objects.get_or_create(
-                vehicle_model=car_name)
-
-            serializer.validated_data["category"] = category
-            serializer.validated_data['car_type'] = car_type
-
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        print(serializer.errors)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ListFuel(generics.ListAPIView):
-    serializer_class = GasLineDetailsSerializer
-    queryset = GasLineDetails.objects.all()
-
-
-class DetailGasline(generics.RetrieveAPIView):
-    serializer_class = GasLineDetailsSerializer
-    queryset = GasLineDetails.objects.all()
-
-
-class DeleteGasline(generics.DestroyAPIView):
-    serializer_class = GasLineDetailsSerializer
-    queryset = GasLineDetails.objects.all()
-
-
 class ListTyre(generics.ListAPIView):
     serializer_class = TyreSerializer
     queryset = Tyre.objects.all()
@@ -147,34 +110,6 @@ class DeleteTyre(generics.DestroyAPIView):
 class EditTyre(generics.UpdateAPIView):
     serializer_class = TyreSerializer
     queryset = Tyre.objects.all()
-
-
-# Views for Fuel
-
-
-class CreateGasLineDetails(generics.CreateAPIView):
-    serializer_class = GasLineDetailsSerializer
-    queryset = GasLineDetails.objects.all()
-
-
-class ListGasLineDetails(generics.ListAPIView):
-    serializer_class = GasLineDetailsSerializer
-    queryset = GasLineDetails.objects.all()
-
-
-class EditGasLineDetails(generics.UpdateAPIView):
-    serializer_class = GasLineDetailsSerializer
-    queryset = GasLineDetails.objects.all()
-
-
-class deleteGasLineDetails(generics.UpdateAPIView):
-    serializer_class = GasLineDetailsSerializer
-    queryset = GasLineDetails.objects.all()
-
-
-class GasLineDetails(generics.RetrieveAPIView):
-    serializer_class = GasLineDetailsSerializer
-    queryset = GasLineDetails.objects.all()
 
 
 # Views for Subscriptions

@@ -87,51 +87,6 @@ class Tyre(models.Model):
         return f"{self.tyre_type}'s Tyre Order"
 
 
-class GasLineDetails(models.Model):
-    category = models.ForeignKey(
-        Category, related_name='gaslines', on_delete=models.CASCADE)
-    car_type = models.ForeignKey(
-        VehicleInformation, on_delete=models.CASCADE)
-    fuel_capacity = models.DecimalField(
-        max_digits=8,
-        decimal_places=2,
-        validators=[MinValueValidator(0)],
-        help_text='Fuel capacity in liters'
-    )
-    current_fuel_level = models.DecimalField(
-        max_digits=8,
-        decimal_places=2,
-        validators=[MinValueValidator(0)],
-        help_text='Current fuel level in liters'
-    )
-    qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    delivery_address = models.CharField(max_length=255)
-    arrivaltime = models.DateTimeField(default=timezone.now)
-    fuel_type = models.CharField(max_length=200, default=True)
-
-    def total_price(self):
-        if self.category is not None:
-            return self.qty * self.category.price
-        else:
-            return 0
-
-    def save(self, *args, **kwargs):
-        if isinstance(self.car_type, str):
-            vehicle_info = VehicleInformation.objects.filter(
-                vehicle_type=self.car_type).first()
-            if vehicle_info:
-                self.car_type = vehicle_info
-        super(GasLineDetails, self).save(*args, **kwargs)
-
-    def clean(self):
-        if self.fuel_capacity < self.current_fuel_level:
-            raise ValidationError(
-                _('Fuel capacity should be greater than or equal to current fuel level'))
-
-    def __str__(self):
-        return f"{self.fuel_capacity}L, {self.current_fuel_level}L"
-
-
 class Subscription(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)

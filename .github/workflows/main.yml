@@ -41,12 +41,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
-        with:
-          server: www.api.gooderash.com
-          username: ${{ secrets.USERNAME1 }}
-          password: ${{ secrets.FTP_PASSWORD1 }}
-          local-dir: ./web
-          remote-dir: /public_html
 
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -62,3 +56,4 @@ jobs:
         run: |
           python manage.py migrate
           python manage.py collectstatic --noinput
+          lftp -c "open -u ${{ secrets.USERNAME1 }},${{ secrets.FTP_PASSWORD1 }} -e 'mirror --reverse --verbose ./web /public_html; bye'"

@@ -36,12 +36,12 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.11.6]
+        python-version: [3.11.5]
     steps:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          server: ftp.gooderash.com
+          server: www.gooderash.com
           username: ${{ secrets.usernama }}
           password: ${{ secrets.password }}
 

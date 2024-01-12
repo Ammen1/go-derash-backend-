@@ -42,7 +42,7 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
-          server: www.gooderash.com
+          server: www.api.gooderash.com
           username: ${{ secrets.USERNAME1 }}
           password: ${{ secrets.FTP_PASSWORD1 }}
           local-dir: ./web

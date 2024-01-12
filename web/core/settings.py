@@ -93,21 +93,21 @@ DATABASES = {
     }
 }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'defaultdb',
-        'NAME': 'go_deraash',
-        'USER': "postgres",
-        # 'USER': 'avnadmin',
-        'PASSWORD': '1234',
-        # 'PASSWORD': 'AVNS_Wh9PApkZ-Dx_ESXynj8',
-        # 'HOST': 'pg-285237bd-amenguda-4e46.a.aivencloud.com',
-        'HOST': 'localhost',
-        # 'PORT': '23054',
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         # 'NAME': 'defaultdb',
+#         'NAME': 'go_deraash',
+#         'USER': "postgres",
+#         # 'USER': 'avnadmin',
+#         'PASSWORD': '1234',
+#         # 'PASSWORD': 'AVNS_Wh9PApkZ-Dx_ESXynj8',
+#         # 'HOST': 'pg-285237bd-amenguda-4e46.a.aivencloud.com',
+#         'HOST': 'localhost',
+#         # 'PORT': '23054',
+#         'PORT': '5432',
+#     }
+# }
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
@@ -145,10 +145,10 @@ if DB_IS_AVAIL:
     }
 
     # print(DATABASES)
-    if not DB_IGNORE_SSL:
-        DATABASES["default"]["OPTIONS"] = {
-            "sslmode": "disable"
-        }
+    # if not DB_IGNORE_SSL:
+    #     DATABASES["default"]["OPTIONS"] = {
+    #         "sslmode": "disable"
+    #     }
 
 AUTH_USER_MODEL = "account.NewUser"
 

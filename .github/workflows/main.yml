@@ -44,7 +44,7 @@ jobs:
         with:
           server: ftp.gooderash.com
           username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD1 }}
+          password: ${{ secrets.FTP_PASSWORD }}
 
       - name: Checkout Repository
         uses: actions/checkout@v2

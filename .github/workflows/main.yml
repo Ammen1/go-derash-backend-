@@ -56,4 +56,4 @@ jobs:
         run: |
           python manage.py migrate
           python manage.py collectstatic --noinput
-          lftp -c "open -u ${{ secrets.USERNAME1 }},${{ secrets.FTP_PASSWORD1 }} -e 'mirror --reverse --verbose ./web /public_html; bye'"
+          lftp -c "open -u ${{ secrets.USERNAME1 }},${{ secrets.FTP_PASSWORD1 }} -e 'mirror --reverse --verbose ./core /public_html; bye'"

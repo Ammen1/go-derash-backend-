@@ -41,6 +41,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
+        with:
+          server: ftp.gooderash.com
+          username: ${{ secrets.USERNAME1 }}
+          password: ${{ secrets.FTP_PASSWORD1 }}
 
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -56,4 +60,3 @@ jobs:
         run: |
           python manage.py migrate
           python manage.py collectstatic --noinput
-          lftp -c "  ${{ secrets.USERNAME1 }},${{ secrets.PASSWORD1 }} "

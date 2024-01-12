@@ -12,7 +12,7 @@ class TyreCategorySerializer(serializers.ModelSerializer):
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Brand
+        model = TyreBrand
         fields = '__all__'
 
 
@@ -39,3 +39,30 @@ class TyreSerializer(serializers.ModelSerializer):
                 data['car_type'] = vehicle_info.pk
 
         return super().to_internal_value(data)
+
+
+# class OrderItemSerializer(serializers.ModelSerializer):
+#     fuel = TyreSerializer()
+
+#     class Meta:
+#         model = OrderItem
+#         fields = ['id', 'tyre', 'price', 'quantity']
+
+
+# class OrderSerializer(serializers.ModelSerializer):
+#     items = OrderItemSerializer(many=True, read_only=True)
+
+#     class Meta:
+#         model = Order
+#         fields = ['id', 'user', 'full_name', 'email', 'address', 'city',
+#                   'phone', 'created', 'updated', 'total_paid',
+#                   'order_key', 'payment_option', 'billing_status', 'items']
+
+#     def create(self, validated_data):
+#         items_data = validated_data.pop('items')
+#         order = Order.objects.create(**validated_data)
+#         for item_data in items_data:
+#             fuel_data = item_data.pop('fuel')
+#             fuel = Fuel.objects.create(**fuel_data)
+#             OrderItem.objects.create(order=order, fuel=fuel, **item_data)
+#         return order

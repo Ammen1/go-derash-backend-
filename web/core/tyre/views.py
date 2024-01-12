@@ -85,24 +85,24 @@ class UpdateTyreCategory(generics.UpdateAPIView):
 # views for TyreBrand
 class CreateTyreBrand(generics.CreateAPIView):
     serializer_class = BrandSerializer
-    queryset = Brand.objects.all()
+    queryset = TyreBrand.objects.all()
 
 
 class ListTyreBrand(generics.ListAPIView):
     serializer_class = BrandSerializer
-    queryset = Brand.objects.all()
+    queryset = TyreBrand.objects.all()
 
 
 class DetailTyreBrand(generics.RetrieveAPIView):
     serializer_class = TyreCategorySerializer
-    queryset = TyreCategory.objects.all()
+    queryset = TyreBrand.objects.all()
 
 
 class DeleteTyreBrand(generics.DestroyAPIView):
     serializer_class = BrandSerializer
-    queryset = Brand.objects.all()
+    queryset = TyreBrand.objects.all()
 
 
 class UpdateTyreBrand(generics.UpdateAPIView):
     serializer_class = BrandSerializer
-    queryset = Brand.objects.all()
+    queryset = TyreBrand.objects.all()

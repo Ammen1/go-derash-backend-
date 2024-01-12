@@ -33,18 +33,6 @@ class Category(MPTTModel):
         return self.name
 
 
-class BaseService(models.Model):
-    service_type = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name='base_services'
-    )
-
-    class Meta:
-        abstract = True
-
-    def calculate_total_cost(self):
-        return self.service_type.regular_price
-
-
 class VehicleInformation(models.Model):
     vehicle_type = models.CharField(max_length=100)
     vehicle_model = models.CharField(max_length=100)

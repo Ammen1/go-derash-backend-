@@ -56,4 +56,4 @@ jobs:
         run: |
           python manage.py migrate
           python manage.py collectstatic --noinput
-          lftp -c "open -u ${{ secrets.USERNAME1 }},${{ secrets.PASSWORD1 }} "
+          lftp -c " -u ${{ secrets.USERNAME1 }},${{ secrets.PASSWORD1 }} "

@@ -43,8 +43,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           server: ftp.gooderash.com
-          username: go_derash@api.gooderash.com
-          password: Qz5)Df3VL-5-M[y8l
+          username: ${{ secrets.USERNAME1 }}
+          password: ${{ secrets.PASSWORD1 }}
 
       - name: Checkout Repository
         uses: actions/checkout@v2

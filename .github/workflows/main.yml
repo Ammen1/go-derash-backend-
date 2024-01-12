@@ -43,7 +43,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USENAME }}
+          username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD1 }}
 
       - name: Checkout Repository

@@ -41,9 +41,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          server: www.gooderash.com
-          username: ${{ secrets.usernama }}
-          password: ${{ secrets.password }}
+          server: ftp.gooderash.com
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./web
+          remote-dir: /public_html
 
       - name: Checkout Repository
         uses: actions/checkout@v2

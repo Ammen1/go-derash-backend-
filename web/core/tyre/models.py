@@ -78,76 +78,76 @@ class Tyre(models.Model):
         return f"{self.tyre_type}'s Tyre Order"
 
 
-# class Order(models.Model):
-#     user = models.ForeignKey(
-#         settings.AUTH_USER_MODEL,
-#         on_delete=models.CASCADE,
-#         related_name='orders',
-#         null=True,
-#         blank=True
-#     )
-#     tyres = models.ManyToManyField(Tyre, related_name='orders')
-#     total_price = models.DecimalField(
-#         verbose_name=_("total price"),
-#         max_digits=10,
-#         decimal_places=2,
-#         validators=[MinValueValidator(0)],
-#         default=Decimal('0.00')
-#     )
-#     order_date = models.DateTimeField(default=timezone.now)
-#     delivery_address = models.CharField(max_length=255)
+class Order(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='orders',
+        null=True,
+        blank=True
+    )
+    tyres = models.ManyToManyField(Tyre, related_name='orders')
+    total_price = models.DecimalField(
+        verbose_name=_("total price"),
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
+        default=Decimal('0.00')
+    )
+    order_date = models.DateTimeField(default=timezone.now)
+    delivery_address = models.CharField(max_length=255)
 
-#     class Meta:
-#         ordering = ['-order_date']
-#         verbose_name_plural = _("orders")
+    class Meta:
+        ordering = ['-order_date']
+        verbose_name_plural = _("orders")
 
-#     def save(self, *args, **kwargs):
-#         # Calculate total price based on the prices of individual tyres in the order
-#         self.total_price = sum(tyre.total_price() for tyre in self.tyres.all())
-#         super(Order, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        # Calculate total price based on the prices of individual tyres in the order
+        self.total_price = sum(tyre.total_price() for tyre in self.tyres.all())
+        super(Order, self).save(*args, **kwargs)
 
-#     def __str__(self):
-#         return f"Order #{self.id} - {self.user.username if self.user else 'Guest'} - {self.order_date}"
-
-
-# class Order(models.Model):
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-#                              on_delete=models.CASCADE, related_name="order_user")
-#     full_name = models.CharField(max_length=50)
-#     email = models.EmailField(max_length=254, blank=True)
-#     address = models.CharField(max_length=250)
-#     city = models.CharField(max_length=100)
-#     phone = models.CharField(max_length=100)
-#     created = models.DateTimeField(auto_now_add=True)
-#     updated = models.DateTimeField(auto_now=True)
-#     total_paid = models.DecimalField(max_digits=5, decimal_places=2)
-#     order_key = models.CharField(max_length=200)
-#     payment_option = models.CharField(max_length=200, blank=True)
-#     billing_status = models.BooleanField(default=False)
-
-#     class Meta:
-#         ordering = ("-created",)
-
-#     def update_total_paid(self):
-#         total_paid = sum(item.fuel.price *
-#                          item.quantity for item in self.items.all())
-#         self.total_paid = Decimal(total_paid)
-
-#     def save(self, *args, **kwargs):
-#         self.update_total_paid()
-#         super().save(*args, **kwargs)
-
-#     def __str__(self):
-#         return str(self.created)
+    def __str__(self):
+        return f"Order #{self.id} - {self.user.username if self.user else 'Guest'} - {self.order_date}"
 
 
-# class OrderItem(models.Model):
-#     order = models.ForeignKey(
-#         Order, related_name="items", on_delete=models.CASCADE)
-#     tyre = models.ForeignKey(Tyre, related_name="order_items",
-#                              on_delete=models.CASCADE)  # Change this ForeignKey
-#     price = models.DecimalField(max_digits=5, decimal_places=2)
-#     quantity = models.PositiveIntegerField(default=1)
+class Order(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, related_name="order_user")
+    full_name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=254, blank=True)
+    address = models.CharField(max_length=250)
+    city = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    total_paid = models.DecimalField(max_digits=5, decimal_places=2)
+    order_key = models.CharField(max_length=200)
+    payment_option = models.CharField(max_length=200, blank=True)
+    billing_status = models.BooleanField(default=False)
 
-#     def __str__(self):
-#         return str(self.id)
+    class Meta:
+        ordering = ("-created",)
+
+    def update_total_paid(self):
+        total_paid = sum(item.fuel.price *
+                         item.quantity for item in self.items.all())
+        self.total_paid = Decimal(total_paid)
+
+    def save(self, *args, **kwargs):
+        self.update_total_paid()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.created)
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(
+        Order, related_name="items", on_delete=models.CASCADE)
+    tyre = models.ForeignKey(Tyre, related_name="order_items",
+                             on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return str(self.id)

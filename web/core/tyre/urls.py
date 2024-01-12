@@ -32,4 +32,16 @@ urlpatterns = [
          DeleteTyreBrand.as_view(), name='deletetyrebrand'),
     path('user/tyre/edittyrebrand/<int:pk>/',
          UpdateTyreBrand.as_view(), name='edittyrebrand'),
+
+    # Order URLs
+    #     path('user/tyre/createOrder/',
+    #          CreateOrder.as_view(), name='createOrder'),
+    #     path('user/tyre/listOrder/',
+    #          ListOrder.as_view(), name='listOrder'),
+    #     path('user/tyre/detailOrder/<int:pk>/',
+    #          DetailOrder.as_view(), name='detailOrder'),
+    #     path('user/tyre/deleteOrder/<int:pk>/',
+    #          DeleteOrder.as_view(), name='deleteOrder'),
+    #     path('user/tyre/editOrder/<int:pk>/',
+    #          UpdateOrder.as_view(), name='editOrder'),
 ]

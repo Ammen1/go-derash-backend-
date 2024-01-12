@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from core.tyre.models import *
+from core.account.models import NewUser
 from core.base.models import VehicleInformation
 from .serializers import *
 
@@ -106,3 +107,40 @@ class DeleteTyreBrand(generics.DestroyAPIView):
 class UpdateTyreBrand(generics.UpdateAPIView):
     serializer_class = BrandSerializer
     queryset = TyreBrand.objects.all()
+
+
+# views for order;
+# class CreateOrder(generics.CreateAPIView):
+#     def post(self, request, *args, **kwargs):
+#         serializer = OrderSerializer(data=request.data)
+
+#         if serializer.is_valid():
+#             user_id = serializer.validated_data.get("user")
+#             user, created = NewUser.objects.get_or_create(
+#                 name=user_id)
+
+#             serializer.validated_data["user"] = user
+#             serializer.save()
+#             return Response(serializer.data, statu=status.HTTP_201_CREATED)
+#         print(serializer.errors)
+#         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+
+
+# class ListOrder(generics.ListAPIView):
+#     serializer_class = OrderSerializer
+#     queryset = Order.objects.all()
+
+
+# class DetailOrder(generics.RetrieveAPIView):
+#     serializer_class = OrderSerializer
+#     queryset = Order.objects.all()
+
+
+# class DeteleOrder(generics.DestroyAPIView):
+#     serializer_class = OrderSerializer
+#     queryset = Order.objects.all()
+
+
+# class UpdateOrder(generics.UpdateAPIView):
+#     serializer_class = OrderSerializer
+#     queryset = Order.objects.all()

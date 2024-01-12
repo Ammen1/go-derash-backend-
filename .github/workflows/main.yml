@@ -42,9 +42,9 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
-          server: ftp.gooderash.com
-          username: ${{ secrets.USERNAME1 }}
-          password: ${{ secrets.PASSWORD1 }}
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USENAME }}
+          password: ${{ secrets.FTP_PASSWORD1 }}
 
       - name: Checkout Repository
         uses: actions/checkout@v2

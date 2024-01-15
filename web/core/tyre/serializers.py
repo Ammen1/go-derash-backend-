@@ -19,6 +19,7 @@ class BrandSerializer(serializers.ModelSerializer):
 class TyreSerializer(serializers.ModelSerializer):
     total_cost = serializers.SerializerMethodField()
     car_type = serializers.CharField(write_only=True)
+    brand = serializers.CharField(write_only=True)
 
     class Meta:
         model = Tyre
@@ -38,6 +39,12 @@ class TyreSerializer(serializers.ModelSerializer):
             if vehicle_info:
                 data['car_type'] = vehicle_info.pk
 
+    def to_internal_value(self, data):
+        if 'brand' in data and isinstance(data['brand'], str):
+            brand = TyreBrand.objects.filter(name=data['brand']).first()
+
+            if brand:
+                data['brand'] = brand.pk
         return super().to_internal_value(data)
 
 

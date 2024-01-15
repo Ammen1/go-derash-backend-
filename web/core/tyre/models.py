@@ -66,16 +66,16 @@ class Tyre(models.Model):
         else:
             return 0
 
-    def save(self, *args, **kwargs):
-        if isinstance(self.car_type, str):
-            vehicle_info = VehicleInformation.objects.filter(
-                vehicle_type=self.car_type).first()
-            if vehicle_info:
-                self.car_type = vehicle_info
-        super(Tyre, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if isinstance(self.car_type, str):
+    #         vehicle_info = VehicleInformation.objects.filter(
+    #             vehicle_type=self.car_type).first()
+    #         if vehicle_info:
+    #             self.car_type = vehicle_info
+    #     super(Tyre, self).save(*args, **kwargs)
 
-    def __str__(self):
-        return f"{self.tyre_type}'s Tyre Order"
+    # def __str__(self):
+    #     return f"{self.tyre_type}'s Tyre Order"
 
 
 # class Order(models.Model):

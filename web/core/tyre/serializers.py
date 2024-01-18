@@ -33,7 +33,6 @@ class TyreSerializer(serializers.ModelSerializer):
 
     def to_internal_value(self, data):
         if 'car_type' in data and isinstance(data['car_type'], str):
-            # Assuming VehicleInformation model has a field named 'vehicle_type'
             vehicle_info = VehicleInformation.objects.filter(
                 vehicle_type=data['car_type']).first()
             if vehicle_info:

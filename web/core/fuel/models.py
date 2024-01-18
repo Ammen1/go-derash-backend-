@@ -49,19 +49,19 @@ class GasLineDetails(models.Model):
     category = models.ForeignKey(
         FuelCategory, related_name='gaslines', on_delete=models.CASCADE)
     car_type = models.ForeignKey(
-        VehicleInformation, on_delete=models.CASCADE)
+        VehicleInformation, related_name='cars', on_delete=models.CASCADE)
     brand = models.ForeignKey(
         FuelBrand, related_name="brandes", on_delete=models.CASCADE)
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     delivery_address = models.CharField(max_length=255)
     arrivaltime = models.DateTimeField(default=timezone.now)
     fuel_type = models.CharField(max_length=200, default=True)
-    price = models.DecimalField(verbose_name=_(
-        "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    total_cost = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)
 
     def total_price(self):
         if self.category is not None:
-            return self.qty * self.price
+            return self.qty * self.category.price
         else:
             return 0
 

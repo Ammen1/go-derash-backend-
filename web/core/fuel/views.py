@@ -8,30 +8,45 @@ from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from core.fuel.models import *
 from .serializers import *
+from core.base.models import VehicleInformation
 
 
 # Fuel Views
 class FuelOrderCreateView(generics.CreateAPIView):
+    serializer_class = GasLineDetailsSerializer
+
     def post(self, request, *args, **kwargs):
-        serializer = GasLineDetailsSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
+
         if serializer.is_valid():
-            # Get or create a Category instance based on your logic
             category_name = serializer.validated_data.get("category")
-            category, created = Category.objects.get_or_create(
+            category, created = FuelCategory.objects.get_or_create(
                 name=category_name)
+
             car_name = serializer.validated_data.get("car_type")
             car_type, created = VehicleInformation.objects.get_or_create(
                 vehicle_model=car_name)
 
-            brand_name = serializers.validate_data.get("brand")
-            brand, created = Brand.objects.get_or_create(naem=brand_name)
+            brand_name = serializer.validated_data.get("brand")
+            brand, created = FuelBrand.objects.get_or_create(name=brand_name)
+
+            # Assuming you have a price field in TyreCategory model
+            price_per_unit = category.price
+
+            # Calculate total cost based on qty and price
+            qty = serializer.validated_data.get("qty")
+            total_cost = qty * price_per_unit
+
+            # Update the serializer data with calculated total_cost
+            serializer.validated_data["total_cost"] = total_cost
 
             serializer.validated_data["category"] = category
-            serializer.validated_data['car_type'] = car_type
-            sesrializer.validates_data["brand"] = brnad_name
+            serializer.validated_data["car_type"] = car_type
+            serializer.validated_data["brand"] = brand
 
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

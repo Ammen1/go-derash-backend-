@@ -112,8 +112,8 @@ DATABASES = {
 # }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://gooderash.com",
-
+    # "http://gooderash.com",
+    "http://localhost:3000",
 ]
 
 DB_USERNAME = os.environ.get("POSTGRES_USER")

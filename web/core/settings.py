@@ -94,21 +94,7 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         # 'NAME': 'defaultdb',
-#         'NAME': 'go_deraash',
-#         'USER': "postgres",
-#         # 'USER': 'avnadmin',
-#         'PASSWORD': '1234',
-#         # 'PASSWORD': 'AVNS_Wh9PApkZ-Dx_ESXynj8',
-#         # 'HOST': 'pg-285237bd-amenguda-4e46.a.aivencloud.com',
-#         'HOST': 'localhost',
-#         # 'PORT': '23054',
-#         # 'PORT': '5432',
-#     }
-# }
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://gooderash.com",

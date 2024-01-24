@@ -111,7 +111,7 @@ DATABASES = {
 # }
 
 CORS_ALLOWED_ORIGINS = [
-    "https://gooderash.com"
+    "http://gooderash.com",
 
 ]
 

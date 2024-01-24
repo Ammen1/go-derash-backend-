@@ -2,8 +2,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path, re_path
-from core.base.views import index
 
 
 urlpatterns = [
@@ -19,7 +17,6 @@ urlpatterns = [
     path('api/engineoil/', include('core.engineoil.urls', namespace='engineoil')),
     path('api/carwash/', include('core.carwash.urls', namespace='carwash')),
     path('api/market/', include('core.market.urls', namespace='market')),
-    re_path(r'^.*$', index),
 
 ]
 

@@ -17,8 +17,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = str(os.environ.get('DEBUG')) == "1"
 ENV_ALLOWED_HOST = os.environ.get("ENV_ALLOWED_HOST")
-ALLOWED_HOSTS = []
-# "api.gooderash.com", "www.api.gooderash.com"
+ALLOWED_HOSTS = ["api.gooderash.com", "www.api.gooderash.com"]
 # "gooderash.com", "www.gooderash.com"
 if ENV_ALLOWED_HOST:
     ALLOWED_HOSTS = [ENV_ALLOWED_HOST]
@@ -112,8 +111,8 @@ DATABASES = {
 # }
 
 CORS_ALLOWED_ORIGINS = [
-    # "http://gooderash.com",
-    "http://localhost:3000",
+    "http://gooderash.com",
+
 ]
 
 DB_USERNAME = os.environ.get("POSTGRES_USER")

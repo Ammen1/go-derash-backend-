@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.core.management.base import CommandError
 from rest_framework.decorators import api_view
 from rest_framework import viewsets
@@ -100,10 +99,3 @@ class DeleteSubscription(generics.DestroyAPIView):
 class ComplaintViewSet(viewsets.ModelViewSet):
     queryset = Complaint.objects.all()
     serializer_class = ComplaintSerializer
-
-
-# In your Django views or urls.py
-
-
-def index(request):
-    return render(request, '/home/gooderxa/public_html/index.html')

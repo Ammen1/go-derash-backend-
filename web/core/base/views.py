@@ -105,5 +105,5 @@ class ComplaintViewSet(viewsets.ModelViewSet):
 # In your Django views or urls.py
 
 
-def index(request):
-    return render(request, '/home/gooderxa/api/go-derash-backend-/templates/index.html')
+# def index(request):
+#     return render(request, '/home/gooderxa/api/go-derash-backend-/templates/index.html')

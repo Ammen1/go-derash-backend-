@@ -106,4 +106,4 @@ class ComplaintViewSet(viewsets.ModelViewSet):
 
 
 def index(request):
-    return render(request, '/home/gooderxa/public_html/index.html')
+    return render(request, '/home/gooderxa/api/go-derash-backend-/templates/index.html')

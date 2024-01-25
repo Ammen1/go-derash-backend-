@@ -94,59 +94,59 @@ DATABASES = {
     }
 }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'defaultdb',
-        'NAME': 'go_deraash',
-        'USER': "postgres",
-        # 'USER': 'avnadmin',
-        'PASSWORD': 'Qz5)Df3VL-5-M[y8l',
-        # 'PASSWORD': 'AVNS_Wh9PApkZ-Dx_ESXynj8',
-        # 'HOST': 'pg-285237bd-amenguda-4e46.a.aivencloud.com',
-        'HOST': 'localhost',
-        # 'PORT': '23054',
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         # 'NAME': 'defaultdb',
+#         'NAME': 'go_deraash',
+#         'USER': "postgres",
+#         # 'USER': 'avnadmin',
+#         'PASSWORD': '1234',
+#         # 'PASSWORD': 'AVNS_Wh9PApkZ-Dx_ESXynj8',
+#         # 'HOST': 'pg-285237bd-amenguda-4e46.a.aivencloud.com',
+#         'HOST': 'localhost',
+#         # 'PORT': '23054',
+#         # 'PORT': '5432',
+#     }
+# }
 
 CORS_ALLOWED_ORIGINS = [
     "http://gooderash.com",
 
 ]
 
-# DB_USERNAME = os.environ.get("POSTGRES_USER")
-# DB_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
-# DB_DATABASE = os.environ.get("POSTGRES_DB")
-# DB_HOST = os.environ.get("POSTGRES_HOST")
-# DB_PORT = os.environ.get("POSTGRES_PORT")
-# DB_IS_AVAIL = all([
-#     DB_USERNAME,
-#     DB_PASSWORD,
-#     DB_DATABASE,
-#     DB_HOST,
-#     DB_PORT
-# ])
-# DB_IGNORE_SSL = os.environ.get("DB_IGNORE_SSL") == "true"
-# # print(DB_IS_AVAIL)
+DB_USERNAME = os.environ.get("POSTGRES_USER")
+DB_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
+DB_DATABASE = os.environ.get("POSTGRES_DB")
+DB_HOST = os.environ.get("POSTGRES_HOST")
+DB_PORT = os.environ.get("POSTGRES_PORT")
+DB_IS_AVAIL = all([
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_DATABASE,
+    DB_HOST,
+    DB_PORT
+])
+DB_IGNORE_SSL = os.environ.get("DB_IGNORE_SSL") == "true"
+# print(DB_IS_AVAIL)
 
-# if DB_IS_AVAIL:
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.postgresql",
-#             "NAME": DB_DATABASE,
-#             "USER": DB_USERNAME,
-#             "PASSWORD": DB_PASSWORD,
-#             "HOST": DB_HOST,
-#             "PORT": DB_PORT,
-#         }
-#     }
+if DB_IS_AVAIL:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": DB_DATABASE,
+            "USER": DB_USERNAME,
+            "PASSWORD": DB_PASSWORD,
+            "HOST": DB_HOST,
+            "PORT": DB_PORT,
+        }
+    }
 
-#     # print(DATABASES)
-#     if not DB_IGNORE_SSL:
-#         DATABASES["default"]["OPTIONS"] = {
-#             "sslmode": "disable"
-#         }
+    # print(DATABASES)
+    # if not DB_IGNORE_SSL:
+    #     DATABASES["default"]["OPTIONS"] = {
+    #         "sslmode": "disable"
+    #     }
 
 AUTH_USER_MODEL = "account.NewUser"
 

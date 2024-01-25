@@ -143,10 +143,10 @@ if DB_IS_AVAIL:
     }
 
     # print(DATABASES)
-    # if not DB_IGNORE_SSL:
-    #     DATABASES["default"]["OPTIONS"] = {
-    #         "sslmode": "disable"
-    #     }
+    if not DB_IGNORE_SSL:
+        DATABASES["default"]["OPTIONS"] = {
+            "sslmode": "disable"
+        }
 
 AUTH_USER_MODEL = "account.NewUser"
 

@@ -17,10 +17,10 @@ urlpatterns = [
     path('api/engineoil/', include('core.engineoil.urls', namespace='engineoil')),
     path('api/carwash/', include('core.carwash.urls', namespace='carwash')),
     path('api/market/', include('core.market.urls', namespace='market')),
-    # path('api/inventory',
+    # path('api/inventory/',
     #      include('core.marketplace.inventory.urls', namespace='inventory')),
-    path('api/products/', include('core.marketplace.drf.urls', namespace='products')),
-    # path('api/promotions',
+    path('api/products', include('core.marketplace.drf.urls', namespace='products')),
+    # path('api/promotions/',
     #      include('core.marketplace.promotion.urls', namespace='promotions')),
 
 ]

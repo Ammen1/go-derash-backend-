@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'core.tyre',
     'core.carwash',
     'core.market',
+    'mptt',
+    # 'django.contrib.admin',
 
     'core.marketplace.inventory',
     'core.marketplace.promotion',

@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'core.tyre',
     'core.carwash',
     'core.market',
+
+    'core.marketplace.inventory',
+    'core.marketplace.promotion',
+    'core.marketplace.drf',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',

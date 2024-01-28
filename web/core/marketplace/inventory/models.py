@@ -172,7 +172,7 @@ class ProductInventory(models.Model):
 class Media(models.Model):
     product_inventory = models.ForeignKey(
         ProductInventory,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="media",
     )
     img_url = models.ImageField()
@@ -218,7 +218,7 @@ class ProductAttributeValues(models.Model):
     productinventory = models.ForeignKey(
         ProductInventory,
         related_name="productattributevaluess",
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
     )
 
     class Meta:

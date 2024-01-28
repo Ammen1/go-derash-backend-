@@ -48,8 +48,8 @@ class EngineOil(models.Model):
         EngineOilCategory, related_name='oilengine', on_delete=models.CASCADE)
     car_type = models.ForeignKey(
         VehicleInformation, on_delete=models.CASCADE)
-    enginebrand = models.ForeignKey(
-        EngineBrand, related_name="enginebrand", on_delete=models.CASCADE)
+    brand = models.ForeignKey(
+        EngineBrand, related_name="brandes", on_delete=models.CASCADE)
     engine_oil_type = models.CharField(max_length=100)
     engine_size = models.CharField(max_length=100)
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])

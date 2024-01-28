@@ -12,27 +12,52 @@ from .serializers import *
 
 
 # Engine Oil Views
+from rest_framework import generics, status
+from rest_framework.response import Response
+from core.engineoil.serializers import EngineOilSerializer
+from core.engineoil.models import EngineOilCategory, VehicleInformation, EngineBrand
+
+
 class CreateEngineOil(generics.CreateAPIView):
+    serializer_class = EngineOilSerializer
+
     def post(self, request, *args, **kwargs):
-        serializer = EngineOilSerializer(data=request.data)
+        # Create a mutable copy of request.data
+        mutable_data = request.data.copy()
+
+        serializer = self.get_serializer(data=mutable_data)
+
         if serializer.is_valid():
             category_name = serializer.validated_data.get("category")
-            category, created = EngineOilCategory.objects.get_get_or_create(
+            category, created = EngineOilCategory.objects.get_or_create(
                 name=category_name)
+
             car_name = serializer.validated_data.get("car_type")
             car_type, created = VehicleInformation.objects.get_or_create(
                 vehicle_model=car_name)
-            brand_name = serializers.validate_data.get("brand")
-            brand, created = Brand.objects.get_or_create(naem=brand_name)
+
+            brand_name = serializer.validated_data.get("brand")
+            brand, created = EngineBrand.objects.get_or_create(name=brand_name)
+
+            # Assuming you have a price field in TyreCategory model
+            price_per_unit = category.price
+
+            # Calculate total cost based on qty and price
+            qty = serializer.validated_data.get("qty")
+            total_cost = qty * price_per_unit
+
+            # Update the serializer data with calculated total_cost
+            serializer.validated_data["total_cost"] = total_cost
 
             serializer.validated_data["category"] = category
-            serializer.validates_data["car_type"] = car_type
-            sesrializer.validates_data["brand"] = brnad_name
+            serializer.validated_data["car_type"] = car_type
+            serializer.validated_data["brand"] = brand
 
             serializer.save()
-            return Response(serializer.data, statu=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
         print(serializer.errors)
-        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ListEngineOil(generics.ListAPIView):

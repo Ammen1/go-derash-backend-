@@ -22,6 +22,7 @@ class EngineOilBrandSerializer(serializers.ModelSerializer):
 class EngineOilSerializer(serializers.ModelSerializer):
     total_cost = serializers.SerializerMethodField()
     car_type = serializers.CharField(write_only=True)
+    brand = serializers.CharField(write_only=True)
 
     class Meta:
         model = EngineOil
@@ -39,5 +40,11 @@ class EngineOilSerializer(serializers.ModelSerializer):
                 vehicle_type=data['car_type']).first()
             if vehicle_info:
                 data['car_type'] = vehicle_info.pk
+
+        if 'brand' in data and isinstance(data['brand'], str):
+            brand = EngineBrand.objects.filter(name=data['brand']).first()
+
+            if brand:
+                data['brand'] = brand
 
         return super().to_internal_value(data)

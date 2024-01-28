@@ -19,6 +19,7 @@ from .models import (
 
 
 class ProductAttributeValueInline(admin.TabularInline):
+
     model = ProductAttributeValue
 
 
@@ -28,6 +29,7 @@ class ProductInventoryInline(admin.TabularInline):
 
 
 class ProductTypeAttributeInline(admin.TabularInline):
+    inlines = [ProductAttributeValueInline]
     model = ProductTypeAttribute
 
 

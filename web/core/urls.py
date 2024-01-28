@@ -19,7 +19,7 @@ urlpatterns = [
     path('api/market/', include('core.market.urls', namespace='market')),
     # path('api/inventory/',
     #      include('core.marketplace.inventory.urls', namespace='inventory')),
-    path('api/products', include('core.marketplace.drf.urls', namespace='products')),
+    path('api/products/', include('core.marketplace.drf.urls', namespace='products')),
     # path('api/promotions/',
     #      include('core.marketplace.promotion.urls', namespace='promotions')),
 

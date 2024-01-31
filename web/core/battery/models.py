@@ -18,6 +18,9 @@ class BatteryCategory(MPTTModel):
         'self', null=True, blank=True, on_delete=models.SET_NULL)
     price = models.DecimalField(verbose_name=_(
         "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    image = models.ImageField(
+        upload_to='media/', null=True, blank=True)
+    description = models.TextField(default="")
     is_active = models.BooleanField(default=False)
 
     class MPTTMeta:
@@ -46,21 +49,19 @@ class Battery(models.Model):
     category = models.ForeignKey(
         BatteryCategory, related_name='batteries', on_delete=models.CASCADE, null=True)
     car_type = models.ForeignKey(VehicleInformation, on_delete=models.CASCADE)
-    batteryBrand = models.ForeignKey(
+    brand = models.ForeignKey(
         BatteryBrand, related_name='batterybrand', on_delete=models.CASCADE, null=False)
     select_battery_service = models.CharField(max_length=100)
-    price = models.DecimalField(verbose_name=_(
-        "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    total_cost = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     arrivaltime = models.DateTimeField(default=timezone.now)
-    image = models.ImageField(
-        upload_to='media/', null=True, blank=True)
-    description = models.TextField()
+
     delivery_address = models.CharField(max_length=255)
 
     def total_price(self):
         if self.category is not None:
-            return self.qty * self.price
+            return self.qty * self.category.price
         else:
             return 0
 
@@ -70,10 +71,6 @@ class Battery(models.Model):
                 vehicle_type=self.car_type).first()
             if vehicle_info:
                 self.car_type = vehicle_info
-            else:
-                # If the vehicle information doesn't exist, i will handle this case accordingly.
-                # In this example, I'm setting car_type to None, but i will adjust it based on requirements.
-                self.car_type = None
 
         super(Battery, self).save(*args, **kwargs)
 

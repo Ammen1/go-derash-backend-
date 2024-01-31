@@ -22,26 +22,18 @@ class CreateEngineOil(generics.CreateAPIView):
     serializer_class = EngineOilSerializer
 
     def post(self, request, *args, **kwargs):
-        # Create a mutable copy of request.data
         mutable_data = request.data.copy()
-
         serializer = self.get_serializer(data=mutable_data)
-
         if serializer.is_valid():
             category_name = serializer.validated_data.get("category")
             category, created = EngineOilCategory.objects.get_or_create(
                 name=category_name)
-
             car_name = serializer.validated_data.get("car_type")
             car_type, created = VehicleInformation.objects.get_or_create(
                 vehicle_model=car_name)
-
             brand_name = serializer.validated_data.get("brand")
             brand, created = EngineBrand.objects.get_or_create(name=brand_name)
-
-            # Assuming you have a price field in TyreCategory model
             price_per_unit = category.price
-
             # Calculate total cost based on qty and price
             qty = serializer.validated_data.get("qty")
             total_cost = qty * price_per_unit

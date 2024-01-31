@@ -6,7 +6,7 @@ app_name = 'engineoil'
 urlpatterns = [
     # urls for engineoil
     path('user/createengineoil/', CreateEngineOil.as_view(), name='createengineoil'),
-    path('user/deleteengineoil/<int:id>/',
+    path('user/deleteengineoil/<int:pk>/',
          DeleteEgineOil.as_view(), name='deleteengineoil'),
     path('user/allengineoil/', ListEngineOil.as_view(), name='allengineoil'),
     path('user/detailengineoil/<int:id>/',

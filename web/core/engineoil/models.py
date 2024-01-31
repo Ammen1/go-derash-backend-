@@ -19,6 +19,7 @@ class EngineOilCategory(MPTTModel):
         "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     image = models.ImageField(
         upload_to='media/', null=True, blank=True)
+    decription = models.TextField(default="")
     is_active = models.BooleanField(default=False)
 
     class MPTTMeta:
@@ -54,14 +55,13 @@ class EngineOil(models.Model):
     engine_size = models.CharField(max_length=100)
     qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     delivery_address = models.CharField(max_length=255)
-    price = models.DecimalField(verbose_name=_(
-        "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
-    description = models.TextField()
+    total_cost = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True)
     arrivaltime = models.DateTimeField(default=timezone.now)
 
     def total_price(self):
         if self.category is not None:
-            return self.qty * self.price
+            return self.qty * self.category.price
         else:
             return 0
 

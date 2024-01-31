@@ -14,7 +14,7 @@ urlpatterns = [
     path('user/carwash/edit/<int:pk>/', EditCarWash.as_view(), name='edit'),
 
     # urls for category
-    path('user/carwash/carcategory/',
+    path('user/carwash/createcarcategory/',
          CreateCategory.as_view(), name='carcategory'),
     path('user/carwash/carallctegory/',
          ListCategory.as_view(), name='carallctegory'),

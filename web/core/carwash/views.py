@@ -12,16 +12,24 @@ from .serializers import *
 
 # Carwash Views
 class CarWashOrderCreateView(generics.CreateAPIView):
+    serializer_class = CarWashOrderSerializer
+
     def post(self, request, *args, **kwargs):
+        mutable_data = request.data.copy()
+        serializer = self.get_serializer(data=mutable_data)
         serializer = CarWashOrderSerializer(data=request.data)
         if serializer.is_valid():
-            # Get or create a Category instance based on your logic
             category_name = serializer.validated_data.get("category")
-            category, created = Category.objects.get_or_create(
+            category, created = CarWashCategory.objects.get_or_create(
                 name=category_name)
             car_name = serializer.validated_data.get("car_type")
             car_type, created = VehicleInformation.objects.get_or_create(
                 vehicle_model=car_name)
+            qty = serializer.validated_data.get("qty")
+            price_per_unit = category.price
+            total_cost = qty*price_per_unit
+
+            serializer.validated_data["total_cost"] = total_cost
 
             serializer.validated_data["category"] = category
             serializer.validated_data['car_type'] = car_type

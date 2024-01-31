@@ -41,10 +41,12 @@ class EngineOilSerializer(serializers.ModelSerializer):
             if vehicle_info:
                 data['car_type'] = vehicle_info.pk
 
+        return super().to_internal_value(data)
+
+    def to_internal_value(self, data):
         if 'brand' in data and isinstance(data['brand'], str):
             brand = EngineBrand.objects.filter(name=data['brand']).first()
 
             if brand:
-                data['brand'] = brand
-
+                data['brand'] = brand.pk
         return super().to_internal_value(data)

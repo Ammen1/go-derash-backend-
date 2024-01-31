@@ -11,21 +11,20 @@ from core.account.serializers import CustomUserSerializer
 class CarWashCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = CarWashCategory
-        fieds = '__all__'
+        fields = '__all__'
 
 
 class CarWashOrderSerializer(serializers.ModelSerializer):
     total_cost = serializers.SerializerMethodField()
+    car_type = serializers.CharField(write_only=True)
 
     class Meta:
         model = CarWashOrder
-        fields = ["id", "car_type", "name", "delivery_address", "typeofcarwash",
-                  "quantity", "arrivaltime", "total_cost", "category", "image", "description",]
+        fields = '__all__'
 
     def get_total_cost(self, obj):
         total_price = obj.total_price()
-
-        total_cost = total_price * obj.quantity
+        total_cost = total_price * obj.qty
 
         return total_cost
 

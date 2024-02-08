@@ -14,4 +14,8 @@ urlpatterns = [
     path('users/', Allusers.as_view(), name='users'),
     path('deleteuser/<int:pk>/', DeteleUser.as_view(), name='deteleusers'),
     path('edituser/<int:pk>/', EditUser.as_view(), name='edituser'),
+
+
+    path('drivers/', GetDrivers.as_view(), name='drivers'),
+    path('admin/', GetAdmins.as_view(), name='admin'),
 ]

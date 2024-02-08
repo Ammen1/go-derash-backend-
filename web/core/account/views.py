@@ -38,6 +38,16 @@ class GetUserView(APIView):
         return Response(serializer.data)
 
 
+class GetDrivers(generics.ListAPIView):
+    serializer_class = DriverSerializer
+    queryset = Driver.objects.all()
+
+
+class GetAdmins(generics.ListAPIView):
+    serializer_class = AdminUserSerializer
+    queryset = AdminUser.objects.all()
+
+
 class DeteleUser(generics.DestroyAPIView):
     serializer_class = CustomUserSerializer
     queryset = NewUser.objects.all()

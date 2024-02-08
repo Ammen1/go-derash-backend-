@@ -21,7 +21,6 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError(
                 "Superuser must be assigned to is_superuser=True.")
 
-        # Create a NewUser instance (superuser)
         user = self.model(phone=phone, email=email, **other_fields)
         user.set_password(password)
         user.save()
@@ -34,6 +33,9 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     start_date = models.DateTimeField(default=timezone.now)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    is_admin_user = models.BooleanField(default=False)
+    is_driver = models.BooleanField(default=False)
+    address = models.CharField(max_length=255, null=True, blank=True)
 
     objects = CustomAccountManager()
 
@@ -41,19 +43,40 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     EMAIL_FIELD = "email"
 
     def __str__(self):
-        return self.phone
+        if self.is_admin_user:
+            return f"Admin User: {self.phone} - {self.email}"
+        elif self.is_driver:
+            return f"Driver: {self.phone} - {self.email}"
+        else:
+            return f"User: {self.phone} - {self.email} - Address: {self.address}"
 
 
 class Driver(models.Model):
-    driver = models.OneToOneField(NewUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(NewUser, on_delete=models.CASCADE, default="")
     address = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=20)
     license_number = models.CharField(max_length=20)
+    first_name = models.CharField(max_length=100, default="")
+    last_name = models.CharField(max_length=100, default="")
+    vehicle_type = models.CharField(max_length=50, default="")
+    vehicle_registration = models.CharField(max_length=20, default="")
+    available_for_delivery = models.BooleanField(default=True)
+    driver_photo = models.ImageField(
+        upload_to='driver_photos/', null=True, blank=True)
+
+    is_driver = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.user.phone} - {self.user.email}"
 
 
 class AdminUser(models.Model):
-    # Assume that AdminUser is not used for authentication and extends models.Model
+    user = models.OneToOneField(
+        NewUser, null=True, on_delete=models.CASCADE, default="")
     username = models.CharField(max_length=255)
-    email = models.EmailField()
+    email = models.EmailField(null=True, blank=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+    is_admin_user = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.user.phone} - {self.user.email}"

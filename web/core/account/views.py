@@ -15,9 +15,34 @@ from core.account.models import *
 from .serializers import *
 
 
-class Register(APIView):
-    def post(self, request, format='json'):
-        serializer = CustomUserSerializer(data=request.data)
+class CreateAdmin(generics.CreateAPIView):
+    serializer_class = AdminUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.validated_data.get("user")
+            is_admin_user = user.is_admin_user
+            phone = user.phone
+            email = user.email
+            user = NewUser.objects.get(
+                is_admin_user=True, phone=user.phone, email=user.email)
+
+            serializer.validated_data["user"] = user
+
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class Register(generics.CreateAPIView):
+    serializer_class = CustomUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             if user:
@@ -30,12 +55,9 @@ class Register(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class GetUserView(APIView):
-    def get(self, request):
-        user = request.user
-        serializer = CustomUserSerializer(
-            instance=user, context={'request': request})
-        return Response(serializer.data)
+class GetUserView(generics.ListAPIView):
+    serializer_class = CustomUserSerializer
+    queryset = NewUser.objects.all()
 
 
 class GetDrivers(generics.ListAPIView):

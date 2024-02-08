@@ -80,3 +80,11 @@ class AdminUser(models.Model):
 
     def __str__(self):
         return f"{self.user.phone} - {self.user.email}"
+
+    def save(self, *args, **kwargs):
+        if isinstance(self.user, str):
+            user_info = NewUser.objects.filter(
+                is_admin_user=self.user).first()
+            if user_info:
+                self.user = user_info
+        super(AdminUser, self).save(*args, **kwargs)

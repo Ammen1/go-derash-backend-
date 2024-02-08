@@ -11,7 +11,7 @@ from core.account.models import (
 class DriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = Driver
-        fields = ["driver", "address", "phone_number", "license_number"]
+        fields = '__all__'
 
 
 class AdminUserSerializer(serializers.ModelSerializer):
@@ -25,11 +25,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(required=True, write_only=True)
     driverprofile = DriverSerializer(required=False)
     adminuser = AdminUserSerializer(required=False)
+    user = serializers.CharField(required=True)
 
     class Meta:
         model = NewUser
-        fields = ('id', 'phone', 'password1', 'password2',
-                  'is_active', 'is_superuser', 'driverprofile', 'adminuser')
+        fields = ('id', 'phone', "email", 'password1', 'password2',
+                  'is_active', 'is_superuser', 'driverprofile', 'adminuser', "last_login",  "start_date", "is_staff", "is_admin_user", "is_driver", "address", "user_permissions")
         extra_kwargs = {
             'password1': {'write_only': True},
             'password2': {'write_only': True},
@@ -48,3 +49,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+    def to_internal_value(self, data):
+        if 'user' in data and isinstance(data['user'], str):
+            user_info = NewUser.objects.filter(
+                user=data['user']['is_admin_user']).first()
+            if user_info:
+                data['user'] = user_info.pk
+
+        return super().to_internal_value(data)

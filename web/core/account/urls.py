@@ -17,6 +17,7 @@ urlpatterns = [
 
 
     path('drivers/', GetDrivers.as_view(), name='drivers'),
+    path('driver/create/', CreateDriver.as_view(), name='drivers'),
     path('admin/', GetAdmins.as_view(), name='admin'),
     path('admin/create/', CreateAdmin.as_view(), name='create'),
 ]

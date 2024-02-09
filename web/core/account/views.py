@@ -22,15 +22,20 @@ class CreateAdmin(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid():
-            user = serializer.validated_data.get("user")
-            is_admin_user = user.is_admin_user
-            phone = user.phone
-            email = user.email
-            user = NewUser.objects.get(
-                is_admin_user=True, phone=user.phone, email=user.email)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-            serializer.validated_data["user"] = user
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class CreateDriver(generics.CreateAPIView):
+    serializer_class = DriverSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 

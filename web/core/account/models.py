@@ -30,12 +30,14 @@ class CustomAccountManager(BaseUserManager):
 class NewUser(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=15, unique=True)
     email = models.EmailField(null=True, blank=True)
+    driver_photo = models.ImageField(
+        upload_to='driver_photos/', null=True, blank=True, default="")
+    address = models.CharField(max_length=255, null=True, blank=True)
     start_date = models.DateTimeField(default=timezone.now)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_admin_user = models.BooleanField(default=False)
     is_driver = models.BooleanField(default=False)
-    address = models.CharField(max_length=255, null=True, blank=True)
 
     objects = CustomAccountManager()
 
@@ -44,6 +46,7 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         if self.is_admin_user:
+            is_admin_user = True
             return f"Admin User: {self.phone} - {self.email}"
         elif self.is_driver:
             return f"Driver: {self.phone} - {self.email}"
@@ -68,10 +71,16 @@ class Driver(models.Model):
     def __str__(self):
         return f"{self.user.phone} - {self.user.email}"
 
+    def save(self, *args, **kwargs):
+        if self.user and not self.user.is_admin_user:
+            self.user.is_driver_user = True
+            self.user.save()
+        super(Driver, self).save(*args, **kwargs)
+
 
 class AdminUser(models.Model):
     user = models.OneToOneField(
-        NewUser, null=True, on_delete=models.CASCADE, default="")
+        NewUser, null=True, on_delete=models.CASCADE)
     username = models.CharField(max_length=255)
     email = models.EmailField(null=True, blank=True)
     first_name = models.CharField(max_length=255)
@@ -82,9 +91,31 @@ class AdminUser(models.Model):
         return f"{self.user.phone} - {self.user.email}"
 
     def save(self, *args, **kwargs):
-        if isinstance(self.user, str):
-            user_info = NewUser.objects.filter(
-                is_admin_user=self.user).first()
-            if user_info:
-                self.user = user_info
+        if self.user and not self.user.is_admin_user:
+            self.user.is_admin_user = True
+            self.user.save()
         super(AdminUser, self).save(*args, **kwargs)
+
+
+class Car(models.Model):
+    user = models.OneToOneField(
+        NewUser, null=True, on_delete=models.CASCADE)
+    VIN = models.CharField(max_length=17, unique=True,
+                           help_text="Vehicle Identification Number")
+    make = models.CharField(max_length=50)
+    model = models.CharField(max_length=50)
+    year = models.PositiveIntegerField()
+    color = models.CharField(max_length=20)
+
+    # International Requirements
+    country_of_registration = models.CharField(
+        max_length=50, blank=True, null=True, help_text="Country of registration")
+    international_insurance_provider = models.CharField(
+        max_length=50, blank=True, null=True, help_text="International insurance provider")
+    registration_expiration_date = models.DateField(
+        null=True, blank=True, help_text="Date of registration expiration")
+    international_service_requirements = models.TextField(
+        blank=True, null=True, help_text="International service requirements")
+
+    def __str__(self):
+        return f"{self.year} {self.make} {self.model} ({self.VIN})"

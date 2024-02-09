@@ -20,4 +20,8 @@ urlpatterns = [
     path('driver/create/', CreateDriver.as_view(), name='drivers'),
     path('admin/', GetAdmins.as_view(), name='admin'),
     path('admin/create/', CreateAdmin.as_view(), name='create'),
+
+    path('users/<int:user_id>/create-car/',
+         CarCreateView.as_view(), name='create-car'),
+    path('cars/', AllCars.as_view(), name='cars'),
 ]

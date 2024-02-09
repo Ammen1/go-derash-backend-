@@ -60,6 +60,31 @@ class Register(generics.CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class CarCreateView(APIView):
+    def get_user(self, user_id):
+        try:
+            return NewUser.objects.get(id=user_id)
+        except NewUser.DoesNotExist:
+            return None
+
+    def post(self, request, user_id):
+        user = self.get_user(user_id)
+        if not user:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = CarSerializer(
+            data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save(user=user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AllCars(generics.ListAPIView):
+    serializer_class = CarSerializer
+    queryset = Car.objects.all()
+
+
 class GetUserView(generics.ListAPIView):
     serializer_class = CustomUserSerializer
     queryset = NewUser.objects.all()

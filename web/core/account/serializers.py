@@ -1,11 +1,6 @@
 from rest_framework import serializers
-from django.conf import settings
-from rest_framework import serializers
-from core.account.models import (
-    NewUser,
-    AdminUser,
-    Driver,
-)
+from core.account.models import NewUser, AdminUser, Driver
+from .models import Car
 
 
 class DriverSerializer(serializers.ModelSerializer):
@@ -21,16 +16,15 @@ class AdminUserSerializer(serializers.ModelSerializer):
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    password1 = serializers.CharField(required=True, write_only=True)
-    password2 = serializers.CharField(required=True, write_only=True)
+    password1 = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
     driverprofile = DriverSerializer(required=False)
     adminuser = AdminUserSerializer(required=False)
-    user = serializers.CharField(required=True)
 
     class Meta:
         model = NewUser
-        fields = ('id', 'phone', "email", 'password1', 'password2',
-                  'is_active', 'is_superuser', 'driverprofile', 'adminuser', "last_login",  "start_date", "is_staff", "is_admin_user", "is_driver", "address", "user_permissions")
+        fields = ('id', 'phone', 'email', 'password1', 'password2',
+                  'is_active', 'is_superuser', 'driverprofile', 'adminuser', 'last_login', 'start_date', 'is_staff', 'is_admin_user', 'is_driver', 'address', 'user_permissions')
         extra_kwargs = {
             'password1': {'write_only': True},
             'password2': {'write_only': True},
@@ -50,11 +44,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-    def to_internal_value(self, data):
-        if 'user' in data and isinstance(data['user'], str):
-            user_info = NewUser.objects.filter(
-                user=data['user']['is_admin_user']).first()
-            if user_info:
-                data['user'] = user_info.pk
 
-        return super().to_internal_value(data)
+class CarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = '__all__'

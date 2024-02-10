@@ -18,13 +18,11 @@ class AdminUserSerializer(serializers.ModelSerializer):
 class CustomUserSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
-    driverprofile = DriverSerializer(required=False)
-    adminuser = AdminUserSerializer(required=False)
 
     class Meta:
         model = NewUser
         fields = ('id', 'phone', 'email', 'password1', 'password2',
-                  'is_active', 'is_superuser', 'driverprofile', 'adminuser', 'last_login', 'start_date', 'is_staff', 'is_admin_user', 'is_driver', 'address', 'user_permissions')
+                  'is_active', 'is_superuser',  'last_login', 'is_admin_user', 'is_driver', 'user_photo', 'address')
         extra_kwargs = {
             'password1': {'write_only': True},
             'password2': {'write_only': True},

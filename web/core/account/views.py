@@ -1,3 +1,6 @@
+from rest_framework import generics
+from .serializers import CustomUserSerializer
+from rest_framework import status
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -46,17 +49,21 @@ class CreateDriver(generics.CreateAPIView):
 class Register(generics.CreateAPIView):
     serializer_class = CustomUserSerializer
 
+    def generate_tokens(self, user):
+        refresh = RefreshToken.for_user(user)
+        tokens = {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
+        return tokens
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             if user:
-                refresh = RefreshToken.for_user(user)
-                json = {
-                    'refresh': str(refresh),
-                    'access': str(refresh.access_token),
-                }
-                return Response(json, status=status.HTTP_201_CREATED)
+                tokens = self.generate_tokens(user)
+                return Response(tokens, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

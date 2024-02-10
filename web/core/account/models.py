@@ -30,7 +30,7 @@ class CustomAccountManager(BaseUserManager):
 class NewUser(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=15, unique=True)
     email = models.EmailField(null=True, blank=True)
-    driver_photo = models.ImageField(
+    user_photo = models.ImageField(
         upload_to='driver_photos/', null=True, blank=True, default="")
     address = models.CharField(max_length=255, null=True, blank=True)
     start_date = models.DateTimeField(default=timezone.now)

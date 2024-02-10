@@ -69,6 +69,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# Basket session ID
+BASKET_SESSION_ID = "basket"
+
 ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [

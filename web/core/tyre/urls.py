@@ -14,6 +14,11 @@ urlpatterns = [
     path('order/payment-confirmation/',
          PaymentConfirmationView.as_view(), name='payment-confirmation'),
     path('user/orders/', UserOrdersView.as_view(), name='user-orders'),
+    path('order/payment-complete/',
+         PaymentCompleteView.as_view(), name='payment-complete'),
+    path("basket_update_delivery/", Basket_Update_Delivery.as_view(),
+         name="basket_update_delivery"),
+
 
 
 ]

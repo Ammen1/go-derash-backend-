@@ -21,7 +21,7 @@ urlpatterns = [
     path("basket_update_delivery/", Basket_Update_Delivery.as_view(),
          name="basket_update_delivery"),
     path('update/', BasketUpdate.as_view(), name='basket_update'),
-    path('api/tyre/basket/add/', BasketAddView.as_view(), name='basket-add'),
+    path('basket/add/', BasketAddView.as_view(), name='basket-add'),
     path('basket/delete/',
          BasketDeleteView.as_view(), name='basket-delete'),
 

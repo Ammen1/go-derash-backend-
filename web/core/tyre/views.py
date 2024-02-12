@@ -1,3 +1,5 @@
+from paypalcheckoutsdk.orders import OrdersGetRequest
+from .paypal import PayPalClient
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
 from rest_framework import generics
@@ -10,7 +12,6 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from core.tyre.basket import Basket
-# from core.tyre.paypal import PayPalClient
 from core.checkout.models import DeliveryOptions
 from .models import *
 from .serializers import *
@@ -19,7 +20,7 @@ import json
 
 class TyreAllAPIView(generics.ListAPIView):
     queryset = Tyre.objects.filter(
-        is_active=True).prefetch_related("tyre_image")
+        is_active=True)
     serializer_class = TyreSerializer
 
 
@@ -112,8 +113,8 @@ class AddToOrderView(APIView):
                 # Order doesn't exist, create a new one
                 order = Order.objects.create(
                     user_id=user_id,
-                    full_name="name",  # Replace with actual full name logic
-                    address="add",  # Replace with actual address logic
+                    full_name="name",
+                    address="add",
                     total_paid=basket_total,
                     order_key=order_key,
                 )
@@ -168,45 +169,60 @@ class UserOrdersView(generics.ListAPIView):
         return queryset
 
 
-def basket_add(request):
-    basket = Basket(request)
-    if request.POST.get("action") == "post":
-        product_id = int(request.POST.get("productid"))
-        product_qty = int(request.POST.get("productqty"))
-        product = get_object_or_404(Tyre, id=product_id)
-        print("product", product)
-        basket.add(product=product, qty=product_qty)
+class BasketAddView(APIView):
+    def post(self, request, *args, **kwargs):
+        basket = Basket(request)
+        if request.data.get("action") == "post":
+            product_id = int(request.data.get("productid"))
+            product_qty = int(request.data.get("productqty"))
+            product = get_object_or_404(Tyre, id=product_id)
+            product_price = product.regular_price
 
-        basketqty = basket.__len__()
-        response = Response({"qty": basketqty})
-        return response
+            basket.add(item=product, qty=product_qty, price=product_price)
 
+            basket_qty = len(basket)
+            response_data = {"qty": basket_qty}
+            return Response(response_data, status=status.HTTP_200_OK)
 
-def basket_delete(request):
-    basket = Basket(request)
-    if request.POST.get("action") == "post":
-        product_id = int(request.POST.get("productid"))
-        basket.delete(product=product_id)
-
-        basketqty = basket.__len__()
-        baskettotal = basket.get_total_price()
-        response = Response({"qty": basketqty, "subtotal": baskettotal})
-        return response
+        return Response({"error": "Invalid request. 'action' parameter missing or not equal to 'post'."}, status=status.HTTP_400_BAD_REQUEST)
 
 
-def basket_update(request):
-    basket = Basket(request)
-    if request.POST.get("action") == "post":
-        product_id = int(request.POST.get("productid"))
-        product_qty = int(request.POST.get("productqty"))
-        basket.update(product=product_id, qty=product_qty)
+class BasketDeleteView(APIView):
+    def post(self, request, *args, **kwargs):
+        basket = Basket(request)
+        if request.data.get("action") == "post":
+            product_id = int(request.data.get("productid"))
 
-        basketqty = basket.__len__()
-        priny("basketqty", basketqty)
-        basketsubtotal = basket.get_subtotal_price()
-        print("basketsubtotal", basketsubtotal)
-        response = Response({"qty": basketqty, "subtotal": basketsubtotal})
-        return response
+            basket.delete(item=product_id)
+
+            basket_qty = len(basket)
+            basket_total = basket.get_total_price()
+            response_data = {"qty": basket_qty, "subtotal": basket_total}
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        return Response({"error": "Invalid request. 'action' parameter missing or not equal to 'post'."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class BasketUpdate(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        basket = Basket(request)
+
+        if request.data.get("action") == "post":
+            product_id = int(request.data.get("productid"))
+            product_qty = int(request.data.get("productqty"))
+            basket.update(product=product_id, qty=product_qty)
+
+            basket_qty = len(basket)
+            print("Basket Quantity:", basket_qty)
+            basket_subtotal = basket.get_subtotal_price()
+            print("Basket Subtotal:", basket_subtotal)
+            response = {"qty": basket_qty, "subtotal": basket_subtotal}
+            return Response(response, status=status.HTTP_200_OK)
+
+        return Response({"error": "Invalid request. 'action' parameter missing or not equal to 'post'."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PaymentCompleteView(APIView):
@@ -218,18 +234,31 @@ class PaymentCompleteView(APIView):
         order_id = data.get("orderID")
         user_id = request.user.id
 
-        total_paid = response.result.purchase_units[0].amount.value
+        # Initialize PayPal client
+        PPClient = PayPalClient()
 
-        # Assuming Basket is correctly initialized somewhere in your view
+        # Execute PayPal request
+        requestorder = OrdersGetRequest(order_id)
+        response = PPClient.client.execute(requestorder)
+
+        # Ensure response is successful before accessing its attributes
+        if response.result.purchase_units:
+            print(response.result.purchase_units)
+            total_paid = response.result.purchase_units[0].amount.value
+        else:
+            return Response("Invalid PayPal response", status=status.HTTP_400_BAD_REQUEST)
+
+        # Initialize Basket
         basket = Basket(request)
+
         order_data = {
-            "user_id": 1,
-            "full_name": "amenGUDA",
-            "email": "a@a.com",
-            "address": "addis",
-            "total_paid": 10,
+            "user_id": user_id,
+            "full_name": response.result.purchase_units[0].shipping.name.full_name,
+            "email": response.result.payer.email_address,
+            "address": response.result.purchase_units[0].shipping.address.address,
+            "total_paid": total_paid,
             "order_key": response.result.id,
-            "payment_option": "chapa",
+            "payment_option": "paypal",
             "billing_status": True,
         }
 

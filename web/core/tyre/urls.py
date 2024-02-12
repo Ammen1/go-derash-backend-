@@ -1,5 +1,7 @@
 from django.urls import path, include
 from .views import *
+from . import views
+
 
 app_name = 'tyre'
 
@@ -18,7 +20,10 @@ urlpatterns = [
          PaymentCompleteView.as_view(), name='payment-complete'),
     path("basket_update_delivery/", Basket_Update_Delivery.as_view(),
          name="basket_update_delivery"),
-
+    path('update/', BasketUpdate.as_view(), name='basket_update'),
+    path('api/tyre/basket/add/', BasketAddView.as_view(), name='basket-add'),
+    path('basket/delete/',
+         BasketDeleteView.as_view(), name='basket-delete'),
 
 
 ]

@@ -57,13 +57,13 @@ class Basket:
 
         return sum(item_data["qty"] for item_data in self.basket.values())
 
-    def update(self, item, qty):
+    def update(self, product, qty):
         """
         Update values in session data
         """
-        item_id = str(item.id)
-        if item_id in self.basket:
-            self.basket[item_id]["qty"] = qty
+        product_id = str(product)
+        if product_id in self.basket:
+            self.basket[product_id]["qty"] = qty
         self.save()
 
     def get_subtotal_price(self):

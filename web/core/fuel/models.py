@@ -8,7 +8,7 @@ from decimal import Decimal
 from mptt.models import MPTTModel, TreeForeignKey
 from django.core.validators import MinValueValidator
 from core.account.models import Driver
-from core.base.models import VehicleInformation
+from core.orders.models import Order
 
 
 class FuelCategory(MPTTModel):
@@ -16,11 +16,6 @@ class FuelCategory(MPTTModel):
     slug = models.SlugField(max_length=100)
     parent = models.ForeignKey(
         'self', null=True, blank=True, on_delete=models.SET_NULL)
-    price = models.DecimalField(verbose_name=_(
-        "price"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
-    description = models.TextField()
-    image = models.ImageField(
-        upload_to='media/', null=True, blank=True)
     is_active = models.BooleanField(default=False)
 
     class MPTTMeta:
@@ -48,30 +43,63 @@ class FuelBrand(models.Model):
 class GasLineDetails(models.Model):
     category = models.ForeignKey(
         FuelCategory, related_name='gaslines', on_delete=models.CASCADE)
-    car_type = models.ForeignKey(
-        VehicleInformation, related_name='cars', on_delete=models.CASCADE)
     brand = models.ForeignKey(
         FuelBrand, related_name="brandes", on_delete=models.CASCADE)
-    qty = models.PositiveIntegerField(validators=[MinValueValidator(1)])
-    delivery_address = models.CharField(max_length=255)
-    arrivaltime = models.DateTimeField(default=timezone.now)
+    title = models.CharField(
+        verbose_name=_("title"),
+        help_text=_("Required"),
+        max_length=255,
+        default="",
+    )
+    slug = models.SlugField(max_length=255,  default="")
     fuel_type = models.CharField(max_length=200, default=True)
-    total_cost = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True)
+    image = models.ImageField(
+        upload_to='tyre_images/', null=True, blank=True)
+    regular_price = models.DecimalField(
+        verbose_name=_("Regular price"),
+        help_text=_("Maximum 999999.99"),
+        error_messages={
+            "max_digits": {
+                "max_length": _("The price must be between 0 and 999999.99."),
+            },
+        },
+        max_digits=8,
+        decimal_places=2,
+        default=0
+    )
 
-    def total_price(self):
-        if self.category is not None:
-            return self.qty * self.category.price
-        else:
-            return 0
-
-    def save(self, *args, **kwargs):
-        if isinstance(self.car_type, str):
-            vehicle_info = VehicleInformation.objects.filter(
-                vehicle_type=self.car_type).first()
-            if vehicle_info:
-                self.car_type = vehicle_info
-        super(GasLineDetails, self).save(*args, **kwargs)
+    discount_price = models.DecimalField(
+        verbose_name=_("Discount price"),
+        help_text=_("Maximum 999999.99"),
+        error_messages={
+            "max_digits": {
+                "max_length": _("The price must be between 0 and 999999.99."),
+            },
+        },
+        max_digits=8,
+        decimal_places=2,
+        default=0
+    )
+    is_active = models.BooleanField(
+        verbose_name=_("Product visibility"),
+        help_text=_("Change product visibility"),
+        default=True,
+    )
+    created_at = models.DateTimeField(
+        _("Created at"), auto_now_add=True, editable=False)
+    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
 
     def __str__(self):
-        return f"{self.fuel_capacity}L, {self.current_fuel_level}L"
+        return title
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(
+        Order, related_name="item", on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        GasLineDetails, related_name="order_items", on_delete=models.CASCADE)
+    unit_price = models.DecimalField(max_digits=5, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return str(self.id)

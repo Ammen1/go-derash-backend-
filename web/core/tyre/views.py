@@ -12,7 +12,6 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from core.tyre.basket import Basket
-# from core.tyre.paypal import PayPalClient
 from core.checkout.models import DeliveryOptions
 from .models import *
 from .serializers import *
@@ -245,7 +244,6 @@ class PaymentCompleteView(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        # Initialize your Basket
         basket = Basket(request)
 
         # Simulate a successful payment response

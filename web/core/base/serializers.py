@@ -7,37 +7,44 @@ from rest_framework import serializers
 from core.account.serializers import CustomUserSerializer
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class ProductCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
 
 
-class VehicleInformationSerializer(serializers.ModelSerializer):
-
+class ProductSpecificationValueSerializer(serializers.ModelSerializer):
     class Meta:
-        model = VehicleInformation
-        fields = ["vehicle_type", "vehicle_model",
-                  "license_plate", "driver_license"]
-        read_only = False
-        editable = True
-
-
-class SubscriptionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Subscription
-        fields = ["user", "start_date", "end_date", "active"]
-
-
-class ComplaintSerializer(serializers.ModelSerializer):
-    user = CustomUserSerializer()
-
-    class Meta:
-        model = Complaint
+        model = ProductSpecificationValue
         fields = '__all__'
 
 
-class AnalysisSerializer(serializers.ModelSerializer):
+class BrandSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Analysis
+        model = Brand
+        fields = '__all__'
+
+
+class ProductTypeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductType
+        fields = '__all__'
+
+
+class ProductImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProductImage
+        fields = '__all__'
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    category = ProductCategorySerializer()
+    brand = BrandSerializer()
+    product_type = ProductTypeSerializer()
+    # product_images = ProductImageSerializer()
+
+    class Meta:
+        model = Product
         fields = '__all__'

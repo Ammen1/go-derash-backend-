@@ -1,18 +1,43 @@
+from django import forms
 from django.contrib import admin
-from core.base.models import (
-    VehicleInformation,
+from mptt.admin import MPTTModelAdmin
+
+from .models import (
     Category,
-    Subscription,
-    Complaint,
-    RouteManagement,
-    Analysis,
-
-
+    Product,
+    ProductImage,
+    ProductSpecification,
+    ProductSpecificationValue,
+    ProductType,
+    Brand,
 )
 
-admin.site.register(Category)
-admin.site.register(Analysis)
-admin.site.register(Subscription)
-admin.site.register(Complaint)
-admin.site.register(RouteManagement)
-admin.site.register(VehicleInformation)
+admin.site.register(Category, MPTTModelAdmin)
+admin.site.register(Brand)
+
+
+class ProductSpecificationInline(admin.TabularInline):
+    model = ProductSpecification
+
+
+@admin.register(ProductType)
+class ProductTypeAdmin(admin.ModelAdmin):
+    inlines = [
+        ProductSpecificationInline,
+    ]
+
+
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+
+
+class ProductSpecificationValueInline(admin.TabularInline):
+    model = ProductSpecificationValue
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    inlines = [
+        ProductSpecificationValueInline,
+        ProductImageInline,
+    ]

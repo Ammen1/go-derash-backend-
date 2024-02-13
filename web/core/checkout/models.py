@@ -20,13 +20,13 @@ class DeliveryOptions(models.Model):
     )
     delivery_price = models.DecimalField(
         verbose_name=_("delivery price"),
-        help_text=_("Maximum 999.99"),
+        help_text=_("Maximum 999999.99"),
         error_messages={
             "name": {
-                "max_length": _("The price must be between 0 and 999.99."),
+                "max_length": _("The price must be between 0 and 999999.99."),
             },
         },
-        max_digits=5,
+        max_digits=10,
         decimal_places=2,
     )
     delivery_method = models.CharField(

@@ -1,9 +1,12 @@
 from core.orders.models import OrderItem, Order
+from core.base.serializers import ProductSerializer
 
 from rest_framework import serializers
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
     class Meta:
         model = OrderItem
         fields = '__all__'

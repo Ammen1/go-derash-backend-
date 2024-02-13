@@ -1,51 +1,86 @@
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from django.shortcuts import get_object_or_404
-# from rest_framework import generics, permissions, status
-# from rest_framework.response import Response
-# from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
+from rest_framework import generics
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from rest_framework import viewsets
+from rest_framework.parsers import MultiPartParser, FormParser
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from core.basket.basket import Basket
+from core.base.models import Product
 
-# from core.base.models import Category
-# from .serializers import (
-#     BaseServiceSerializer, BatteryServiceSerializer, EngineOilServiceSerializer,
-#     TyreServiceSerializer, CarWashServiceSerializer, GasLineServiceSerializer
-# )
-
-
-# class BaseServiceView(APIView):
-#     def get_serializer_class(self):
-#         return BaseServiceSerializer
-
-#     def get_service_type(self, service_type_id):
-#         return ServiceType.objects.get(id=service_type_id)
-
-#     def get(self, request, service_type_id):
-#         service_type = self.get_service_type(service_type_id)
-#         serializer = self.get_serializer_class()(service_type)
-#         return Response(serializer.data)
+from .serializers import *
+import json
 
 
-# class BaseServiceView(generics.RetrieveAPIView):
-#     queryset = ServiceType.objects.all()
-#     serializer_class = BaseServiceSerializer
-#     lookup_field = 'pk'
+class Basket_Summary(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        basket = Basket(request)
+        return Response(basket, status=status.HTTP_200_OK)
+# {
+# "action": "post"
+# "productid": 1,
+# "productqty": 3
+# }
 
 
-# class BatteryServiceView(BaseServiceView):
-#     serializer_class = BatteryServiceSerializer
+class BasketAdd(APIView):
+    def post(self, request, *args, **kwargs):
+        basket = Basket(request)
+        if request.data.get("action") == "post":
+            product_id = int(request.data.get("productid"))
+            product_qty = int(request.data.get("productqty"))
+            product = get_object_or_404(Product, id=product_id)
+            product_price = product.regular_price
+
+            basket.add(product=product, qty=product_qty)
+
+            basket_qty = len(basket)
+            response_data = {"qty": basket_qty}
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        return Response({"error": "Invalid request. 'action' parameter missing or not equal to 'post'."}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class EngineOilServiceView(BaseServiceView):
-#     serializer_class = EngineOilServiceSerializer
+class BasketUpdate(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        basket = Basket(request)
+
+        if request.data.get("action") == "post":
+            product_id = int(request.data.get("productid"))
+            product_qty = int(request.data.get("productqty"))
+            basket.update(product=product_id, qty=product_qty)
+
+            basket_qty = len(basket)
+            print("Basket Quantity:", basket_qty)
+            basket_subtotal = basket.get_subtotal_price()
+            print("Basket Subtotal:", basket_subtotal)
+            response = {"qty": basket_qty, "subtotal": basket_subtotal}
+            return Response(response, status=status.HTTP_200_OK)
+
+        return Response({"error": "Invalid request. 'action' parameter missing or not equal to 'post'."}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class TyreServiceView(BaseServiceView):
-#     serializer_class = TyreServiceSerializer
+class BasketDelete(APIView):
+    def post(self, request, *args, **kwargs):
+        basket = Basket(request)
+        if request.data.get("action") == "post":
+            product_id = int(request.data.get("productid"))
 
+            basket.delete(item=product_id)
 
-# class CarWashServiceView(BaseServiceView):
-#     serializer_class = CarWashServiceSerializer
+            basket_qty = len(basket)
+            basket_total = basket.get_total_price()
+            response_data = {"qty": basket_qty, "subtotal": basket_total}
+            return Response(response_data, status=status.HTTP_200_OK)
 
-
-# class GasLineServiceView(BaseServiceView):
-#     serializer_class = GasLineServiceSerializer
+        return Response({"error": "Invalid request. 'action' parameter missing or not equal to 'post'."}, status=status.HTTP_400_BAD_REQUEST)

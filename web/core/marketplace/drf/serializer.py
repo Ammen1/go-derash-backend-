@@ -84,15 +84,6 @@ class ProductInventorySerializer(serializers.ModelSerializer):
         ]
         read_only = True
 
-    # def to_internal_value(self, data):
-    #     if 'media' in data and isinstance(data['media'], str):
-    #         is_feature = Media.objects.filter(
-    #             is_feature=data['media']).first()
-    #     if is_feature:
-    #         data['media'] = is_feature
-
-    #     return super().to_internal_value(data)
-
     def get_promotion_price(self, obj):
 
         try:

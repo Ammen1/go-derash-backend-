@@ -12,4 +12,5 @@ urlpatterns = [
          Category_list.as_view(), name='tyre-category-list'),
     path('product/detail/<str:slug>/',
          Product_detail.as_view(), name='tyre-detail'),
+    path('spefication/', Spefication.as_view(), name='pefication'),
 ]

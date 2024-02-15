@@ -11,9 +11,14 @@ from .serializers import *
 
 
 class Product_all(generics.ListAPIView):
-    queryset = Product.objects.filter(
+    queryset = Product.objects.prefetch_related("product_images").filter(
         is_active=True)
     serializer_class = ProductSerializer
+
+
+class Spefication(generics.ListAPIView):
+    queryset = ProductSpecificationValue.objects.all()
+    serializer_class = ProductSpecificationValueSerializer
 
 
 class Category_list(APIView):

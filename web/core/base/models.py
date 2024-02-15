@@ -62,7 +62,8 @@ class ProductType(models.Model):
 
 
 class ProductSpecification(models.Model):
-    product_type = models.ForeignKey(ProductType, on_delete=models.RESTRICT)
+    product_type = models.ForeignKey(
+        ProductType, related_name="size",  on_delete=models.RESTRICT)
     name = models.CharField(
         verbose_name=_("Name"),
         help_text=_("Required"),
@@ -123,9 +124,10 @@ class Product(models.Model):
 
 
 class ProductSpecificationValue(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        Product, related_name="value", on_delete=models.CASCADE)
     specification = models.ForeignKey(
-        ProductSpecification, on_delete=models.RESTRICT)
+        ProductSpecification,  on_delete=models.RESTRICT)
     value = models.CharField(
         verbose_name=_("Value"),
         help_text=_("Product specification value (maximum of 255 words)"),

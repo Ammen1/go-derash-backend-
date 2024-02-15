@@ -25,25 +25,61 @@ class BrandSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ProductSpecificationSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ProductSpecification
+        fields = ['name']
+        read_only = True
+        editable = False
+
+    def get_name(self, obj):
+        return obj.name
+
+
 class ProductTypeSerializer(serializers.ModelSerializer):
+    size = ProductSpecificationSerializer()
 
     class Meta:
         model = ProductType
         fields = '__all__'
 
 
+class ProductSpecificationValueSerializer(serializers.ModelSerializer):
+    value = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ProductSpecificationValue
+        fields = ['value']
+        read_only = True
+        editable = False
+
+    def get_value(self, obj):
+        return obj.value
+
+
 class ProductImageSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = ProductImage
-        fields = '__all__'
+        fields = ["image", "alt_text", "is_feature"]
+        read_only = True
+        editable = False
+
+    def get_image(self, obj):
+        # if obj.image.self.is_feature == True:
+        return obj.image.url
 
 
 class ProductSerializer(serializers.ModelSerializer):
     category = ProductCategorySerializer()
     brand = BrandSerializer()
     product_type = ProductTypeSerializer()
-    # product_images = ProductImageSerializer()
+    product_images = ProductImageSerializer(many=True, read_only=True)
+    value = ProductSpecificationValueSerializer(
+        many=True, read_only=True)
 
     class Meta:
         model = Product

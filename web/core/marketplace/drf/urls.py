@@ -25,6 +25,5 @@ urlpatterns = [
          get_media_for_product_inventory),
     path("inventory/delete/<int:pk>/", DeleteProductInventory.as_view()),
     path("inventory/edit/<int:pk>/", EditProductInventory.as_view()),
-    path("inventory/create/", CreateProductInventory.as_view()),
 
 ]
